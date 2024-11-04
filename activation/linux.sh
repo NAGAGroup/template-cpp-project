@@ -6,5 +6,6 @@ if [ -z "$PIXI_LINUX_ACTIVE" ]; then
   export CUDA_ROOT="$CONDA_PREFIX/targets/x86_64-linux"
   export CUDA_LIB_PATH="$CUDA_ROOT/lib/stubs:$CONDA_PREFIX/lib"
   export LD_LIBRARY_PATH="$CUDA_LIB_PATH:$CONDA_PREFIX/lib:$LD_LIBRARY_PATH"
+  export LDFLAGS="$LDFLAGS -Wl,-rpath,../lib"
   export PIXI_LINUX_ACTIVE="true"
 fi
