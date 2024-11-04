@@ -1,6 +1,8 @@
-export DPCPP_HOME="$PIXI_PROJECT_ROOT"
+set -e
+
 gcc_toolchain="$(find "$CONDA_PREFIX/lib/gcc/$HOST" -maxdepth 1 -wholename "*/$HOST/*")"
 export GCC_TOOLCHAIN="$gcc_toolchain"
+
 if [ -z "$PIXI_CLANG_ACTIVE" ]; then
   export CXX="clang++"
   export CC="clang"
