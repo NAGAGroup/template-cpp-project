@@ -55,8 +55,8 @@ platforms = ["linux-64"]
 clangdev = ">=18,<19"
 
 [feature.dpcpp.target.linux-64.dependencies]
-clangxx_linux-64 = ">=18,<19"
-clang_linux-64 = ">=18,<19"
+clangxx_linux-64 = ">=18,<19"                 # for activation script purposes
+clang_linux-64 = ">=18,<19"                   # for activation script purposes
 intel-opencl-rt = ">=2024.2.1,<2025"
 intel-fortran-rt = ">=2024.2.1,<2025"
 intel-opencl-fpga-emu-rt = ">=2024.2.1,<2025"
@@ -64,6 +64,8 @@ ocl-icd = ">=2.3.2,<3"
 ocl-icd-system = ">=1.0.0,<2"
 clinfo = ">=3.0.21.2.21,<4"
 cuda = ">=12.6.2,<13"
+zstd = ">=1.5.6,<2"
+zstd-static = ">=1.5.6,<2"
 
 [feature.dpcpp.target.linux-64.activation]
 scripts = ["activation/dpcpp.sh"]
