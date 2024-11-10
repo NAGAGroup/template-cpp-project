@@ -90,6 +90,9 @@ gxx_win-64 = ">=14.2.0,<15"
 gcc_linux-64 = ">=14.2.0,<15"
 gxx_linux-64 = ">=14.2.0,<15"
 
+[feature.gcc.target.linux-64.activation]
+scripts = ["activation/gcc.sh"]
+
 
 # Initialize a CMAKE Project
 [feature.cmake-init.pypi-dependencies]
