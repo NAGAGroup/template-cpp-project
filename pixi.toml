@@ -1,6 +1,6 @@
 [project]
 authors = ["Jack Myers <jack.myers@intel.com>"]
-channels = ["https://software.repos.intel.com/python/conda/", "conda-forge"]
+channels = ["conda-forge", "https://software.repos.intel.com/python/conda/"]
 description = "Add a short description here"
 name = "template-cpp-project"
 platforms = ["win-64", "linux-64"]
@@ -8,16 +8,18 @@ version = "0.1.0"
 
 # Common among all toolchains
 [dependencies]
+python = ">=3.12.5,<4"
 cmake = ">=3.30.5,<4"
 ninja = ">=1.12.1,<2"
+git = ">=2.47.0,<3"
 ccache = ">=4.10.1,<5"
 pkg-config = ">=0.29.2,<0.30"
-git = ">=2.47.0,<3"
+pkgconfig = ">=1.5.5,<2"
 cmake-format = ">=0.6.13,<0.7"
+cppcheck = ">=2.15.0,<3"
 clang-format = ">=18.1.8,<20"
 clang-tools = ">=18.1.8,<20"
-cppcheck = ">=2.15.0,<3"
-python = ">=3.12.5,<4"
+catch2 = ">=3.7.1,<4"
 
 [target.linux-64.dependencies]
 wget = ">=1.21.4,<2"
@@ -32,6 +34,8 @@ scripts = ["activation/msvc.bat"]
 # CLANG Toolchain
 [feature.clang.dependencies]
 clangdev = ">=18.1.8,<20"
+clang-format = ">=18.1.8,<20"
+clang-tools = ">=18.1.8,<20"
 
 [feature.clang.target.linux-64.dependencies]
 clangxx_linux-64 = ">=18,<19"
@@ -51,12 +55,7 @@ scripts = ["activation/clang.sh"]
 [feature.dpcpp]
 platforms = ["linux-64"]
 
-[feature.dpcpp.dependencies]
-clangdev = ">=18,<19"
-
 [feature.dpcpp.target.linux-64.dependencies]
-clangxx_linux-64 = ">=18,<19"                 # for activation script purposes
-clang_linux-64 = ">=18,<19"                   # for activation script purposes
 intel-opencl-rt = ">=2024.2.1,<2025"
 intel-fortran-rt = ">=2024.2.1,<2025"
 intel-opencl-fpga-emu-rt = ">=2024.2.1,<2025"
@@ -64,8 +63,6 @@ ocl-icd = ">=2.3.2,<3"
 ocl-icd-system = ">=1.0.0,<2"
 clinfo = ">=3.0.21.2.21,<4"
 cuda = ">=12.6.2,<13"
-zstd = ">=1.5.6,<2"
-zstd-static = ">=1.5.6,<2"
 
 [feature.dpcpp.target.linux-64.activation]
 scripts = ["activation/dpcpp.sh"]
@@ -76,11 +73,15 @@ scripts = ["activation/dpcpp.sh"]
 platforms = ["win-64"]
 
 [feature.msvc.target.win-64.dependencies]
+clang-format = ">=18.1.8,<20"
+clang-tools = ">=18.1.8,<20"
 vs_win-64 = ">=2022.11,<2023"
 
 
 # GNU GCC Toolchain
 [feature.gcc.dependencies]
+clang-format = ">=18.1.8,<20"
+clang-tools = ">=18.1.8,<20"
 gcc = ">=14.2.0,<15"
 gxx = ">=14.2.0,<15"
 

@@ -6,7 +6,7 @@ export GCC_TOOLCHAIN="$gcc_toolchain"
 if [ -z "$PIXI_CLANG_ACTIVE" ]; then
   export CXX="$(which g++)"
   export CC="$(which gcc)"
-  export CXXFLAGS="--sysroot=$CONDA_BUILD_SYSROOT --gcc-install-dir=$GCC_TOOLCHAIN $CXXFLAGS"
-  export CFLAGS="--sysroot=$CONDA_BUILD_SYSROOT --gcc-install-dir=$GCC_TOOLCHAIN $CFLAGS"
+  export CXXFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CXXFLAGS"
+  export CFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CFLAGS"
   export PIXI_CLANG_ACTIVE="1"
 fi

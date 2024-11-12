@@ -56,6 +56,8 @@ presets = {
             "inherits": "cmake-pedantic",
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": "$env{CMAKE_TOOLCHAIN_FILE}",
+                "CMAKE_CXX_COMPILER": "$env{CXX}",
+                "CMAKE_C_COMPILER": "$env{CC}",
             },
         },
         {
@@ -152,6 +154,12 @@ if __name__ == "__main__":
     dev_mode_cmake_init["cacheVariables"]["CMAKE_TOOLCHAIN_FILE"] = dev_mode[
         "cacheVariables"
     ]["CMAKE_TOOLCHAIN_FILE"]
+    dev_mode_cmake_init["cacheVariables"]["CMAKE_C_COMPILER"] = dev_mode[
+        "cacheVariables"
+    ]["CMAKE_C_COMPILER"]
+    dev_mode_cmake_init["cacheVariables"]["CMAKE_CXX_COMPILER"] = dev_mode[
+        "cacheVariables"
+    ]["CMAKE_CXX_COMPILER"]
     dev_mode["cacheVariables"] = dev_mode_cmake_init["cacheVariables"]
 
     with open("CMakePresets.json", "w", encoding="utf8") as f:
