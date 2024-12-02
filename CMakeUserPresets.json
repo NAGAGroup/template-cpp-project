@@ -1,0 +1,58 @@
+{
+  "version": 2,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 24,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "dev-common",
+      "hidden": true,
+      "inherits": ["dev-mode", "clang-tidy", "cppcheck"],
+      "cacheVariables": {
+        "BUILD_DOCS": "ON",
+        "BUILD_SHARED_LIBS": "ON"
+      }
+    },
+    {
+      "name": "dev-linux",
+      "binaryDir": "${sourceDir}/build/dev-linux",
+      "inherits": ["dev-common", "ci-linux"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_VERIFY_INTERFACE_HEADER_SETS": "ON",
+        "ENABLE_SYCL": "ON",
+        "ENABLE_SYCL_TARGETS": "nvptx64-nvidia-cuda"
+      }
+    },
+    {
+      "name": "dev",
+      "binaryDir": "${sourceDir}/build/dev",
+      "inherits": "dev-linux"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "dev",
+      "configurePreset": "dev",
+      "configuration": "Debug",
+      "jobs": 16
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "dev",
+      "configurePreset": "dev",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 16,
+        "noTestsAction": "error"
+      }
+    }
+  ]
+}

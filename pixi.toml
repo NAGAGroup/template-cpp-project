@@ -1,15 +1,35 @@
 [project]
 authors = ["Jack Myers <jack.myers@intel.com>"]
-channels = ["conda-forge", "https://software.repos.intel.com/python/conda/"]
+channels = ["conda-forge"]
 description = "Add a short description here"
-name = "template-cpp-project"
+name = "template-project-cpp"
 platforms = ["win-64", "linux-64"]
 version = "0.1.0"
 
+# Runtime dependencies for installed package
+[feature.runtime.dependencies]
+zlib = ">=1.3.1,<2"
+
+[feature.runtime.target.linux-64.activation]
+scripts = ["activation/linux.sh", "activation/runtime.sh"]
+
+# Host dependencies for building the package
+# These are not installed in the final package
+# but are used to build the package. Typically,
+# these are a subset of the runtime deps
+[host-dependencies]
+zlib = ">=1.3.1,<2"
+fmt = ">=11.0.2,<12"
+
+[target.linux-64.host-dependencies]
+gcc = ">=13.3.0,<13.4"
+gxx = ">=13.3.0,<13.4"
+
+
 # Common among all toolchains
-[dependencies]
+[build-dependencies]
 python = ">=3.12.5,<4"
-cmake = ">=3.30.5,<4"
+cmake = "3.24.*"
 ninja = ">=1.12.1,<2"
 git = ">=2.47.0,<3"
 ccache = ">=4.10.1,<5"
@@ -17,98 +37,112 @@ pkg-config = ">=0.29.2,<0.30"
 pkgconfig = ">=1.5.5,<2"
 cmake-format = ">=0.6.13,<0.7"
 cppcheck = ">=2.15.0,<3"
-clang-format = ">=18.1.8,<20"
-clang-tools = ">=18.1.8,<20"
 catch2 = ">=3.7.1,<4"
+doxygen = ">=1.11.0,<2"
+ripgrep = ">=14.1.1,<15"
 
-[target.linux-64.dependencies]
+[tasks]
+configure = "bash scripts/configure.sh"
+build = "bash scripts/build.sh"
+install = "bash scripts/install.sh"
+change-project-name = "bash scripts/change-project-name.sh"
+
+[target.linux-64.build-dependencies]
 wget = ">=1.21.4,<2"
+sysroot_linux-64 = ">=2.34"
+x86_64-microarch-level = "1.*"
 
 [target.linux-64.activation]
-scripts = ["activation/linux.sh"]
+env = { INSTALL_PREFIX = "$PIXI_PROJECT_ROOT/install", INSTALL_RPATHS = "\\$ORIGIN;\\$ORIGIN/../lib;\\$ORIGIN/../lib64" }
+# The following can be used instead to disable install rpaths and the usage of patchelf to remove conda prefix
+# paths from the installed binaries
+# env = { INSTALL_PREFIX = "$PIXI_PROJECT_ROOT/install", NO_INSTALL_RPATHS="1", NO_PATCHELF="1" }
 
 [target.win-64.activation]
-scripts = ["activation/msvc.bat"]
+env = { INSTALL_PREFIX = "$PIXI_PROJECT_ROOT/install" }
+
+
+# Clang tools like clang-tidy, clangd, etc
+[feature.clang-extra-tools.dependencies]
+clang-format = ">=18.1.8,<20"
+clang-tools = ">=18.1.8,<20"
 
 
 # CLANG Toolchain
-[feature.clang.dependencies]
+[feature.clang.build-dependencies]
 clangdev = ">=18.1.8,<20"
-clang-format = ">=18.1.8,<20"
-clang-tools = ">=18.1.8,<20"
 
-[feature.clang.target.linux-64.dependencies]
+[feature.clang.target.linux-64.build-dependencies]
 clangxx_linux-64 = ">=18,<19"
 clang_linux-64 = ">=18,<19"
 
-[feature.clang.target.win-64.dependencies]
+[feature.clang.target.win-64.build-dependencies]
 vs_win-64 = ">=2022.11,<2023"
 
 [feature.clang.target.win-64.activation]
-scripts = ["activation/clang.bat"]
+scripts = ["activation/msvc.bat", "activation/clang.bat"]
 
 [feature.clang.target.linux-64.activation]
-scripts = ["activation/clang.sh"]
+scripts = ["activation/linux.sh", "activation/clang.sh"]
 
 
 # DPCPP Toolchain 
 [feature.dpcpp]
 platforms = ["linux-64"]
 
-[feature.dpcpp.target.linux-64.dependencies]
-intel-opencl-rt = ">=2024.2.1,<2025"
-intel-fortran-rt = ">=2024.2.1,<2025"
-intel-opencl-fpga-emu-rt = ">=2024.2.1,<2025"
-ocl-icd = ">=2.3.2,<3"
-ocl-icd-system = ">=1.0.0,<2"
-clinfo = ">=3.0.21.2.21,<4"
-cuda = ">=12.6.2,<13"
+[feature.dpcpp.target.linux-64.build-dependencies]
+gcc = ">=13.3.0,<13.4"
+gxx = ">=13.3.0,<13.4"
+cuda = ">=12.6.3,<12.7"
+pkg-config = ">=0.29.2,<0.30"
+pkgconfig = ">=1.5.5,<1.6"
+sysroot_linux-64 = ">=2.34"
+intel-opencl-rt = ">=2024.2.1,<2025.1"
+intel-fortran-rt = ">=2024.2.1,<2025.1"
+clinfo = ">=3.0.21.2.21,<3.1"
+tbb-devel = ">=2022.0.0,<2022.1"
+libxml2 = ">=2.13.5,<2.14"
+zlib = ">=1.3.1,<1.4"
+libhwloc = ">=2.11.2,<2.12"
+zstd-static = ">=1.5.6,<1.6"
+backtrace = ">=20220708,<20220708.1"
+
 
 [feature.dpcpp.target.linux-64.activation]
-scripts = ["activation/dpcpp.sh"]
+scripts = ["activation/linux.sh", "activation/dpcpp.sh"]
 
 
 # MSVC for Windows
 [feature.msvc]
 platforms = ["win-64"]
 
-[feature.msvc.target.win-64.dependencies]
+[feature.msvc.target.win-64.build-dependencies]
 clang-format = ">=18.1.8,<20"
 clang-tools = ">=18.1.8,<20"
 vs_win-64 = ">=2022.11,<2023"
 
 
 # GNU GCC Toolchain
-[feature.gcc.dependencies]
-clang-format = ">=18.1.8,<20"
-clang-tools = ">=18.1.8,<20"
-gcc = ">=14.2.0,<15"
-gxx = ">=14.2.0,<15"
+[feature.gcc.build-dependencies]
+gcc = ">=13.3.0,<13.4"
+gxx = ">=13.3.0,<13.4"
 
-[feature.gcc.target.win-64.dependencies]
-gcc_win-64 = ">=14.2.0,<15"
-gxx_win-64 = ">=14.2.0,<15"
+[feature.gcc.target.win-64.build-dependencies]
+gcc_win-64 = ">=13.3.0,<13.4"
+gxx_win-64 = ">=13.3.0,<13.4"
 
-[feature.gcc.target.linux-64.dependencies]
-gcc_linux-64 = ">=14.2.0,<15"
-gxx_linux-64 = ">=14.2.0,<15"
+[feature.gcc.target.linux-64.build-dependencies]
+gcc_linux-64 = ">=13.3.0,<13.4"
+gxx_linux-64 = ">=13.3.0,<13.4"
 
 [feature.gcc.target.linux-64.activation]
-scripts = ["activation/gcc.sh"]
-
-
-# Initialize a CMAKE Project
-[feature.cmake-init.pypi-dependencies]
-cmake-init = ">=0.40.9, <0.41"
-
-[feature.cmake-init.tasks]
-cmake-init = "bash scripts/cmake-init.sh"
+scripts = ["activation/linux.sh", "activation/gcc.sh"]
 
 
 # ENVIRONMENTS
 [environments]
-clang = ["clang"]
-gcc = ["gcc"]
-msvc = ["msvc"]
+clang = ["clang-extra-tools", "clang"]
+gcc = ["clang-extra-tools", "gcc"]
+msvc = ["clang-extra-tools", "msvc"]
 dpcpp = ["dpcpp"]
-cmake-init = ["cmake-init"]
+runtime = ["runtime"]

@@ -1,12 +1,9 @@
 set -e
 
-gcc_toolchain="$(find "$CONDA_PREFIX/lib/gcc/$HOST" -maxdepth 1 -wholename "*/$HOST/*")"
-export GCC_TOOLCHAIN="$gcc_toolchain"
-
 if [ -z "$PIXI_CLANG_ACTIVE" ]; then
-  export CXX="clang++"
-  export CC="clang"
-  export CXXFLAGS="--sysroot=$CONDA_BUILD_SYSROOT  --gcc-toolchain=$CONDA_PREFIX --target=$HOST $CXXFLAGS"
-  export CFLAGS="--sysroot=$CONDA_BUILD_SYSROOT  --gcc-toolchain=$CONDA_PREFIX --target=$HOST $CFLAGS"
+  gcc_version=$(gcc -dumpversion)
+  gcc_install_dir="$PREFIX/lib/gcc/$CONDA_TOOLCHAIN_HOST/$gcc_version"
+  export CFLAGS="--gcc-install-dir=$gcc_install_dir --target=$CONDA_TOOLCHAIN_HOST $CFLAGS"
+  export CXXFLAGS="--gcc-install-dir=$gcc_install_dir --target=$CONDA_TOOLCHAIN_HOST $CXXFLAGS"
   export PIXI_CLANG_ACTIVE="1"
 fi
