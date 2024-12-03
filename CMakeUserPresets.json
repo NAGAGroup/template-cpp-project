@@ -30,10 +30,7 @@
     {
       "name": "dev",
       "binaryDir": "${sourceDir}/build/dev",
-      "inherits": "dev-linux",
-      "cacheVariables": {
-        "ENABLE_SYCL_TARGETS": ""
-      }
+      "inherits": "dev-linux"
     }
   ],
   "buildPresets": [

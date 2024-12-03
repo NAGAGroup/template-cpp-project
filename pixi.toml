@@ -8,7 +8,7 @@ version = "0.1.0"
 
 # Runtime dependencies for installed package
 [feature.runtime.dependencies]
-zlib = ">=1.3.1,<2"
+fmt = ">=11.0.2,<12"
 
 [feature.runtime.target.linux-64.activation]
 scripts = ["activation/linux.sh", "activation/runtime.sh"]
@@ -18,12 +18,14 @@ scripts = ["activation/linux.sh", "activation/runtime.sh"]
 # but are used to build the package. Typically,
 # these are a subset of the runtime deps
 [host-dependencies]
-zlib = ">=1.3.1,<2"
 fmt = ">=11.0.2,<12"
 
 [target.linux-64.host-dependencies]
 gcc = ">=13.3.0,<13.4"
 gxx = ">=13.3.0,<13.4"
+
+[activation]
+env = { FILTER_COMPILE_COMMANDS_FLAGS = "-fsycl-targets" }
 
 
 # Common among all toolchains
