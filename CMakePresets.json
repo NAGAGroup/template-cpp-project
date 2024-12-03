@@ -28,9 +28,7 @@
       "inherits": "cmake-pedantic",
       "cacheVariables": {
         "template-cpp-project_DEVELOPER_MODE": "ON",
-        "CMAKE_TOOLCHAIN_FILE": "$env{PROJECT_TOOLCHAIN_FILE}",
-        "template-cpp-project_CXXFLAGS_PREPEND": "$env{CXXFLAGS}",
-        "template-cpp-project_LDFLAGS_PREPEND": "$env{LDFLAGS}"
+        "CMAKE_TOOLCHAIN_FILE": "$env{PROJECT_TOOLCHAIN_FILE}"
       }
     },
     {
