@@ -33,4 +33,5 @@ done
 # Write the filtered JSON back to the file
 echo "$json_content" >"$compile_commands_json"
 
+echo ""
 echo "Filtered compile_commands.json and removed flags: $FILTER_COMPILE_COMMANDS_FLAGS"
