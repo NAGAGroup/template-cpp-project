@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if [ "$LINUX_BUILD_ENV_ACTIVE" != "1" ]; then
+if [ "$CONDA_LINUX_ENV_ACTIVE" != "1" ]; then
   if [ -z "$BUILD_PREFIX" ]; then
     export BUILD_PREFIX="$CONDA_PREFIX"
   fi
@@ -18,8 +18,8 @@ if [ "$LINUX_BUILD_ENV_ACTIVE" != "1" ]; then
     export PROJECT_ROOT="$PIXI_PROJECT_ROOT"
   fi
 
-  export CXXFLAGS="$CXXFLAGS -I$CONDA_BUILD_SYSROOT/usr/include"
-  export CFLAGS="$CFLAGS -I$CONDA_BUILD_SYSROOT/usr/include"
+  export CXXFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CXXFLAGS -I$CONDA_BUILD_SYSROOT/usr/include"
+  export CFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CFLAGS -I$CONDA_BUILD_SYSROOT/usr/include"
   export LDFLAGS="$LDFLAGS -L$CONDA_BUILD_SYSROOT/usr/lib"
 
   CONDA_CUDA_ROOT="$PREFIX/targets/x86_64-linux"
@@ -37,5 +37,5 @@ if [ "$LINUX_BUILD_ENV_ACTIVE" != "1" ]; then
     export VCPKG_ROOT="$PROJECT_ROOT/vcpkg"
   fi
 
-  export LINUX_BUILD_ENV_ACTIVE=1
+  export CONDA_LINUX_ENV_ACTIVE=1
 fi

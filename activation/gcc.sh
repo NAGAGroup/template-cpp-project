@@ -1,7 +1,7 @@
 set -e
 
-if [ -z "$PIXI_GCC_ACTIVE" ]; then
+if [ -z "$CONDA_GCC_ENV_ACTIVE" ]; then
   export CFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CFLAGS"
   export CXXFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CXXFLAGS"
-  export PIXI_GCC_ACTIVE="1"
+  export CONDA_GCC_ENV_ACTIVE="1"
 fi

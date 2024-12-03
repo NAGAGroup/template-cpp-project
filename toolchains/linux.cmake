@@ -39,8 +39,6 @@ endif()
 # location of the target environment
 set(CMAKE_FIND_ROOT_PATH "$ENV{PREFIX}" "$ENV{CONDA_BUILD_SYSROOT}")
 
-set(CMAKE_SYSROOT "$ENV{CONDA_BUILD_SYSROOT}")
-
 if(DEFINED ENV{CONDA_CUDA_ROOT})
   set(CUDAToolkit_ROOT
       "$ENV{CONDA_CUDA_ROOT}"
