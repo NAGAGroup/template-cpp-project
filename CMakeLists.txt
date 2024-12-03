@@ -12,12 +12,12 @@ project(
 
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
-# Uncomment below for SYCL/OneMKL support
-# option(ENABLE_SYCL "Enable add_sycl_to_target" OFF)
-# if(ENABLE_SYCL)
-#   include(cmake/sycl.cmake)
-#   find_package(oneMKL REQUIRED)
-# endif()
+# Uncomment below for SYCL/OneMKL support option(ENABLE_SYCL "Enable
+# add_sycl_to_target" OFF)
+if(ENABLE_SYCL)
+  include(cmake/sycl.cmake)
+  # find_package(oneMKL REQUIRED)
+endif()
 
 # ---- Declare library ----
 
@@ -31,10 +31,10 @@ add_library(
   template-cpp-project_template-cpp-project
 )
 
-# if(ENABLE_SYCL)
-#   add_sycl(template-cpp-project_template-cpp-project)
-#   target_link_libraries(template-cpp-project PUBLIC MKL::onemkl)
-# endif()
+if(ENABLE_SYCL)
+  add_sycl(template-cpp-project_template-cpp-project)
+  # target_link_libraries(template-cpp-project PUBLIC MKL::onemkl)
+endif()
 
 include(GenerateExportHeader)
 generate_export_header(

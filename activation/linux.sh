@@ -27,10 +27,11 @@ if [ "$LINUX_BUILD_ENV_ACTIVE" != "1" ]; then
     export CONDA_CUDA_ROOT="$CONDA_CUDA_ROOT"
     export CUDA_LIB_PATH="$CONDA_CUDA_ROOT/lib/stubs"
     export LD_LIBRARY_PATH="$CONDA_CUDA_ROOT/lib:$CONDA_CUDA_ROOT/lib/stubs:$LD_LIBRARY_PATH"
-    export PROJECT_TOOLCHAIN_FILE="$PROJECT_ROOT/toolchains/linux.cmake"
   fi
 
   export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH"
+
+  export PROJECT_TOOLCHAIN_FILE="$PROJECT_ROOT/toolchains/linux.cmake"
 
   if [ -d "$PROJECT_ROOT/vcpkg" ]; then
     export VCPKG_ROOT="$PROJECT_ROOT/vcpkg"
