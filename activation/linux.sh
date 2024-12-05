@@ -18,15 +18,13 @@ if [ "$CONDA_LINUX_ENV_ACTIVE" != "1" ]; then
     export PROJECT_ROOT="$PIXI_PROJECT_ROOT"
   fi
 
-  export CXXFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CXXFLAGS -I$CONDA_BUILD_SYSROOT/usr/include"
-  export CFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CFLAGS -I$CONDA_BUILD_SYSROOT/usr/include"
-  export LDFLAGS="$LDFLAGS -L$CONDA_BUILD_SYSROOT/usr/lib"
+  export CXXFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CXXFLAGS"
+  export CFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CFLAGS"
 
   CONDA_CUDA_ROOT="$PREFIX/targets/x86_64-linux"
   if [ -d "$CONDA_CUDA_ROOT" ]; then
     export CONDA_CUDA_ROOT="$CONDA_CUDA_ROOT"
     export CUDA_LIB_PATH="$CONDA_CUDA_ROOT/lib/stubs"
-    export LD_LIBRARY_PATH="$CONDA_CUDA_ROOT/lib:$CONDA_CUDA_ROOT/lib/stubs:$LD_LIBRARY_PATH"
   fi
 
   export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH"
