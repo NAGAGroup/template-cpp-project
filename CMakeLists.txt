@@ -16,7 +16,7 @@ include(cmake/variables.cmake)
 # add_sycl_to_target" OFF)
 if(ENABLE_SYCL)
   include(cmake/sycl.cmake)
-  # find_package(oneMKL REQUIRED)
+  find_package(oneMath REQUIRED)
 endif()
 
 # ---- Declare library ----
@@ -33,7 +33,9 @@ add_library(
 
 if(ENABLE_SYCL)
   add_sycl(template-cpp-project_template-cpp-project)
-  # target_link_libraries(template-cpp-project PUBLIC MKL::onemkl)
+  target_link_libraries(
+    template-cpp-project_template-cpp-project PUBLIC ONEMATH::onemath
+  )
 endif()
 
 include(GenerateExportHeader)

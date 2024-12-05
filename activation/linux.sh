@@ -31,6 +31,8 @@ if [ "$CONDA_LINUX_ENV_ACTIVE" != "1" ]; then
 
   export PROJECT_TOOLCHAIN_FILE="$PROJECT_ROOT/toolchains/linux.cmake"
 
+  export CMAKE_PREFIX_PATH="$PREFIX/lib/cmake:$CMAKE_PREFIX_PATH"
+
   if [ -d "$PROJECT_ROOT/vcpkg" ]; then
     export VCPKG_ROOT="$PROJECT_ROOT/vcpkg"
   fi
