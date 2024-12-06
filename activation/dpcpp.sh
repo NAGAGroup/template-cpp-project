@@ -10,8 +10,10 @@ if [ -z "$CONDA_DPCPP_ENV_ACTIVE" ]; then
 
   export CC="$BUILD_PREFIX/bin/clang"
   export CXX="$BUILD_PREFIX/bin/clang++"
-  export CFLAGS="--cuda-path=$CONDA_CUDA_ROOT $CFLAGS"
-  export CXXFLAGS="--cuda-path=$CONDA_CUDA_ROOT $CXXFLAGS"
+  if [ -n "$CONDA_CUDA_ROOT" ]; then
+    export CFLAGS="--cuda-path=$CONDA_CUDA_ROOT $CFLAGS"
+    export CXXFLAGS="--cuda-path=$CONDA_CUDA_ROOT $CXXFLAGS"
+  fi
 
   export OCL_ICD_VENDORS="$PREFIX/etc/OpenCL/vendors"
   export OCL_ICD_FILENAMES=
