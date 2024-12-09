@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-if [ "$CONDA_LINUX_ENV_ACTIVE" != "1" ]; then
+if [ "${CONDA_LINUX_ENV_ACTIVE:-0}" != "1" ]; then
   if [ -z "$BUILD_PREFIX" ]; then
     export BUILD_PREFIX="$CONDA_PREFIX"
   fi
   if [ -z "$PREFIX" ]; then
-    export PREFIX="$CONDA_PREFIX"
+    export PREFIX="$BUILD_PREFIX"
   fi
   if [ -z "$INSTALL_PREFIX" ]; then
     export INSTALL_PREFIX="$PREFIX"
@@ -14,13 +14,7 @@ if [ "$CONDA_LINUX_ENV_ACTIVE" != "1" ]; then
   if [ -z "$CONDA_TOOLCHAIN_HOST" ]; then
     export CONDA_TOOLCHAIN_HOST="$HOST"
   fi
-  if [ -z "$PROJECT_ROOT" ]; then
-    export PROJECT_ROOT="$PIXI_PROJECT_ROOT"
-  fi
-
-  export CXXFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CXXFLAGS -I$CONDA_BUILD_SYSROOT/usr/include"
-  export CFLAGS="--sysroot=$CONDA_BUILD_SYSROOT $CFLAGS -I$CONDA_BUILD_SYSROOT/usr/include"
-  export LDFLAGS="$LDFLAGS -L$CONDA_BUILD_SYSROOT/usr/lib"
+  "${PROJECT_ROOT?PROJECT_ROOT must be set before script activation.}"
 
   CONDA_CUDA_ROOT="$PREFIX/targets/x86_64-linux"
   if [ -d "$CONDA_CUDA_ROOT" ]; then
