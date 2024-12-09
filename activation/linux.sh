@@ -14,7 +14,7 @@ if [ "${CONDA_LINUX_ENV_ACTIVE:-0}" != "1" ]; then
   if [ -z "$CONDA_TOOLCHAIN_HOST" ]; then
     export CONDA_TOOLCHAIN_HOST="$HOST"
   fi
-  "${PROJECT_ROOT?PROJECT_ROOT must be set before script activation.}"
+  project_root="${PROJECT_ROOT?PROJECT_ROOT must be set before script activation.}"
 
   CONDA_CUDA_ROOT="$PREFIX/targets/x86_64-linux"
   if [ -d "$CONDA_CUDA_ROOT" ]; then

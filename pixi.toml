@@ -107,7 +107,7 @@ features = ["default-toolchain", "test"]
 # features = ["dev", "default-toolchain", "clang-extra-tools", "build", "test"]
 # examples of using other toolchains instead for development
 # features = ["dev", "default-toolchain", "mingw", "clang-extra-tools", "test"]  # multi-platform gcc
-features = ["dev", "dpcpp", "test"] # linux-only dev env
+features = ["dev", "dpcpp", "dpcpp-extras", "test"] # linux-only dev env
 # features = ["dev", "clang", "clang-extra-tools", "test"]  # simple multi-platform env
 
 
@@ -155,13 +155,13 @@ scripts = ["activation/linux.sh", "activation/clang.sh"]
 # ---- Open DPC++ Toolchain ----
 [feature.dpcpp]
 platforms = ["linux-64"]
-channels = [
-  "conda-forge",
-  "~/Documents/software/dpcpp-toolkit-feedstock/output/",
-]
+channels = ["conda-forge", "nagagroup"]
 
 [feature.dpcpp.system-requirements]
 libc = "2.34"
+
+[feature.dpcpp-extras.dependencies]
+intel-opencl-rt = ">=2024.0.0,<2025"
 
 [feature.dpcpp.build-dependencies]
 open-dpcpp-toolkit = ">=20.0.0,<21"
