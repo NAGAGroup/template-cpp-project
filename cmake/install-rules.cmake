@@ -13,12 +13,6 @@ include(GNUInstallDirs)
 set(package template-cpp-project)
 
 install(
-  DIRECTORY include/ "${PROJECT_BINARY_DIR}/export/"
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-  COMPONENT template-cpp-project_Development
-)
-
-install(
   TARGETS template-cpp-project_template-cpp-project
   EXPORT template-cpp-projectTargets
   RUNTIME #

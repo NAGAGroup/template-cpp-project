@@ -11,15 +11,13 @@ version = "0.1.0"
 # Global environment variables that
 # affect all toolchains
 [activation.env]
-FILTER_COMPILE_COMMANDS_FLAGS = "-fsycl-targets" # remove problematic flags from compile_commands.json
+FILTER_COMPILE_COMMANDS_FLAGS = "-fsycl,-fsycl-targets" # remove problematic flags from compile_commands.json
 # INSTALL_PREFIX = "~/.local/share/dev"            # default install prefix
 PROJECT_ROOT = "$PIXI_PROJECT_ROOT" # rename root project so scripts make sense to non-pixi users
 
 # Global, linux-specific environment variables
 [target.linux-64.activation.env]
 INSTALL_RPATHS = "\\$ORIGIN;\\$ORIGIN/../lib;\\$ORIGIN/../lib64"
-# NO_INSTALL_RPATHS="1"  # disable install rpaths
-# NO_PATCHELF="1"        # disable patchelf to remove conda prefix paths from installed binaries
 
 
 # ========= Project Dependencies ==========
@@ -176,7 +174,7 @@ intel-opencl-rt = ">=2024.0.0,<2025"
 open-dpcpp-toolkit = ">=20.0.0,<21"
 
 [feature.dpcpp.activation]
-scripts = ["activation/dpcpp.sh"]
+scripts = ["activation/clang.sh", "activation/dpcpp.sh"]
 
 # ---- MinGW Toolchain for Windows ----
 # This toolchain feature can be combined with the default-toolchain

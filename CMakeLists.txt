@@ -36,28 +36,9 @@ if(ENABLE_SYCL)
   # target_link_libraries(template-cpp-project PUBLIC MKL::onemkl)
 endif()
 
-include(GenerateExportHeader)
-generate_export_header(
-  template-cpp-project_template-cpp-project
-  BASE_NAME
-  template-cpp-project
-  EXPORT_FILE_NAME
-  export/template-cpp-project/template-cpp-project_export.hpp
-  CUSTOM_CONTENT_FROM_VARIABLE
-  pragma_suppress_c4251
-)
-
-if(NOT BUILD_SHARED_LIBS)
-  target_compile_definitions(
-    template-cpp-project_template-cpp-project
-    PUBLIC TEMPLATE_CPP_PROJECT_STATIC_DEFINE
-  )
-endif()
-
 set_target_properties(
   template-cpp-project_template-cpp-project
-  PROPERTIES CXX_VISIBILITY_PRESET hidden
-             VISIBILITY_INLINES_HIDDEN YES
+  PROPERTIES VISIBILITY_INLINES_HIDDEN YES
              VERSION "${PROJECT_VERSION}"
              SOVERSION "${PROJECT_VERSION_MAJOR}"
              EXPORT_NAME template-cpp-project
