@@ -8,7 +8,5 @@ if [ "${CONDA_CLANG_ENV_ACTIVE:-0}" == "0" ]; then
   gcc_version=$(gcc -dumpversion)
   gcc_install_dir="$PREFIX/lib/gcc/$CONDA_TOOLCHAIN_HOST/$gcc_version"
   export GCC_INSTALL_DIR="$gcc_install_dir"
-  export CFLAGS="--gcc-install-dir=$gcc_install_dir $CFLAGS"
-  export CXXFLAGS="--gcc-install-dir=$gcc_install_dir $CXXFLAGS"
   export CONDA_CLANG_ENV_ACTIVE="1"
 fi

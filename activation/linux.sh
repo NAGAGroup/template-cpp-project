@@ -9,7 +9,7 @@ if [ "${CONDA_LINUX_ENV_ACTIVE:-0}" != "1" ]; then
     export PREFIX="$BUILD_PREFIX"
   fi
   if [ -z "$INSTALL_PREFIX" ]; then
-    export INSTALL_PREFIX="$PREFIX"
+    export INSTALL_PREFIX="$HOME/.local/share/dev"
   fi
   if [ -z "$CONDA_TOOLCHAIN_HOST" ]; then
     export CONDA_TOOLCHAIN_HOST="$HOST"
@@ -23,7 +23,9 @@ if [ "${CONDA_LINUX_ENV_ACTIVE:-0}" != "1" ]; then
     export LD_LIBRARY_PATH="$CONDA_CUDA_ROOT/lib:$CONDA_CUDA_ROOT/lib/stubs:$LD_LIBRARY_PATH"
   fi
 
-  export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH"
+  if [ "${ENABLE_LD_LIBRARY_PATH:-0}" == "1" ]; then
+    export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH"
+  fi
 
   export PROJECT_TOOLCHAIN_FILE="$PROJECT_ROOT/toolchains/linux.cmake"
 

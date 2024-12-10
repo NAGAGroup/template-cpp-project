@@ -11,9 +11,9 @@ version = "0.1.0"
 # Global environment variables that
 # affect all toolchains
 [activation.env]
-FILTER_COMPILE_COMMANDS_FLAGS = "-fsycl-targets"         # remove problematic flags from compile_commands.json
-INSTALL_PREFIX = "$HOME/.pixi-builds/$PIXI_PROJECT_NAME"
-PROJECT_ROOT = "$PIXI_PROJECT_ROOT"                      # rename root project so scripts make sense to non-pixi users
+FILTER_COMPILE_COMMANDS_FLAGS = "-fsycl-targets" # remove problematic flags from compile_commands.json
+# INSTALL_PREFIX = "~/.local/share/dev"            # default install prefix
+PROJECT_ROOT = "$PIXI_PROJECT_ROOT" # rename root project so scripts make sense to non-pixi users
 
 # Global, linux-specific environment variables
 [target.linux-64.activation.env]
@@ -103,11 +103,20 @@ features = ["default-toolchain", "build"]
 [environments.test]
 features = ["default-toolchain", "test"]
 
+[feature.dev.activation.env]
+INSTALL_PREFIX = "$CONDA_PREFIX"
+
 [environments.dev]
 # features = ["dev", "default-toolchain", "clang-extra-tools", "build", "test"]
 # examples of using other toolchains instead for development
 # features = ["dev", "default-toolchain", "mingw", "clang-extra-tools", "test"]  # multi-platform gcc
-features = ["dev", "dpcpp", "dpcpp-extras", "test"] # linux-only dev env
+features = [
+  "dev",
+  "dpcpp",
+  "dpcpp-extras",
+  "build",
+  "test",
+] # linux-only dev env
 # features = ["dev", "clang", "clang-extra-tools", "test"]  # simple multi-platform env
 
 

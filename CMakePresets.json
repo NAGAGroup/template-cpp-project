@@ -2,7 +2,7 @@
   "version": 2,
   "cmakeMinimumRequired": {
     "major": 3,
-    "minor": 14,
+    "minor": 24,
     "patch": 0
   },
   "configurePresets": [
@@ -74,7 +74,7 @@
       }
     },
     {
-      "name": "ci-linux",
+      "name": "linux",
       "inherits": ["flags-gcc-clang", "ci-std"],
       "hidden": true,
       "cacheVariables": {
@@ -82,12 +82,12 @@
       }
     },
     {
-      "name": "ci-win64",
+      "name": "win64",
       "inherits": ["flags-msvc", "ci-std"],
       "hidden": true
     },
     {
-      "name": "ci-win64-clang",
+      "name": "win64-clang",
       "inherits": ["flags-gcc-clang", "ci-std"],
       "hidden": true
     },
@@ -126,16 +126,16 @@
       "hidden": true
     },
     {
-      "name": "ci-ubuntu",
-      "inherits": ["ci-build", "ci-linux", "clang-tidy", "cppcheck", "dev-mode"]
+      "name": "ci-linux",
+      "inherits": ["ci-build", "linux", "clang-tidy", "cppcheck", "dev-mode"]
     },
     {
       "name": "ci-windows",
-      "inherits": ["ci-build", "ci-win64", "dev-mode"]
+      "inherits": ["ci-build", "win64", "dev-mode"]
     },
     {
       "name": "ci-windows-clang",
-      "inherits": ["ci-build", "ci-win64-clang", "dev-mode"]
+      "inherits": ["ci-build", "win64-clang", "dev-mode"]
     }
   ]
 }
