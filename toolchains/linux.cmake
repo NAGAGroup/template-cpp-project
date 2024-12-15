@@ -1,0 +1,56 @@
+set(CMAKE_C_COMPILER
+    "$ENV{CC}"
+    CACHE FILEPATH "" FORCE
+)
+set(CMAKE_CXX_COMPILER
+    "$ENV{CXX}"
+    CACHE FILEPATH "" FORCE
+)
+set(CMAKE_MAKE_PROGRAM
+    "$ENV{BUILD_PREFIX}/bin/ninja"
+    CACHE FILEPATH "" FORCE
+)
+
+set(CMAKE_C_FLAGS "$ENV{CFLAGS} ${CMAKE_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} ${CMAKE_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "$ENV{LDFLAGS} ${CMAKE_EXE_LINKER_FLAGS}")
+set(CMAKE_SHARED_LINKER_FLAGS "$ENV{LDFLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
+
+if(NOT "$ENV{NO_INSTALL_RPATH}" STREQUAL "1")
+  if("$ENV{INSTALL_RPATHS}" STREQUAL "")
+    set(CMAKE_INSTALL_RPATH "\$ORIGIN;\$ORIGIN/../lib;\$ORIGIN/../lib64")
+  else()
+    set(CMAKE_INSTALL_RPATH "$ENV{INSTALL_RPATHS}")
+  endif()
+  set(CMAKE_SKIP_RPATH
+      FALSE
+      CACHE BOOL "" FORCE
+  )
+  set(CMAKE_SKIP_INSTALL_RPATH
+      FALSE
+      CACHE BOOL "" FORCE
+  )
+  set(CMAKE_SKIP_BUILD_RPATH
+      FALSE
+      CACHE BOOL "" FORCE
+  )
+endif()
+
+# location of the target environment
+set(CMAKE_FIND_ROOT_PATH "$ENV{PREFIX}" "$ENV{CONDA_BUILD_SYSROOT}")
+
+if(DEFINED ENV{CONDA_CUDA_ROOT})
+  set(CUDAToolkit_ROOT
+      "$ENV{CONDA_CUDA_ROOT}"
+      CACHE PATH ""
+  )
+  set(CUDA_TOOLKIT_ROOT_DIR
+      "$ENV{CONDA_CUDA_ROOT}"
+      CACHE PATH ""
+  )
+endif()
+
+if(DEFINED ENV{VCPKG_ROOT})
+  include("$ENV{VCPKG_ROOT}/scripts/toolchains/linux.cmake")
+  include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+endif()

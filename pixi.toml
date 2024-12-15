@@ -1,0 +1,190 @@
+[project]
+authors = ["Jack Myers <jack.myers@intel.com>"]
+channels = ["conda-forge"]
+description = "Add a short description here"
+name = "template-project-cpp"
+platforms = ["win-64", "linux-64"]
+version = "0.1.0"
+
+
+# ======= Project environment Variables =======
+# Global environment variables that
+# affect all toolchains
+[activation.env]
+FILTER_COMPILE_COMMANDS_FLAGS = "-fsycl,-fsycl-targets" # remove problematic flags from compile_commands.json
+# INSTALL_PREFIX = "~/.local/share/dev"            # default install prefix
+PROJECT_ROOT = "$PIXI_PROJECT_ROOT" # rename root project so scripts make sense to non-pixi users
+
+# Global, linux-specific environment variables
+[target.linux-64.activation.env]
+INSTALL_RPATHS = "\\$ORIGIN;\\$ORIGIN/../lib;\\$ORIGIN/../lib64"
+
+
+# ========= Project Dependencies ==========
+# Runtime dependencies for installed package
+[dependencies]
+fmt = ">=11.0.2,<12"
+
+# Host dependencies for building the package
+# These are not installed in the final package
+# but are used to build the package. Typically,
+# these are a subset of the runtime deps
+[host-dependencies]
+fmt = ">=11.0.2,<12"
+
+# Common among all toolchains
+[build-dependencies]
+python = ">=3.12.5,<4"
+cmake = "3.24.*"
+ninja = ">=1.12.1,<2"
+git = ">=2.47.0,<3"
+ccache = ">=4.10.1,<5"
+pkg-config = ">=0.29.2,<0.30"
+pkgconfig = ">=1.5.5,<2"
+cmake-format = ">=0.6.13,<0.7"
+
+[target.linux-64.build-dependencies]
+wget = ">=1.21.4,<2"
+
+# Testing dependencies
+[feature.test.dependencies]
+catch2 = ">=3.7.1,<4"
+
+# Project management specific dependencies
+[feature.project-mgmt.dependencies]
+ripgrep = ">=14.1.1,<15"
+
+# Extra packages for development
+[feature.dev.dependencies]
+cppcheck = ">=2.15.0,<3"
+doxygen = ">=1.11.0,<2"
+
+# Clang tools like clang-tidy, clangd, etc
+# Not included in dev because the dpcpp toolchain
+# already includes these tools and would conflict
+#
+# If not using dpcpp, it can be moved to the dev feature
+[feature.clang-extra-tools.dependencies]
+clang-format = ">=18.1.8,<20"
+clang-tools = ">=18.1.8,<20"
+
+
+# ======= Project Tasks =======
+# Build workflow implementation
+[feature.build.tasks.configure]
+cmd = "bash scripts/configure.sh"
+
+[feature.build.tasks.build]
+cmd = "bash scripts/build.sh"
+depends-on = ["configure"]
+
+[feature.build.tasks.install]
+cmd = "bash scripts/install.sh"
+depends-on = ["build"]
+
+# Project management tasks
+[feature.project-mgmt.tasks]
+change-project-name = "bash scripts/change-project-name.sh"
+
+[environments.project-mgmt]
+no-default-feature = true
+features = ["project-mgmt"]
+
+# ======= Project Environments =======
+# The user-facing documentation would 
+# direct users who want to install the project
+# for usage in their own projects to use 
+# pixi run -e user install
+[environments.user]
+features = ["default-toolchain", "build"]
+
+[environments.test]
+features = ["default-toolchain", "test"]
+
+[feature.dev.activation.env]
+INSTALL_PREFIX = "$CONDA_PREFIX"
+
+[environments.dev]
+# features = ["dev", "default-toolchain", "clang-extra-tools", "build", "test"]
+# examples of using other toolchains instead for development
+# features = ["dev", "default-toolchain", "mingw", "clang-extra-tools", "test"]  # multi-platform gcc
+features = [
+  "dev",
+  "dpcpp",
+  "dpcpp-extras",
+  "build",
+  "test",
+] # linux-only dev env
+# features = ["dev", "clang", "clang-extra-tools", "test"]  # simple multi-platform env
+
+
+# ======= TOOLCHAINS =======
+
+# ----- Default Toolchain -----
+[feature.default-toolchain]
+platforms = ["linux-64", "win-64"]
+
+# GNU GCC Toolchain
+[feature.default-toolchain.target.linux-64.build-dependencies]
+gcc_linux-64 = ">=13.3.0,<13.4"
+gxx_linux-64 = ">=13.3.0,<13.4"
+
+# Default toolchain activation for linux
+[feature.default-toolchain.target.linux-64.activation]
+scripts = ["activation/gcc.sh"]
+
+# MSVC for Windows
+[feature.default-toolchain.target.win-64.build-dependencies]
+vs_win-64 = ">=2022.11,<2023"
+
+[feature.default-toolchain.target.win-64.activation]
+scripts = ["activation/msvc.bat"]
+
+
+# ----- Clang Toolchain -----
+[feature.clang.build-dependencies]
+clangdev = ">=18.1.8,<20"
+
+[feature.clang.target.linux-64.build-dependencies]
+clangxx_linux-64 = ">=18,<19"
+clang_linux-64 = ">=18,<19"
+
+[feature.clang.target.win-64.build-dependencies]
+vs_win-64 = ">=2022.11,<2023"
+
+[feature.clang.target.win-64.activation]
+scripts = ["activation/msvc.bat", "activation/clang.bat"]
+
+[feature.clang.target.linux-64.activation]
+scripts = ["activation/linux.sh", "activation/clang.sh"]
+
+
+# ---- Open DPC++ Toolchain ----
+[feature.dpcpp]
+platforms = ["linux-64"]
+channels = ["conda-forge", "nagagroup"]
+
+[feature.dpcpp.system-requirements]
+libc = "2.34"
+
+[feature.dpcpp-extras.dependencies]
+intel-opencl-rt = ">=2024.0.0,<2025"
+
+[feature.dpcpp.build-dependencies]
+open-dpcpp-toolkit = ">=20.0.0,<21"
+
+[feature.dpcpp.activation]
+scripts = ["activation/clang.sh", "activation/dpcpp.sh"]
+
+# ---- MinGW Toolchain for Windows ----
+# This toolchain feature can be combined with the default-toolchain
+# to create gcc environments for both linux and windows
+[feature.mingw]
+platforms = ["win-64"]
+
+[feature.mingw.build-dependencies]
+gcc_win-64 = ">=13.3.0,<13.4"
+gxx_win-64 = ">=13.3.0,<13.4"
+
+[feature.mingw.activation]
+scripts = ["activation/mingw.bat"]

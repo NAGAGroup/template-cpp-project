@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 24,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "dev-common",
+      "hidden": true,
+      "inherits": ["dev-mode", "clang-tidy", "cppcheck"],
+      "binaryDir": "${sourceDir}/build/dev",
+      "cacheVariables": {
+        "BUILD_DOCS": "ON",
+        "BUILD_SHARED_LIBS": "ON",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_VERIFY_INTERFACE_HEADER_SETS": "ON",
+        "ENABLE_SYCL": "ON",
+        "ENABLE_SYCL_TARGETS": "nvptx64-nvidia-cuda",
+        "CMAKE_INSTALL_PREFIX": "$env{INSTALL_PREFIX}"
+      }
+    },
+    {
+      "name": "dev-linux",
+      "inherits": ["dev-common", "linux"]
+    },
+    {
+      "name": "dev-win64",
+      "inherits": ["dev-common", "win64"]
+    },
+    {
+      "name": "dev-win64-clang",
+      "inherits": ["dev-common", "win64"]
+    },
+    {
+      "name": "dev",
+      "inherits": "dev-linux"
+    }
+  ]
+}

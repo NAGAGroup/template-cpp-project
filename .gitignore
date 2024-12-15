@@ -1,0 +1,12 @@
+**/.DS_Store
+.idea/
+.vs/
+.vscode/
+build/
+cmake-build-*/
+prefix/
+compile_commands.json
+.pixi/
+pixi.lock
+.cache/
+vcpkg
