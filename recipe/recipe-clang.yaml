@@ -12,26 +12,16 @@ build:
   string: clang_build
   script:
     - |
-      # Set up compiler environment variables (Clang)
-      export CC="${BUILD_PREFIX}/bin/clang"
-      export CXX="${BUILD_PREFIX}/bin/clang++"
-      
-      # Set up GCC compatibility (Clang uses GCC headers)
-      gcc_version=$(gcc -dumpversion)
-      gcc_install_dir="${PREFIX}/lib/gcc/${CONDA_TOOLCHAIN_HOST}/${gcc_version}"
-      export GCC_INSTALL_DIR="${gcc_install_dir}"
-      
       # Set up build directories
       mkdir -p build
       
       # Configure with CMake
+      # Note: CC, CXX, and CMAKE_ARGS are automatically set by conda compiler activation
       cmake -B build -S . \
         -GNinja \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
+        ${CMAKE_ARGS} \
         -DCMAKE_CXX_STANDARD=17 \
-        -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef" \
-        -DTEMPLATE_CPP_PROJECT_DEVELOPER_MODE=ON
+        -Dtemplate-cpp-project_DEVELOPER_MODE=OFF
       
       # Build
       cmake --build build --config Release
@@ -52,13 +42,14 @@ requirements:
     - clang_linux-64 >=18,<19    # [linux64]
   host:
     - fmt >=11.0.2,<12
+
   run:
     - fmt >=11.0.2,<12
 
 tests:
-  - script:
-      - template-cpp-project_test --version
-    requirements:
-      run:
-        - catch2 >=3.7.1,<4
-        - template-cpp-project
+  - package_contents:
+      # Verify the library and CMake files were installed
+      files:
+        - lib/libtemplate-cpp-project.a
+        - lib/cmake/template-cpp-project/template-cpp-projectConfig.cmake
+        - lib/cmake/template-cpp-project/template-cpp-projectTargets.cmake

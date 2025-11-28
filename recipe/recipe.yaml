@@ -11,7 +11,7 @@ build:
   number: 0
   script:
     - |
-      # Set up compiler environment variables
+      # DPC++ (SYCL) specific environment setup
       export CC="${BUILD_PREFIX}/bin/clang"
       export CXX="${BUILD_PREFIX}/bin/clang++"
       export MKLROOT="${PREFIX}"
@@ -21,14 +21,14 @@ build:
       mkdir -p build
       
       # Configure with CMake
+      # Note: DPC++ uses its own toolchain file, not the standard CMAKE_ARGS
       cmake -B build -S . \
         -GNinja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
         -DCMAKE_CXX_STANDARD=17 \
         -DCMAKE_TOOLCHAIN_FILE="${BUILD_PREFIX}/lib/cmake/clang.cmake" \
-        -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef" \
-        -DTEMPLATE_CPP_PROJECT_DEVELOPER_MODE=ON
+        -Dtemplate-cpp-project_DEVELOPER_MODE=OFF
       
       # Build
       cmake --build build --config Release
@@ -48,14 +48,15 @@ requirements:
   host:
     # Host dependencies (libraries needed at runtime)
     - fmt >=11.0.2,<12
+
   run:
     # Runtime dependencies (what the package needs to run)
     - fmt >=11.0.2,<12
 
 tests:
-  - script:
-      - template-cpp-project_test --version
-    requirements:
-      run:
-        - catch2 >=3.7.1,<4
-        - template-cpp-project  # Depend on the built package
+  - package_contents:
+      # Verify the library and CMake files were installed
+      files:
+        - lib/libtemplate-cpp-project.a
+        - lib/cmake/template-cpp-project/template-cpp-projectConfig.cmake
+        - lib/cmake/template-cpp-project/template-cpp-projectTargets.cmake

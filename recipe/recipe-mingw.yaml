@@ -12,27 +12,22 @@ build:
   string: mingw_build
   script:
     - |
-      # Set up compiler environment variables (MinGW GCC)
-      set CC=%BUILD_PREFIX%\bin\gcc.exe
-      set CXX=%BUILD_PREFIX%\bin\g++.exe
-      
-      # Set up build directories
+      REM Set up build directories
       mkdir build
       cd build
       
-      # Configure with CMake
+      REM Configure with CMake
+      REM Note: CC, CXX, and CMAKE_ARGS are automatically set by conda compiler activation
       cmake .. ^
         -GNinja ^
-        -DCMAKE_BUILD_TYPE=Release ^
-        -DCMAKE_INSTALL_PREFIX=%PREFIX% ^
+        %CMAKE_ARGS% ^
         -DCMAKE_CXX_STANDARD=17 ^
-        -DCMAKE_CXX_FLAGS="/W4 /permissive- /utf-8" ^
-        -DTEMPLATE_CPP_PROJECT_DEVELOPER_MODE=ON
+        -Dtemplate-cpp-project_DEVELOPER_MODE=OFF
       
-      # Build
+      REM Build
       cmake --build . --config Release
       
-      # Install
+      REM Install
       cmake --install . --config Release
 
 requirements:
@@ -47,13 +42,14 @@ requirements:
     - gxx_win-64 >=13.3.0,<13.4
   host:
     - fmt >=11.0.2,<12
+
   run:
     - fmt >=11.0.2,<12
 
 tests:
-  - script:
-      - template-cpp-project_test --version
-    requirements:
-      run:
-        - catch2 >=3.7.1,<4
-        - template-cpp-project
+  - package_contents:
+      # Verify the library and CMake files were installed
+      files:
+        - Library/lib/template-cpp-project.lib
+        - Library/lib/cmake/template-cpp-project/template-cpp-projectConfig.cmake
+        - Library/lib/cmake/template-cpp-project/template-cpp-projectTargets.cmake

@@ -1,0 +1,34 @@
+# Conda build ignore file
+# Exclude directories that shouldn't be copied into the build environment
+
+# Build outputs (avoid recursive copying)
+output/
+build/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git internals (large, not needed for builds)
+.git/
+
+# Pixi/conda environments
+.pixi/
+env/
+envs/
+
+# CMake build artifacts
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# Serena memories (agent state)
+.serena/
+
+# Temporary files
+*.tmp
+*.bak
