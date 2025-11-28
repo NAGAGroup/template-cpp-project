@@ -16,16 +16,16 @@ pixi global install rattler-build
 
 ```bash
 # Linux/Windows with Clang (default)
-rattler-build build recipe/recipe.yaml
+rattler-build build -r recipe/recipe.yaml
 
 # Linux with GCC
-rattler-build build recipe/recipe-gcc.yaml
+rattler-build build -r recipe/recipe-gcc.yaml
 
 # Linux with DPC++ (SYCL)
-rattler-build build recipe/recipe-dpcpp.yaml
+rattler-build build -r recipe/recipe-dpcpp.yaml
 
 # Windows with MinGW
-rattler-build build recipe/recipe-mingw.yaml
+rattler-build build -r recipe/recipe-mingw.yaml
 ```
 
 Output packages are created in the `output/` directory as `.tar.bz2` conda packages.
@@ -94,7 +94,7 @@ To modify a recipe:
 
 1. Edit the YAML file (e.g., `recipe.yaml`)
 2. Update compiler versions, flags, or dependencies as needed
-3. Run `rattler-build build recipe/recipe.yaml` to test
+3. Run `rattler-build build -r recipe/recipe.yaml` to test
 
 Common customizations:
 
@@ -125,7 +125,7 @@ Recipes can be automatically built in CI pipelines:
 ```bash
 # Build all recipes
 for recipe in recipe/*.yaml; do
-  rattler-build build "$recipe"
+  rattler-build build -r "$recipe"
 done
 ```
 

@@ -1,27 +1,28 @@
-[project]
+[workspace]
 authors = ["Jack Myers <jackhmyers97@gmail.com>"]
 channels = ["conda-forge"]
-description = "Add a short description here"
 name = "template-project-cpp"
 platforms = ["win-64", "linux-64"]
+preview = ["pixi-build"]
+
+# ======= Package Configuration (pixi-build) =======
+# This enables `pixi build` and `pixi global install .`
+# Uses the rattler-build backend with recipe/recipe.yaml
+[package]
+name = "template-cpp-project"
 version = "0.1.0"
 
-# ======= pixi-build (rattler-build) Configuration =======
-# NOTE: Recipes in the recipe/ directory can be built independently
-# with rattler-build for creating conda packages:
+[package.build]
+backend = { name = "pixi-build-rattler-build", version = "*" }
+# Note: All package dependencies (host, build, run) come from recipe/recipe.yaml
+
+# ======= Alternative Recipes =======
+# For other toolchains, build directly with rattler-build:
 #
-#   rattler-build build recipe/recipe.yaml              # Build with Clang (default)
-#   rattler-build build recipe/recipe-gcc.yaml          # Build with GCC
-#   rattler-build build recipe/recipe-dpcpp.yaml        # Build with DPC++
-#   rattler-build build recipe/recipe-mingw.yaml        # Build with MinGW
-#
-# These recipes use the pixi-build-rattler-build backend, allowing
-# custom toolchains (like DPC++) that aren't available in conda-forge's
-# default compilers.
-#
-# For full pixi integration with package building, the workspace would
-# need to be restructured with a [package] section. This is deferred
-# as pixi-build is still in preview and APIs may change.
+#   rattler-build build -r recipe/recipe.yaml              # Build with Clang (default)
+#   rattler-build build -r recipe/recipe-gcc.yaml          # Build with GCC
+#   rattler-build build -r recipe/recipe-dpcpp.yaml        # Build with DPC++
+#   rattler-build build -r recipe/recipe-mingw.yaml        # Build with MinGW
 
 # ======= Project environment Variables =======
 # Global environment variables that
@@ -37,19 +38,15 @@ INSTALL_RPATHS = "\\$ORIGIN;\\$ORIGIN/../lib;\\$ORIGIN/../lib64"
 
 
 # ========= Project Dependencies ==========
-# Runtime dependencies for installed package
-[dependencies]
-fmt = ">=11.0.2,<12"
+# Note: Runtime dependencies (like fmt) are specified in recipe/recipe.yaml
+# for package builds. For development, they're included via feature dependencies.
 
-# Host dependencies for building the package
-# These are not installed in the final package
-# but are used to build the package. Typically,
-# these are a subset of the runtime deps
-[host-dependencies]
+# Common build tools for all development environments
+# Note: Using [dependencies] instead of [build-dependencies] because
+# pixi-build reserves build-dependencies for package builds only.
+# For dev environments, all deps go in regular [dependencies].
+[feature.build-tools.dependencies]
 fmt = ">=11.0.2,<12"
-
-# Common among all toolchains
-[build-dependencies]
 python = ">=3.12.5,<4"
 cmake = "3.24.*"
 ninja = ">=1.12.1,<2"
@@ -59,7 +56,7 @@ pkg-config = ">=0.29.2,<0.30"
 pkgconfig = ">=1.5.5,<2"
 cmake-format = ">=0.6.13,<0.7"
 
-[target.linux-64.build-dependencies]
+[feature.build-tools.target.linux-64.dependencies]
 wget = ">=1.21.4,<2"
 
 # Testing dependencies
@@ -112,10 +109,10 @@ features = ["project-mgmt"]
 # for usage in their own projects to use 
 # pixi run -e user install
 [environments.user]
-features = ["default-toolchain", "build"]
+features = ["build-tools", "default-toolchain", "build"]
 
 [environments.test]
-features = ["default-toolchain", "test"]
+features = ["build-tools", "default-toolchain", "build", "test"]
 
 [feature.dev.activation.env]
 INSTALL_PREFIX = "$CONDA_PREFIX"
@@ -125,13 +122,21 @@ INSTALL_PREFIX = "$CONDA_PREFIX"
 # examples of using other toolchains instead for development
 # features = ["dev", "default-toolchain", "mingw", "clang-extra-tools", "test"]  # multi-platform gcc
 features = [
+  "build-tools",
   "dev",
   "dpcpp",
   "dpcpp-extras",
   "build",
   "test",
 ] # linux-only dev env
-# features = ["dev", "clang", "clang-extra-tools", "test"]  # simple multi-platform env
+
+# Clang-based development environment (multi-platform)
+[environments.dev-clang]
+features = ["build-tools", "dev", "clang", "clang-extra-tools", "build", "test"]
+
+# MinGW-based development environment (Windows with GCC)
+[environments.dev-mingw]
+features = ["build-tools", "dev", "default-toolchain", "mingw", "build", "test"]
 
 
 # ======= TOOLCHAINS =======
@@ -141,7 +146,7 @@ features = [
 platforms = ["linux-64", "win-64"]
 
 # GNU GCC Toolchain
-[feature.default-toolchain.target.linux-64.build-dependencies]
+[feature.default-toolchain.target.linux-64.dependencies]
 gcc_linux-64 = ">=13.3.0,<13.4"
 gxx_linux-64 = ">=13.3.0,<13.4"
 
@@ -150,7 +155,7 @@ gxx_linux-64 = ">=13.3.0,<13.4"
 scripts = ["activation/gcc.sh"]
 
 # MSVC for Windows
-[feature.default-toolchain.target.win-64.build-dependencies]
+[feature.default-toolchain.target.win-64.dependencies]
 vs_win-64 = ">=2022.11,<2023"
 
 [feature.default-toolchain.target.win-64.activation]
@@ -158,14 +163,14 @@ scripts = ["activation/msvc.bat"]
 
 
 # ----- Clang Toolchain -----
-[feature.clang.build-dependencies]
+[feature.clang.dependencies]
 clangdev = ">=18.1.8,<20"
 
-[feature.clang.target.linux-64.build-dependencies]
+[feature.clang.target.linux-64.dependencies]
 clangxx_linux-64 = ">=18,<19"
 clang_linux-64 = ">=18,<19"
 
-[feature.clang.target.win-64.build-dependencies]
+[feature.clang.target.win-64.dependencies]
 vs_win-64 = ">=2022.11,<2023"
 
 [feature.clang.target.win-64.activation]
@@ -186,7 +191,7 @@ libc = "2.34"
 [feature.dpcpp-extras.dependencies]
 intel-opencl-rt = ">=2024.0.0,<2025"
 
-[feature.dpcpp.build-dependencies]
+[feature.dpcpp.dependencies]
 naga-llvm-compute-toolkit = ">=2025.0.0"
 
 [feature.dpcpp.activation]
@@ -198,7 +203,7 @@ scripts = ["activation/clang.sh", "activation/dpcpp.sh"]
 [feature.mingw]
 platforms = ["win-64"]
 
-[feature.mingw.build-dependencies]
+[feature.mingw.dependencies]
 gcc_win-64 = ">=13.3.0,<13.4"
 gxx_win-64 = ">=13.3.0,<13.4"
 

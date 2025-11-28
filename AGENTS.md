@@ -120,16 +120,16 @@ pixi global install rattler-build
 
 ```bash
 # Build with DPC++ (Linux only, requires nagagroup channel)
-rattler-build build recipe/recipe.yaml
+rattler-build build -r recipe/recipe.yaml
 
 # Build with GCC (Linux)
-rattler-build build recipe/recipe-gcc.yaml
+rattler-build build -r recipe/recipe-gcc.yaml
 
 # Build with Clang (multi-platform)
-rattler-build build recipe/recipe-clang.yaml
+rattler-build build -r recipe/recipe-clang.yaml
 
 # Build with MinGW (Windows)
-rattler-build build recipe/recipe-mingw.yaml
+rattler-build build -r recipe/recipe-mingw.yaml
 ```
 
 #### Output
