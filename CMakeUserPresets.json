@@ -17,8 +17,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "CMAKE_VERIFY_INTERFACE_HEADER_SETS": "ON",
-        "ENABLE_SYCL": "ON",
-        "ENABLE_SYCL_TARGETS": "nvptx64-nvidia-cuda",
+        "ENABLE_SYCL": "OFF",
         "CMAKE_INSTALL_PREFIX": "$env{INSTALL_PREFIX}"
       }
     },

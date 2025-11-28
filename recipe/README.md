@@ -1,160 +1,69 @@
-# Conda Package Recipes
+# Building Conda Packages
 
-This directory contains **rattler-build** recipes for building conda packages of `template-cpp-project` with different toolchains.
+This directory contains the recipe and variant configurations for building conda packages using **rattler-build**.
 
-## Quick Start
+## Structure
 
-### Prerequisites
+```
+recipe/
+├── recipe.yaml              # Unified recipe (uses ${{ compiler() }})
+├── variants.yaml            # Default variants (Clang) - used by pixi-build
+├── variants-linux-clang.yaml
+├── variants-linux-gcc.yaml
+├── variants-win-clang.yaml
+└── variants-win-msvc.yaml
+```
 
-Install `rattler-build`:
+## Building with pixi-build
+
+The simplest way to build is using pixi, which automatically uses `variants.yaml` (Clang):
 
 ```bash
+pixi build
+```
+
+## Building with rattler-build
+
+For more control over the toolchain, use rattler-build directly with a specific variant file:
+
+```bash
+# Install rattler-build (if not already installed)
 pixi global install rattler-build
+
+# Linux + Clang (default)
+rattler-build build -r recipe/recipe.yaml --variant-config recipe/variants-linux-clang.yaml
+
+# Linux + GCC
+rattler-build build -r recipe/recipe.yaml --variant-config recipe/variants-linux-gcc.yaml
+
+# Windows + Clang
+rattler-build build -r recipe/recipe.yaml --variant-config recipe/variants-win-clang.yaml
+
+# Windows + MSVC
+rattler-build build -r recipe/recipe.yaml --variant-config recipe/variants-win-msvc.yaml
 ```
 
-### Build a Package
+## Output
 
-```bash
-# Linux/Windows with Clang (default)
-rattler-build build -r recipe/recipe.yaml
+Built packages are placed in the `output/` directory as `.conda` packages.
 
-# Linux with GCC
-rattler-build build -r recipe/recipe-gcc.yaml
+## Toolchain Variants
 
-# Linux with DPC++ (SYCL)
-rattler-build build -r recipe/recipe-dpcpp.yaml
+| Variant File | Platform | Compiler | Version |
+|--------------|----------|----------|---------|
+| `variants.yaml` | Cross-platform | Clang | 18 |
+| `variants-linux-clang.yaml` | Linux | Clang | 18 |
+| `variants-linux-gcc.yaml` | Linux | GCC | 13 |
+| `variants-win-clang.yaml` | Windows | Clang | 18 |
+| `variants-win-msvc.yaml` | Windows | MSVC | 2022 |
 
-# Windows with MinGW
-rattler-build build -r recipe/recipe-mingw.yaml
-```
+## How It Works
 
-Output packages are created in the `output/` directory as `.tar.bz2` conda packages.
+The unified `recipe.yaml` uses the `${{ compiler('c') }}` and `${{ compiler('cxx') }}` Jinja functions, which are resolved based on the variant configuration:
 
-## Available Recipes
+- `c_compiler: clang` → resolves to `clang_linux-64` or `clang_win-64`
+- `cxx_compiler: clangxx` → resolves to `clangxx_linux-64` or `clangxx_win-64`
+- `c_compiler: gcc` → resolves to `gcc_linux-64`
+- `c_compiler: vs2022` → resolves to `vs2022_win-64`
 
-### `recipe.yaml` - Clang (Default)
-
-- **Toolchain**: Clang 18
-- **Platform**: Linux, Windows
-- **Channels**: conda-forge
-- **Use Case**: Cross-platform C++ development
-- **Advantages**: Modern compiler, excellent diagnostics, works on both Linux and Windows
-
-### `recipe-gcc.yaml` - GCC
-
-- **Toolchain**: GCC 13.3
-- **Platform**: Linux
-- **Channels**: conda-forge
-- **Use Case**: Standard C++ development on Linux
-- **Advantages**: Widely compatible, large community
-
-### `recipe-dpcpp.yaml` - DPC++ (SYCL)
-
-- **Toolchain**: Intel's DPC++ (SYCL)
-- **Platform**: Linux only
-- **Channels**: conda-forge, NAGAGroup
-- **Use Case**: When you need SYCL support for heterogeneous computing
-- **Requires**: Intel SYCL SDK from NAGAGroup channel
-
-### `recipe-mingw.yaml` - MinGW
-
-- **Toolchain**: GCC-based MinGW for Windows
-- **Platform**: Windows only
-- **Channels**: conda-forge
-- **Use Case**: GNU development tools on Windows
-- **Advantages**: Familiar tools for Linux developers
-
-## Recipe Structure
-
-Each recipe includes:
-
-- **Build Dependencies**:
-  - CMake ≥3.24, Ninja, ccache, pkg-config
-  - Compiler toolchain (varies by recipe)
-
-- **Host Dependencies**:
-  - fmt library (formatting)
-
-- **Runtime Dependencies**:
-  - fmt library
-
-- **Build Process**:
-  - Sets environment variables (`CC`, `CXX`, etc.)
-  - Runs CMake configure with Release mode
-  - Builds with CMake
-  - Installs to conda environment
-
-- **Tests**:
-  - Runs `template-cpp-project_test --version` to verify installation
-  - Requires Catch2 test framework
-
-## Customization
-
-To modify a recipe:
-
-1. Edit the YAML file (e.g., `recipe.yaml`)
-2. Update compiler versions, flags, or dependencies as needed
-3. Run `rattler-build build -r recipe/recipe.yaml` to test
-
-Common customizations:
-
-**Change CMake flags**:
-```yaml
-- DCMAKE_CXX_FLAGS="-O3 -march=native"
-```
-
-**Add additional dependencies**:
-```yaml
-requirements:
-  build:
-    - my-library >=1.0.0
-```
-
-**Modify build steps**:
-```yaml
-build:
-  script:
-    - cmake -B build -S . ...
-    - cmake --build build ...
-```
-
-## Integration with CI/CD
-
-Recipes can be automatically built in CI pipelines:
-
-```bash
-# Build all recipes
-for recipe in recipe/*.yaml; do
-  rattler-build build -r "$recipe"
-done
-```
-
-## Troubleshooting
-
-### Build fails with missing compiler
-
-Ensure the toolchain's conda channel is accessible:
-```bash
-# For DPC++, add nagagroup channel
-conda config --add channels nagagroup
-```
-
-### Linker errors after build
-
-Check that `RPATH` handling is correct in CMake:
-```yaml
-- -DCMAKE_INSTALL_RPATH="\$ORIGIN;\$ORIGIN/../lib"
-```
-
-### Test failures
-
-Verify Catch2 is available in the test environment:
-```bash
-mamba install -c conda-forge catch2
-```
-
-## References
-
-- [Rattler-Build Documentation](https://prefix-dev.github.io/rattler-build/)
-- [Conda Recipe Format](https://conda.io/projects/conda-build/en/latest/resources/define-metadata.html)
-- [schema_version 1 Specification](https://prefix-dev.github.io/rattler-build/schema/)
+This approach eliminates recipe duplication while supporting multiple toolchains.

@@ -1,0 +1,22 @@
+# Windows + Clang toolchain variant
+#
+# Build with:
+#   rattler-build build -r recipe/recipe.yaml --variant-config recipe/variants-win-clang.yaml
+
+c_compiler:
+  - clang
+
+cxx_compiler:
+  - clangxx
+
+c_compiler_version:
+  - "18"
+
+cxx_compiler_version:
+  - "18"
+
+c_stdlib:
+  - vs
+
+c_stdlib_version:
+  - ""

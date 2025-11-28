@@ -1,0 +1,22 @@
+# Windows + MSVC toolchain variant
+#
+# Build with:
+#   rattler-build build -r recipe/recipe.yaml --variant-config recipe/variants-win-msvc.yaml
+
+c_compiler:
+  - vs2022
+
+cxx_compiler:
+  - vs2022
+
+c_compiler_version:
+  - ""
+
+cxx_compiler_version:
+  - ""
+
+c_stdlib:
+  - vs
+
+c_stdlib_version:
+  - ""

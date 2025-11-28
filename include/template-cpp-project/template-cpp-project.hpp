@@ -2,7 +2,9 @@
 
 #include <string>
 
-class exported_class
+#include "template-cpp-project/template-cpp-project_export.hpp"
+
+class TEMPLATE_CPP_PROJECT_EXPORT exported_class
 {
 public:
   /**

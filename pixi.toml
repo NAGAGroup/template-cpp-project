@@ -16,45 +16,36 @@ version = "0.1.0"
 backend = { name = "pixi-build-rattler-build", version = "*" }
 # Note: All package dependencies (host, build, run) come from recipe/recipe.yaml
 
-# ======= Alternative Recipes =======
-# For other toolchains, build directly with rattler-build:
+# ======= Alternative Toolchain Builds =======
+# The default `pixi build` uses Clang (via recipe/variants.yaml)
+# For other toolchains, build with rattler-build directly:
 #
-#   rattler-build build -r recipe/recipe.yaml              # Build with Clang (default)
-#   rattler-build build -r recipe/recipe-gcc.yaml          # Build with GCC
-#   rattler-build build -r recipe/recipe-dpcpp.yaml        # Build with DPC++
-#   rattler-build build -r recipe/recipe-mingw.yaml        # Build with MinGW
+#   rattler-build build -r recipe/recipe.yaml --variant-config recipe/variants-linux-gcc.yaml
+#   rattler-build build -r recipe/recipe.yaml --variant-config recipe/variants-win-msvc.yaml
+#
+# See recipe/README.md for full documentation.
 
-# ======= Project environment Variables =======
-# Global environment variables that
-# affect all toolchains
+# ======= Project Environment Variables =======
 [activation.env]
-FILTER_COMPILE_COMMANDS_FLAGS = "-fsycl,-fsycl-targets" # remove problematic flags from compile_commands.json
-# INSTALL_PREFIX = "~/.local/share/dev"            # default install prefix
-PROJECT_ROOT = "$PIXI_PROJECT_ROOT" # rename root project so scripts make sense to non-pixi users
+PROJECT_ROOT = "$PIXI_PROJECT_ROOT"
 
-# Global, linux-specific environment variables
 [target.linux-64.activation.env]
 INSTALL_RPATHS = "\\$ORIGIN;\\$ORIGIN/../lib;\\$ORIGIN/../lib64"
 
 
-# ========= Project Dependencies ==========
-# Note: Runtime dependencies (like fmt) are specified in recipe/recipe.yaml
-# for package builds. For development, they're included via feature dependencies.
+# ========= Shared Features ==========
 
 # Common build tools for all development environments
-# Note: Using [dependencies] instead of [build-dependencies] because
-# pixi-build reserves build-dependencies for package builds only.
-# For dev environments, all deps go in regular [dependencies].
 [feature.build-tools.dependencies]
 fmt = ">=11.0.2,<12"
-python = ">=3.12.5,<4"
-cmake = "3.24.*"
+cmake = ">=3.24,<4"
 ninja = ">=1.12.1,<2"
 git = ">=2.47.0,<3"
 ccache = ">=4.10.1,<5"
 pkg-config = ">=0.29.2,<0.30"
 pkgconfig = ">=1.5.5,<2"
 cmake-format = ">=0.6.13,<0.7"
+nushell = ">=0.103,<1"
 
 [feature.build-tools.target.linux-64.dependencies]
 wget = ">=1.21.4,<2"
@@ -63,149 +54,129 @@ wget = ">=1.21.4,<2"
 [feature.test.dependencies]
 catch2 = ">=3.7.1,<4"
 
-# Project management specific dependencies
-[feature.project-mgmt.dependencies]
-ripgrep = ">=14.1.1,<15"
-
-# Extra packages for development
-[feature.dev.dependencies]
+# Extra dev tools (linting, docs, etc.)
+[feature.dev-tools.dependencies]
 cppcheck = ">=2.15.0,<3"
 doxygen = ">=1.11.0,<2"
 
-# Clang tools like clang-tidy, clangd, etc
-# Not included in dev because the dpcpp toolchain
-# already includes these tools and would conflict
-#
-# If not using dpcpp, it can be moved to the dev feature
-[feature.clang-extra-tools.dependencies]
-clang-format = ">=18.1.8,<20"
-clang-tools = ">=18.1.8,<20"
+# Clang tools (clang-tidy, clangd, clang-format)
+[feature.clang-tools.dependencies]
+clang-format = ">=18,<19"
+clang-tools = ">=18,<19"
+
+# Project management tools
+[feature.project-mgmt.dependencies]
+ripgrep = ">=14.1.1,<15"
 
 
-# ======= Project Tasks =======
-# Build workflow implementation
-[feature.build.tasks.configure]
-cmd = "bash scripts/configure.sh"
+# ======= Build Tasks =======
+[feature.build-tasks.tasks.configure]
+cmd = "nu scripts/configure.nu"
 
-[feature.build.tasks.build]
-cmd = "bash scripts/build.sh"
+[feature.build-tasks.tasks.build]
+cmd = "nu scripts/build.nu"
 depends-on = ["configure"]
 
-[feature.build.tasks.install]
-cmd = "bash scripts/install.sh"
+[feature.build-tasks.tasks.install]
+cmd = "nu scripts/install.nu"
 depends-on = ["build"]
 
-# Project management tasks
+[feature.build-tasks.tasks.patch-rpaths]
+cmd = "nu scripts/patch-rpaths.nu"
+depends-on = ["install"]
+
 [feature.project-mgmt.tasks]
-change-project-name = "bash scripts/change-project-name.sh"
-
-[environments.project-mgmt]
-no-default-feature = true
-features = ["project-mgmt"]
-
-# ======= Project Environments =======
-# The user-facing documentation would 
-# direct users who want to install the project
-# for usage in their own projects to use 
-# pixi run -e user install
-[environments.user]
-features = ["build-tools", "default-toolchain", "build"]
-
-[environments.test]
-features = ["build-tools", "default-toolchain", "build", "test"]
-
-[feature.dev.activation.env]
-INSTALL_PREFIX = "$CONDA_PREFIX"
-
-[environments.dev]
-# features = ["dev", "default-toolchain", "clang-extra-tools", "build", "test"]
-# examples of using other toolchains instead for development
-# features = ["dev", "default-toolchain", "mingw", "clang-extra-tools", "test"]  # multi-platform gcc
-features = [
-  "build-tools",
-  "dev",
-  "dpcpp",
-  "dpcpp-extras",
-  "build",
-  "test",
-] # linux-only dev env
-
-# Clang-based development environment (multi-platform)
-[environments.dev-clang]
-features = ["build-tools", "dev", "clang", "clang-extra-tools", "build", "test"]
-
-# MinGW-based development environment (Windows with GCC)
-[environments.dev-mingw]
-features = ["build-tools", "dev", "default-toolchain", "mingw", "build", "test"]
+change-project-name = "nu scripts/change-project-name.nu"
 
 
-# ======= TOOLCHAINS =======
+# ======= TOOLCHAIN FEATURES =======
+# These match the variant files in recipe/
 
-# ----- Default Toolchain -----
-[feature.default-toolchain]
-platforms = ["linux-64", "win-64"]
+# ----- Linux + Clang -----
+[feature.linux-clang]
+platforms = ["linux-64"]
 
-# GNU GCC Toolchain
-[feature.default-toolchain.target.linux-64.dependencies]
-gcc_linux-64 = ">=13.3.0,<13.4"
-gxx_linux-64 = ">=13.3.0,<13.4"
+[feature.linux-clang.dependencies]
+clang_linux-64 = ">=18,<19"
+clangxx_linux-64 = ">=18,<19"
 
-# Default toolchain activation for linux
-[feature.default-toolchain.target.linux-64.activation]
-scripts = ["activation/gcc.sh"]
+[feature.linux-clang.activation]
+scripts = ["activation/linux.sh", "activation/clang.sh"]
 
-# MSVC for Windows
-[feature.default-toolchain.target.win-64.dependencies]
-vs_win-64 = ">=2022.11,<2023"
+# ----- Linux + GCC -----
+[feature.linux-gcc]
+platforms = ["linux-64"]
 
-[feature.default-toolchain.target.win-64.activation]
+[feature.linux-gcc.dependencies]
+gcc_linux-64 = ">=13.3.0,<14"
+gxx_linux-64 = ">=13.3.0,<14"
+
+[feature.linux-gcc.activation]
+scripts = ["activation/linux.sh", "activation/gcc.sh"]
+
+# ----- Windows + Clang -----
+[feature.win-clang]
+platforms = ["win-64"]
+
+[feature.win-clang.dependencies]
+clangdev = ">=18,<19"
+clang_win-64 = ">=18,<19"
+clangxx_win-64 = ">=18,<19"
+# MSVC is needed for Windows SDK/libraries
+vs2022_win-64 = ">=17.0"
+
+[feature.win-clang.activation]
+scripts = ["activation/clang.bat"]
+
+# ----- Windows + MSVC -----
+[feature.win-msvc]
+platforms = ["win-64"]
+
+[feature.win-msvc.dependencies]
+vs2022_win-64 = ">=17.0"
+
+[feature.win-msvc.activation]
 scripts = ["activation/msvc.bat"]
 
 
-# ----- Clang Toolchain -----
-[feature.clang.dependencies]
-clangdev = ">=18.1.8,<20"
+# ======= DEVELOPMENT ENVIRONMENTS =======
+# One environment per platform/toolchain combination
+# Naming convention: dev-<platform>-<toolchain>
 
-[feature.clang.target.linux-64.dependencies]
-clangxx_linux-64 = ">=18,<19"
-clang_linux-64 = ">=18,<19"
+[feature.dev-common.activation.env]
+INSTALL_PREFIX = "$CONDA_PREFIX"
 
-[feature.clang.target.win-64.dependencies]
-vs_win-64 = ">=2022.11,<2023"
+# Linux + Clang (default for Linux development)
+[environments.dev-linux-clang]
+features = ["build-tools", "dev-tools", "clang-tools", "test", "linux-clang", "build-tasks", "dev-common"]
 
-[feature.clang.target.win-64.activation]
-scripts = ["activation/msvc.bat", "activation/clang.bat"]
+# Linux + GCC
+[environments.dev-linux-gcc]
+features = ["build-tools", "dev-tools", "clang-tools", "test", "linux-gcc", "build-tasks", "dev-common"]
 
-[feature.clang.target.linux-64.activation]
-scripts = ["activation/linux.sh", "activation/clang.sh"]
+# Windows + Clang (default for Windows development)
+[environments.dev-win-clang]
+features = ["build-tools", "dev-tools", "clang-tools", "test", "win-clang", "build-tasks", "dev-common"]
 
+# Windows + MSVC
+[environments.dev-win-msvc]
+features = ["build-tools", "dev-tools", "test", "win-msvc", "build-tasks", "dev-common"]
 
-# ---- Open DPC++ Toolchain ----
-[feature.dpcpp]
-platforms = ["linux-64"]
-channels = ["conda-forge", "NAGAGroup"]
+# Convenience alias: 'dev' points to platform-appropriate Clang environment
+[environments.dev]
+features = ["build-tools", "dev-tools", "clang-tools", "test", "linux-clang", "win-clang", "build-tasks", "dev-common"]
 
-[feature.dpcpp.system-requirements]
-libc = "2.34"
+# ======= OTHER ENVIRONMENTS =======
 
-[feature.dpcpp-extras.dependencies]
-intel-opencl-rt = ">=2024.0.0,<2025"
+# User environment for consumers who just want to build/install
+[environments.user]
+features = ["build-tools", "linux-clang", "win-clang", "build-tasks"]
 
-[feature.dpcpp.dependencies]
-naga-llvm-compute-toolkit = ">=2025.0.0"
+# Test-only environment (for CI)
+[environments.test]
+features = ["build-tools", "test", "linux-clang", "win-clang", "build-tasks"]
 
-[feature.dpcpp.activation]
-scripts = ["activation/clang.sh", "activation/dpcpp.sh"]
-
-# ---- MinGW Toolchain for Windows ----
-# This toolchain feature can be combined with the default-toolchain
-# to create gcc environments for both linux and windows
-[feature.mingw]
-platforms = ["win-64"]
-
-[feature.mingw.dependencies]
-gcc_win-64 = ">=13.3.0,<13.4"
-gxx_win-64 = ">=13.3.0,<13.4"
-
-[feature.mingw.activation]
-scripts = ["activation/mingw.bat"]
+# Project management (renaming, etc.)
+[environments.project-mgmt]
+no-default-feature = true
+features = ["project-mgmt"]

@@ -1,8 +1,11 @@
 schema_version: 1
 
+context:
+  version: "0.1.0"
+
 package:
   name: template-cpp-project
-  version: "0.1.0"
+  version: ${{ version }}
 
 source:
   path: ..
@@ -10,45 +13,38 @@ source:
 build:
   number: 0
   script:
+    - mkdir -p build
     - |
-      # Set up build directories
-      mkdir -p build
-      
-      # Configure with CMake
-      # Note: CC, CXX, and CMAKE_ARGS are automatically set by conda compiler activation
       cmake -B build -S . \
         -GNinja \
         ${CMAKE_ARGS} \
         -DCMAKE_CXX_STANDARD=17 \
         -Dtemplate-cpp-project_DEVELOPER_MODE=OFF
-      
-      # Build
-      cmake --build build --config Release
-      
-      # Install
-      cmake --install build --config Release
+    - cmake --build build --config Release
+    - cmake --install build --config Release
 
 requirements:
   build:
-    # Build tools
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
     - cmake >=3.24,<4
     - ninja >=1.12.1,<2
     - ccache >=4.10.1,<5
     - pkg-config >=0.29.2,<0.30
-    # Clang compiler
-    - clangdev >=18.1.8,<20
-    - clangxx_linux-64 >=18,<19  # [linux64]
-    - clang_linux-64 >=18,<19    # [linux64]
   host:
     - fmt >=11.0.2,<12
-
   run:
     - fmt >=11.0.2,<12
 
 tests:
   - package_contents:
-      # Verify the library and CMake files were installed
       files:
-        - lib/libtemplate-cpp-project.a
-        - lib/cmake/template-cpp-project/template-cpp-projectConfig.cmake
-        - lib/cmake/template-cpp-project/template-cpp-projectTargets.cmake
+        - if: unix
+          then:
+            - lib/libtemplate-cpp-project.a
+            - lib/cmake/template-cpp-project/template-cpp-projectConfig.cmake
+        - if: win
+          then:
+            - Library/lib/template-cpp-project.lib
+            - Library/lib/cmake/template-cpp-project/template-cpp-projectConfig.cmake
