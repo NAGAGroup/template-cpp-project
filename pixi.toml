@@ -178,7 +178,7 @@ scripts = ["activation/linux.sh", "activation/clang.sh"]
 # ---- Open DPC++ Toolchain ----
 [feature.dpcpp]
 platforms = ["linux-64"]
-channels = ["conda-forge", "nagagroup"]
+channels = ["conda-forge", "NAGAGroup"]
 
 [feature.dpcpp.system-requirements]
 libc = "2.34"
@@ -187,7 +187,7 @@ libc = "2.34"
 intel-opencl-rt = ">=2024.0.0,<2025"
 
 [feature.dpcpp.build-dependencies]
-open-dpcpp-toolkit = ">=20.0.0,<21"
+naga-llvm-compute-toolkit = ">=2025.0.0"
 
 [feature.dpcpp.activation]
 scripts = ["activation/clang.sh", "activation/dpcpp.sh"]

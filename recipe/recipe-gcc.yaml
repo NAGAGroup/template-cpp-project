@@ -49,9 +49,6 @@ requirements:
   run:
     - fmt >=11.0.2,<12
 
-channels:
-  - conda-forge
-
 tests:
   - script:
       - template-cpp-project_test --version

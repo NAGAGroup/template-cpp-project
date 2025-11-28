@@ -43,18 +43,14 @@ requirements:
     - ninja >=1.12.1,<2
     - ccache >=4.10.1,<5
     - pkg-config >=0.29.2,<0.30
-    # DPC++ toolchain from nagagroup channel
-    - open-dpcpp-toolkit >=20.0.0,<21
+    # DPC++ toolchain from NAGAGroup channel
+    - naga-llvm-compute-toolkit >=2025.0.0
   host:
     # Host dependencies (libraries needed at runtime)
     - fmt >=11.0.2,<12
   run:
     # Runtime dependencies (what the package needs to run)
     - fmt >=11.0.2,<12
-
-channels:
-  - conda-forge
-  - nagagroup
 
 tests:
   - script:
