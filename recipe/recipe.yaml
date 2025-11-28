@@ -1,0 +1,65 @@
+schema_version: 1
+
+package:
+  name: template-cpp-project
+  version: "0.1.0"
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script:
+    - |
+      # Set up compiler environment variables
+      export CC="${BUILD_PREFIX}/bin/clang"
+      export CXX="${BUILD_PREFIX}/bin/clang++"
+      export MKLROOT="${PREFIX}"
+      export OCL_ICD_VENDORS="${PREFIX}/etc/OpenCL/vendors"
+      
+      # Set up build directories
+      mkdir -p build
+      
+      # Configure with CMake
+      cmake -B build -S . \
+        -GNinja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
+        -DCMAKE_CXX_STANDARD=17 \
+        -DCMAKE_TOOLCHAIN_FILE="${BUILD_PREFIX}/lib/cmake/clang.cmake" \
+        -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef" \
+        -DTEMPLATE_CPP_PROJECT_DEVELOPER_MODE=ON
+      
+      # Build
+      cmake --build build --config Release
+      
+      # Install
+      cmake --install build --config Release
+
+requirements:
+  build:
+    # Build tools
+    - cmake >=3.24,<4
+    - ninja >=1.12.1,<2
+    - ccache >=4.10.1,<5
+    - pkg-config >=0.29.2,<0.30
+    # DPC++ toolchain from nagagroup channel
+    - open-dpcpp-toolkit >=20.0.0,<21
+  host:
+    # Host dependencies (libraries needed at runtime)
+    - fmt >=11.0.2,<12
+  run:
+    # Runtime dependencies (what the package needs to run)
+    - fmt >=11.0.2,<12
+
+channels:
+  - conda-forge
+  - nagagroup
+
+tests:
+  - script:
+      - template-cpp-project_test --version
+    requirements:
+      run:
+        - catch2 >=3.7.1,<4
+        - template-cpp-project  # Depend on the built package

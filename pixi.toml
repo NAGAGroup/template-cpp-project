@@ -6,6 +6,22 @@ name = "template-project-cpp"
 platforms = ["win-64", "linux-64"]
 version = "0.1.0"
 
+# ======= pixi-build (rattler-build) Configuration =======
+# NOTE: Recipes in the recipe/ directory can be built independently
+# with rattler-build for creating conda packages:
+#
+#   rattler-build build recipe/recipe.yaml              # Build with DPC++
+#   rattler-build build recipe/recipe-gcc.yaml          # Build with GCC
+#   rattler-build build recipe/recipe-clang.yaml        # Build with Clang
+#   rattler-build build recipe/recipe-mingw.yaml        # Build with MinGW
+#
+# These recipes use the pixi-build-rattler-build backend, allowing
+# custom toolchains (like DPC++) that aren't available in conda-forge's
+# default compilers.
+#
+# For full pixi integration with package building, the workspace would
+# need to be restructured with a [package] section. This is deferred
+# as pixi-build is still in preview and APIs may change.
 
 # ======= Project environment Variables =======
 # Global environment variables that
