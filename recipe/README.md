@@ -15,14 +15,14 @@ pixi global install rattler-build
 ### Build a Package
 
 ```bash
-# Linux with DPC++ (default)
+# Linux/Windows with Clang (default)
 rattler-build build recipe/recipe.yaml
 
 # Linux with GCC
 rattler-build build recipe/recipe-gcc.yaml
 
-# Linux/Windows with Clang
-rattler-build build recipe/recipe-clang.yaml
+# Linux with DPC++ (SYCL)
+rattler-build build recipe/recipe-dpcpp.yaml
 
 # Windows with MinGW
 rattler-build build recipe/recipe-mingw.yaml
@@ -32,13 +32,13 @@ Output packages are created in the `output/` directory as `.tar.bz2` conda packa
 
 ## Available Recipes
 
-### `recipe.yaml` - DPC++ (Default)
+### `recipe.yaml` - Clang (Default)
 
-- **Toolchain**: Intel's DPC++ (SYCL)
-- **Platform**: Linux only
-- **Channels**: conda-forge, nagagroup
-- **Use Case**: When you need SYCL support for heterogeneous computing
-- **Requires**: Intel SYCL SDK from nagagroup channel
+- **Toolchain**: Clang 18
+- **Platform**: Linux, Windows
+- **Channels**: conda-forge
+- **Use Case**: Cross-platform C++ development
+- **Advantages**: Modern compiler, excellent diagnostics, works on both Linux and Windows
 
 ### `recipe-gcc.yaml` - GCC
 
@@ -48,13 +48,13 @@ Output packages are created in the `output/` directory as `.tar.bz2` conda packa
 - **Use Case**: Standard C++ development on Linux
 - **Advantages**: Widely compatible, large community
 
-### `recipe-clang.yaml` - Clang
+### `recipe-dpcpp.yaml` - DPC++ (SYCL)
 
-- **Toolchain**: Clang 18
-- **Platform**: Linux, Windows
-- **Channels**: conda-forge
-- **Use Case**: Cross-platform C++ development
-- **Advantages**: Modern compiler, excellent diagnostics
+- **Toolchain**: Intel's DPC++ (SYCL)
+- **Platform**: Linux only
+- **Channels**: conda-forge, NAGAGroup
+- **Use Case**: When you need SYCL support for heterogeneous computing
+- **Requires**: Intel SYCL SDK from NAGAGroup channel
 
 ### `recipe-mingw.yaml` - MinGW
 

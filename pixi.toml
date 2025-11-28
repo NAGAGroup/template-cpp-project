@@ -1,5 +1,5 @@
 [project]
-authors = ["Jack Myers <jack.myers@intel.com>"]
+authors = ["Jack Myers <jackhmyers97@gmail.com>"]
 channels = ["conda-forge"]
 description = "Add a short description here"
 name = "template-project-cpp"
@@ -10,9 +10,9 @@ version = "0.1.0"
 # NOTE: Recipes in the recipe/ directory can be built independently
 # with rattler-build for creating conda packages:
 #
-#   rattler-build build recipe/recipe.yaml              # Build with DPC++
+#   rattler-build build recipe/recipe.yaml              # Build with Clang (default)
 #   rattler-build build recipe/recipe-gcc.yaml          # Build with GCC
-#   rattler-build build recipe/recipe-clang.yaml        # Build with Clang
+#   rattler-build build recipe/recipe-dpcpp.yaml        # Build with DPC++
 #   rattler-build build recipe/recipe-mingw.yaml        # Build with MinGW
 #
 # These recipes use the pixi-build-rattler-build backend, allowing

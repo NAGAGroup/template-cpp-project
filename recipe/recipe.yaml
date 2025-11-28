@@ -11,23 +11,15 @@ build:
   number: 0
   script:
     - |
-      # DPC++ (SYCL) specific environment setup
-      export CC="${BUILD_PREFIX}/bin/clang"
-      export CXX="${BUILD_PREFIX}/bin/clang++"
-      export MKLROOT="${PREFIX}"
-      export OCL_ICD_VENDORS="${PREFIX}/etc/OpenCL/vendors"
-      
       # Set up build directories
       mkdir -p build
       
       # Configure with CMake
-      # Note: DPC++ uses its own toolchain file, not the standard CMAKE_ARGS
+      # Note: CC, CXX, and CMAKE_ARGS are automatically set by conda compiler activation
       cmake -B build -S . \
         -GNinja \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
+        ${CMAKE_ARGS} \
         -DCMAKE_CXX_STANDARD=17 \
-        -DCMAKE_TOOLCHAIN_FILE="${BUILD_PREFIX}/lib/cmake/clang.cmake" \
         -Dtemplate-cpp-project_DEVELOPER_MODE=OFF
       
       # Build
@@ -43,14 +35,14 @@ requirements:
     - ninja >=1.12.1,<2
     - ccache >=4.10.1,<5
     - pkg-config >=0.29.2,<0.30
-    # DPC++ toolchain from NAGAGroup channel
-    - naga-llvm-compute-toolkit >=2025.0.0
+    # Clang compiler
+    - clangdev >=18.1.8,<20
+    - clangxx_linux-64 >=18,<19  # [linux64]
+    - clang_linux-64 >=18,<19    # [linux64]
   host:
-    # Host dependencies (libraries needed at runtime)
     - fmt >=11.0.2,<12
 
   run:
-    # Runtime dependencies (what the package needs to run)
     - fmt >=11.0.2,<12
 
 tests:
