@@ -26,6 +26,8 @@ platforms = [
   { name = "linux-64-v4", platform = "linux-64", archspec = "x86_64_v4" },
 ]
 preview = ["pixi-build"]
+# Fail fast on pixi versions older than the features this workspace uses.
+requires-pixi = ">=0.76.1"
 
 # ---- pixi build-variants ---------------------------------------------------
 # Environments select a variant by PINNING the dependency (see the env
@@ -156,6 +158,25 @@ no-default-feature = true
 features = ["test-coverage"]
 no-default-feature = true
 
+# Run every test env in one command; each dependency is pinned to ITS
+# environment (docs: "Environment specification for task dependencies").
+[tasks.test-all]
+depends-on = [
+  { task = "test", environment = "test" },
+  { task = "test", environment = "test-static" },
+]
+description = "Run all cross-platform test envs"
+
+# Wildcard selector: matches every linux platform name (v3/portable/v4).
+[target."linux-64-*".tasks.test-all]
+depends-on = [
+  { task = "test", environment = "test" },
+  { task = "test", environment = "test-static" },
+  { task = "test", environment = "test-asan" },
+  { task = "test", environment = "test-tsan" },
+]
+description = "Run all test envs (incl. sanitizers)"
+
 # Task visibility follows features: a task must live in a feature that the
 # target env includes (the [tasks] table belongs to the default feature).
 [feature.test.tasks.test]
@@ -240,8 +261,9 @@ clang-tools = "*"
 clang = "*"
 
 [feature.dev.tasks.configure]
-cmd = "cmake --preset dev && ln -sf build/dev/compile_commands.json compile_commands.json"
-description = "Configure the in-tree dev build (and refresh the clangd compile_commands symlink)"
+# MiniJinja + the pixi.* context make tasks cross-platform (no symlinks on win).
+cmd = "cmake --preset dev && {% if pixi.is_win %}cmake -E copy_if_different build/dev/compile_commands.json compile_commands.json{% else %}ln -sf build/dev/compile_commands.json compile_commands.json{% endif %}"
+description = "Configure the in-tree dev build (and refresh the clangd compile_commands link)"
 
 [feature.dev.tasks.build]
 cmd = "cmake --build build/dev"
