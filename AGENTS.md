@@ -67,9 +67,11 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
 - Env-side variant selection works via run-dep conflicts OR custom-
   platform-scoped single-value variants; run-deps are not
   variant-substituted (pixi#4303) → microarch is per-level subpackages.
-- `--locked` verification re-solves source workspaces unreliably across
-  hosts/clones (repro: `CONDA_OVERRIDE_CUDA= pixi install --locked`) →
-  CI uses `frozen`.
+- `--locked`/`--frozen` are developer-side tools for already-installed
+  envs; virtual packages legitimately differ across hosts (and their
+  satisfiability re-solve is also buggy — repro:
+  `CONDA_OVERRIDE_CUDA= pixi install --locked`). CI and consumers use
+  DEFAULT resolution semantics; the committed lock still drives it.
 - pixi-pack publishes source packages per-package (--path semantics, no
   source run-deps) → packs limited to leaf envs; workspace
   `pixi publish` (publish-local task) handles full chains fine.

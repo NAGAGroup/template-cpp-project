@@ -9,10 +9,11 @@ on:
 # tasks through pixi environments — no system compilers, no setup-cpp,
 # no vcpkg/Conan. One workspace at the repo root owns everything.
 #
-# frozen: install exactly what pixi.lock records. (pixi's --locked
-# satisfiability check re-solves source-package workspaces and is
-# currently unreliable across hosts/clones — upstream bug with repro:
-# CONDA_OVERRIDE_CUDA= pixi install --locked.)
+# We deliberately use pixi's DEFAULT resolution semantics (no --locked /
+# --frozen): virtual packages (__archspec, __glibc, __cuda) legitimately
+# differ across hosts and virtualized runners, and the committed
+# pixi.lock still drives resolution wherever it is satisfiable.
+# locked/frozen are developer-side tools for already-installed envs.
 jobs:
   consume:
     name: consume (${{ matrix.os }})
@@ -26,12 +27,12 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          frozen: true
+          locked: false
           environments: app
       - name: Build the app chain (incl. both wrappers) and run the demo
-        run: pixi run --frozen demo
+        run: pixi run demo
       - name: Adaptive default env (library consumers)
-        run: pixi install --frozen
+        run: pixi install
 
   test:
     name: test (${{ matrix.os }})
@@ -49,10 +50,10 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          frozen: true
+          locked: false
           environments: ${{ matrix.envs }}
       - name: Run every test env for this platform
-        run: pixi run --frozen test-all
+        run: pixi run test-all
 
   test-lowest:
     name: min-version compatibility (linux)
@@ -62,10 +63,10 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          frozen: true
+          locked: false
           environments: test-lowest
       - name: Tests against lowest direct dependency versions
-        run: pixi run --frozen -e test-lowest test
+        run: pixi run -e test-lowest test
 
   coverage:
     name: coverage (linux, llvm-cov)
@@ -75,10 +76,10 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          frozen: true
+          locked: false
           environments: test-coverage
       - name: Instrumented tests + report
-        run: pixi run --frozen -e test-coverage coverage
+        run: pixi run -e test-coverage coverage
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-lcov
@@ -95,7 +96,7 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          frozen: true
+          locked: false
           environments: v1 v3 clang spdlog14
       - name: Publish-set validation (dependency-ordered, self-contained)
         run: pixi publish --dry-run --to ./local-channel
@@ -108,14 +109,14 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          frozen: true
+          locked: false
           environments: style dev-enginelib
       - name: clang-format check
-        run: pixi run --frozen -e style format-check
+        run: pixi run -e style format-check
       - name: Doxygen
-        run: pixi run --frozen -e style docs
+        run: pixi run -e style docs
       - name: clang-tidy (enginelib)
-        run: pixi run --frozen -e dev-enginelib lint
+        run: pixi run -e dev-enginelib lint
 
   pack:
     # The non-pixi consumption path. NOTE: pixi-pack publishes source
@@ -134,7 +135,7 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          frozen: true
+          locked: false
           environments: header-only
       - name: Pack the header-only library environment
         run: pixi exec pixi-pack --create-executable --environment header-only --platform ${{ runner.os == 'Windows' && 'win-64' || 'linux-64' }} pixi.toml
