@@ -214,6 +214,9 @@ enginelib = { path = "." }
 
 [feature.dev.dependencies]
 catch2 = ">=3.5,<4"
+# Pin the variant-expanded dep to the default lineage: an unpinned
+# variant dep in the dev closure makes `--locked` verification unstable.
+spdlog = "1.15.*"
 clang-tools = "*"
 # clang-tools ships clang-tidy but not the clang builtin headers
 # (resource dir); the clang package provides them.
