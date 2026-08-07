@@ -57,6 +57,14 @@ jobs:
         with:
           cache: true
           manifest-path: packages/enginelib/pixi.toml
+          # pixi's --locked verification is cwd-sensitive for workspaces
+          # with variant-expanded dev closures (upstream bug): it fails via
+          # --manifest-path from outside but passes in-directory — so we
+          # run the locked install ourselves.
+          run-install: false
+      - name: Locked install (in-directory)
+        working-directory: packages/enginelib
+        run: pixi install --locked
       - name: ASan + UBSan
         working-directory: packages/enginelib
         run: pixi run -e test-asan test
@@ -73,6 +81,14 @@ jobs:
         with:
           cache: true
           manifest-path: packages/enginelib/pixi.toml
+          # pixi's --locked verification is cwd-sensitive for workspaces
+          # with variant-expanded dev closures (upstream bug): it fails via
+          # --manifest-path from outside but passes in-directory — so we
+          # run the locked install ourselves.
+          run-install: false
+      - name: Locked install (in-directory)
+        working-directory: packages/enginelib
+        run: pixi install --locked
       - name: Instrumented tests + report
         working-directory: packages/enginelib
         run: pixi run -e test-coverage coverage
@@ -90,6 +106,14 @@ jobs:
         with:
           cache: true
           manifest-path: packages/enginelib/pixi.toml
+          # pixi's --locked verification is cwd-sensitive for workspaces
+          # with variant-expanded dev closures (upstream bug): it fails via
+          # --manifest-path from outside but passes in-directory — so we
+          # run the locked install ourselves.
+          run-install: false
+      - name: Locked install (in-directory)
+        working-directory: packages/enginelib
+        run: pixi install --locked
       - name: microarch v1 + v3 (v4 skipped — runners lack AVX-512, __archspec would refuse)
         working-directory: packages/enginelib
         run: pixi install -e v1 && pixi install -e v3
