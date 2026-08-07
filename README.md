@@ -12,7 +12,8 @@ Everything else in this repo follows from that sentence.
 
 | | |
 |---|---|
-| `packages/mathkit` | header-only library (standalone-consumable, its own workspace + version) |
+| `pixi.toml` | THE workspace — every environment, task, and the variant matrix (members are package-only manifests) |
+| `packages/mathkit` | header-only library (weak self-export teaching case) |
 | `packages/enginelib` | compiled library — the variant teacher: preset-variants (`static`, `asan`, `tsan`, `coverage`, `relwithdebinfo`), microarch performance subpackages (`v1`/`v3`/`v4`), pixi build-variants (spdlog version matrix) |
 | `packages/demo-app` | application consuming the libraries (internal-only, package-only manifest) |
 | `external/fmt` | wrapper package building upstream fmt from a git tag (pixi-build-cmake) |
@@ -30,21 +31,22 @@ To just try it ([install pixi](https://pixi.prefix.dev), nothing else —
 no compiler, no cmake, no system anything):
 
 ```sh
-pixi run demo                     # build every package, run the app
-pixi run test-all                 # run every package's test suite
-cd packages/enginelib
-pixi run -e test-asan test        # sanitized variant, tests built to match
-pixi run -e test-coverage coverage
-pixi run -e dev dev-test          # the in-tree dev loop (no packages involved)
+pixi run demo                       # build the app chain, run it
+pixi run test-all                   # every test env for this platform
+pixi run -e test-asan test          # sanitized variant, tests built to match
+pixi run -e test-coverage coverage  # llvm-cov report
+pixi run -e dev-enginelib dev-test  # the in-tree dev loop (no packages involved)
+pixi install -e clang               # clang-built packages via a custom platform
+pixi run publish-local              # every package into an indexed local channel
 ```
 
 ## The ideas, in one screen
 
-1. **Environments are the interface.** The implicit default env of every
-   workspace is a *consumer* env that self-consumes its packages. Test
-   envs consume test packages. Dev envs materialize a package's build
-   closure *without building it* — day-to-day work is plain CMake presets
-   inside that env.
+1. **Environments are the interface.** One root workspace; the default
+   env is a *machine-adaptive* consumer env (capable CPUs get the
+   v3-optimized build automatically). Test envs consume test packages.
+   Dev envs materialize a package's build closure *without building it*
+   — day-to-day work is plain CMake presets inside that env.
 2. **A package variant is a CMake preset.** Pixi manifests pass only
    `--preset=<name>`; presets carry *project-owned knobs* which
    CMakeLists maps to real CMake variables. Non-pixi users get the same
