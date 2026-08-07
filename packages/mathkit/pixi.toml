@@ -15,6 +15,7 @@ mathkit = { path = "." }
 [package]
 name = "mathkit"
 version = "0.1.0"
+publish = true
 
 [package.build]
 backend = { name = "pixi-build-cmake", version = "*" }

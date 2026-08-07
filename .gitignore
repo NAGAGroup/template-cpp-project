@@ -9,3 +9,8 @@ compile_commands.json
 .cache/
 .vscode/
 .idea/
+environment.sh
+environment.ps1
+coverage.info
+*.profraw
+*.profdata

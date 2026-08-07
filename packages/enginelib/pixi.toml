@@ -177,6 +177,7 @@ description = "Run instrumented tests and produce llvm-cov + lcov reports (use w
 [package]
 name = "enginelib"
 version = "0.1.0"
+publish = true
 
 [package.build]
 backend = { name = "pixi-build-cmake", version = "*" }
