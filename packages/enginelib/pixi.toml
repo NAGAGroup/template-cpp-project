@@ -204,6 +204,9 @@ stb = { path = "../../external/stb" }
 # manual repetition can become a weak self-export instead.
 [package.run-dependencies]
 mathkit = { path = "../mathkit" }
+# stb is private+header-only, but our CMake config always resolves it
+# (static consumers link it via the export set) -> propagate it.
+stb = { path = "../../external/stb" }
 
 # ---- Dev environment -------------------------------------------------------
 # The package's dependency closure WITHOUT building it, plus dev-only

@@ -27,3 +27,4 @@ stb = { path = "../../../../external/stb" }
 
 [package.run-dependencies]
 mathkit = { path = "../../../mathkit" }
+stb = { path = "../../../../external/stb" }

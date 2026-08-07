@@ -30,4 +30,5 @@ x86_64-microarch-level = "4.*"
 
 [package.run-dependencies]
 mathkit = { path = "../../../mathkit" }
+stb = { path = "../../../../external/stb" }
 x86_64-microarch-level = "4.*"
