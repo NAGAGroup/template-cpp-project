@@ -3,22 +3,23 @@ package:
   version: "2026.8.6"
 
 source:
-  git: https://github.com/nothings/stb
-  rev: 2c980bb59875b0d32144a71867fbdebb2f77cd20
+  # Upstream (no build system, no releases — pinned by commit sha) ...
+  - git: https://github.com/nothings/stb
+    rev: 2c980bb59875b0d32144a71867fbdebb2f77cd20
+  # ... plus our hand-written CMake config, staged from the wrapper dir.
+  - path: ./cmake
+    target_directory: _wrapper_cmake
 
 build:
   script:
-    - mkdir -p "$PREFIX/include/stb" "$PREFIX/lib/cmake/stb"
-    - cp *.h "$PREFIX/include/stb/"
-    - |
-      cat > "$PREFIX/lib/cmake/stb/stbConfig.cmake" <<'EOF'
-      # Hand-written CMake config for stb (upstream ships no build system).
-      if(TARGET stb::stb)
-        return()
-      endif()
-      get_filename_component(_stb_prefix "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
-      add_library(stb::stb INTERFACE IMPORTED)
-      set_target_properties(stb::stb PROPERTIES
-        INTERFACE_INCLUDE_DIRECTORIES "${_stb_prefix}/include")
-      unset(_stb_prefix)
-      EOF
+    - if: unix
+      then:
+        - mkdir -p "$PREFIX/include/stb" "$PREFIX/lib/cmake/stb"
+        - cp *.h "$PREFIX/include/stb/"
+        - cp _wrapper_cmake/stbConfig.cmake "$PREFIX/lib/cmake/stb/"
+    - if: win
+      then:
+        - if not exist "%LIBRARY_PREFIX%\include\stb" mkdir "%LIBRARY_PREFIX%\include\stb"
+        - if not exist "%LIBRARY_PREFIX%\lib\cmake\stb" mkdir "%LIBRARY_PREFIX%\lib\cmake\stb"
+        - copy *.h "%LIBRARY_PREFIX%\include\stb\"
+        - copy _wrapper_cmake\stbConfig.cmake "%LIBRARY_PREFIX%\lib\cmake\stb\"
