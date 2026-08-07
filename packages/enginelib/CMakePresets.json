@@ -5,7 +5,8 @@
       "name": "base",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_SCAN_FOR_MODULES": "OFF"
       }
     },
     {
@@ -17,13 +18,17 @@
       "name": "static",
       "displayName": "Static (package variant)",
       "inherits": "base",
-      "cacheVariables": { "ENGINELIB_SHARED": "OFF" }
+      "cacheVariables": {
+        "ENGINELIB_SHARED": "OFF"
+      }
     },
     {
       "name": "relwithdebinfo",
       "displayName": "RelWithDebInfo (package variant)",
       "inherits": "base",
-      "cacheVariables": { "ENGINELIB_BUILD_TYPE": "RelWithDebInfo" }
+      "cacheVariables": {
+        "ENGINELIB_BUILD_TYPE": "RelWithDebInfo"
+      }
     },
     {
       "name": "asan",
@@ -60,29 +65,51 @@
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_PREFIX_PATH": "$env{CONDA_PREFIX}"
+        "CMAKE_PREFIX_PATH": "$env{CONDA_PREFIX}",
+        "ENGINELIB_DEV_MODE": "ON"
       }
     },
     {
       "name": "dev-asan",
       "displayName": "Dev ASan+UBSan (in-tree)",
-      "inherits": ["asan", "dev"]
+      "inherits": [
+        "asan",
+        "dev"
+      ]
     },
     {
       "name": "dev-tsan",
       "displayName": "Dev TSan (in-tree)",
-      "inherits": ["tsan", "dev"]
+      "inherits": [
+        "tsan",
+        "dev"
+      ]
     },
     {
       "name": "dev-static",
       "displayName": "Dev static (in-tree)",
-      "inherits": ["static", "dev"]
+      "inherits": [
+        "static",
+        "dev"
+      ]
     }
   ],
   "buildPresets": [
-    { "name": "dev", "configurePreset": "dev" },
-    { "name": "dev-asan", "configurePreset": "dev-asan" },
-    { "name": "dev-tsan", "configurePreset": "dev-tsan" },
-    { "name": "dev-static", "configurePreset": "dev-static" }
+    {
+      "name": "dev",
+      "configurePreset": "dev"
+    },
+    {
+      "name": "dev-asan",
+      "configurePreset": "dev-asan"
+    },
+    {
+      "name": "dev-tsan",
+      "configurePreset": "dev-tsan"
+    },
+    {
+      "name": "dev-static",
+      "configurePreset": "dev-static"
+    }
   ]
 }

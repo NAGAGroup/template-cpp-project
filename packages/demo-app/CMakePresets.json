@@ -5,7 +5,8 @@
       "name": "base",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_SCAN_FOR_MODULES": "OFF"
       }
     },
     {
@@ -21,9 +22,15 @@
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_PREFIX_PATH": "$env{CONDA_PREFIX}"
+        "CMAKE_PREFIX_PATH": "$env{CONDA_PREFIX}",
+        "DEMO_APP_DEV_MODE": "ON"
       }
     }
   ],
-  "buildPresets": [{ "name": "dev", "configurePreset": "dev" }]
+  "buildPresets": [
+    {
+      "name": "dev",
+      "configurePreset": "dev"
+    }
+  ]
 }

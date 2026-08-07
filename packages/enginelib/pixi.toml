@@ -213,10 +213,14 @@ enginelib = { path = "." }
 
 [feature.dev.dependencies]
 catch2 = ">=3.5,<4"
+clang-tools = "*"
+# clang-tools ships clang-tidy but not the clang builtin headers
+# (resource dir); the clang package provides them.
+clang = "*"
 
 [feature.dev.tasks.configure]
-cmd = "cmake --preset dev"
-description = "Configure the in-tree dev build"
+cmd = "cmake --preset dev && ln -sf build/dev/compile_commands.json compile_commands.json"
+description = "Configure the in-tree dev build (and refresh the clangd compile_commands symlink)"
 
 [feature.dev.tasks.build]
 cmd = "cmake --build build/dev"
@@ -233,6 +237,11 @@ cmake --preset dev \
 && cmake --build build/dev \
 && ctest --test-dir build/dev --output-on-failure"""
 description = "Dev-loop testing: cmake-install the lib into the dev env, then build+run tests against it (no packages involved)"
+
+[feature.dev.tasks.lint]
+cmd = "run-clang-tidy -quiet -p build/dev"
+description = "clang-tidy static analysis over the dev build"
+depends-on = ["configure"]
 
 [environments.dev]
 features = ["dev"]

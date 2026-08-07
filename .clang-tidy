@@ -1,0 +1,13 @@
+---
+Checks: >
+  bugprone-*,
+  performance-*,
+  modernize-*,
+  readability-*,
+  -modernize-use-trailing-return-type,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -bugprone-easily-swappable-parameters
+# Only lint OUR headers, not dependencies'.
+HeaderFilterRegex: '(mathkit|enginelib|demo-app)/(include|src|tests)/'
+FormatStyle: file

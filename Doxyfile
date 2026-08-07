@@ -1,0 +1,9 @@
+PROJECT_NAME           = "template-cpp-project"
+OUTPUT_DIRECTORY       = docs/api
+INPUT                  = packages/mathkit/include packages/enginelib/include
+RECURSIVE              = YES
+GENERATE_LATEX         = NO
+GENERATE_HTML          = YES
+EXTRACT_ALL            = YES
+QUIET                  = YES
+WARN_IF_UNDOCUMENTED   = NO

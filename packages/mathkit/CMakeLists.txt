@@ -5,6 +5,14 @@ project(
   DESCRIPTION "Header-only math utilities (template example package)"
   LANGUAGES CXX)
 
+option(MATHKIT_DEV_MODE "Enable developer warnings (dev presets)" OFF)
+if(MATHKIT_DEV_MODE)
+  add_compile_options(
+    "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
+    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall;-Wextra;-Wpedantic>")
+  set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+endif()
+
 add_library(mathkit INTERFACE)
 add_library(mathkit::mathkit ALIAS mathkit)
 target_include_directories(

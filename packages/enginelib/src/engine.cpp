@@ -16,9 +16,9 @@ double Engine::advance(double dt) {
 }
 
 double Engine::noise(double x, double y) const {
-  return static_cast<double>(stb_perlin_noise3(
-      static_cast<float>(x), static_cast<float>(y),
-      static_cast<float>(elapsed_), 0, 0, 0));
+  return static_cast<double>(
+      stb_perlin_noise3(static_cast<float>(x), static_cast<float>(y),
+                        static_cast<float>(elapsed_), 0, 0, 0));
 }
 
 }  // namespace enginelib

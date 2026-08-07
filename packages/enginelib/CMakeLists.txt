@@ -50,6 +50,14 @@ if(UNIX)
   set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif()
 
+option(ENGINELIB_DEV_MODE "Enable developer warnings (dev presets)" OFF)
+if(ENGINELIB_DEV_MODE)
+  add_compile_options(
+    "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
+    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall;-Wextra;-Wpedantic>")
+  set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+endif()
+
 # ---- Dependencies ----------------------------------------------------------
 find_package(mathkit CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)

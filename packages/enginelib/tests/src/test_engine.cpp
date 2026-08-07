@@ -11,8 +11,7 @@ TEST_CASE("engine accumulates time", "[engine]") {
   enginelib::Engine engine;
   engine.advance(0.5);
   engine.advance(0.25);
-  REQUIRE_THAT(engine.elapsed(),
-               Catch::Matchers::WithinRel(0.75, 1e-12));
+  REQUIRE_THAT(engine.elapsed(), Catch::Matchers::WithinRel(0.75, 1e-12));
 }
 
 TEST_CASE("combine exercises the public mathkit dependency", "[mathkit]") {

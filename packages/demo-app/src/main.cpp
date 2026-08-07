@@ -1,5 +1,5 @@
-#include <enginelib/engine.hpp>
 #include <fmt/format.h>
+#include <enginelib/engine.hpp>
 
 int main() {
   enginelib::Engine engine;

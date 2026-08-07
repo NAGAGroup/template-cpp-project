@@ -51,6 +51,30 @@ cwd = "packages/enginelib"
 depends-on = ["test-mathkit", "test-enginelib"]
 description = "Run every package's default test env"
 
+# ---- Style / docs environment ---------------------------------------------
+# Zero-system-tooling: formatters, docs generators — and even git for file
+# discovery — come from the env, never the system.
+[feature.style.dependencies]
+clang-format = "*"
+doxygen = "*"
+git = "*"
+
+[feature.style.tasks.format]
+cmd = "git ls-files '*.cpp' '*.hpp' | xargs clang-format -i"
+description = "Format all C++ sources in-place"
+
+[feature.style.tasks.format-check]
+cmd = "git ls-files '*.cpp' '*.hpp' | xargs clang-format --dry-run --Werror"
+description = "Fail if any file is unformatted (CI)"
+
+[feature.style.tasks.docs]
+cmd = "doxygen Doxyfile"
+description = "Generate API docs into docs/api/"
+
+[environments.style]
+features = ["style"]
+no-default-feature = true
+
 # demo-app is an internal-only (package-only) project, so its dev env
 # lives here at the root rather than in its own workspace.
 [feature.dev-demo-app.dev]

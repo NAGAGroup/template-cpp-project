@@ -35,6 +35,14 @@ if(ENGINELIB_TESTS_COVERAGE)
   add_link_options(-fprofile-instr-generate)
 endif()
 
+option(ENGINELIB_TESTS_DEV_MODE "Enable developer warnings (dev presets)" OFF)
+if(ENGINELIB_TESTS_DEV_MODE)
+  add_compile_options(
+    "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
+    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall;-Wextra;-Wpedantic>")
+  set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+endif()
+
 # ---- Dependencies ----------------------------------------------------------
 find_package(enginelib CONFIG REQUIRED)
 find_package(Catch2 3 CONFIG REQUIRED)

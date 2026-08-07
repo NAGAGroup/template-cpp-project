@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 4.2)
 project(mathkit-tests LANGUAGES CXX)
 
 # Tests are a CONSUMER PROJECT: they find_package() the installed mathkit.
+option(MATHKIT_TESTS_DEV_MODE "Enable developer warnings (dev presets)" OFF)
+if(MATHKIT_TESTS_DEV_MODE)
+  add_compile_options(
+    "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
+    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall;-Wextra;-Wpedantic>")
+  set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+endif()
+
 find_package(mathkit CONFIG REQUIRED)
 find_package(Catch2 3 CONFIG REQUIRED)
 
