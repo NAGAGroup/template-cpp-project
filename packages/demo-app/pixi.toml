@@ -1,7 +1,6 @@
-# demo-app: application, internal-only. This is a PACKAGE-ONLY manifest
-# (no [workspace]) — the workspace context comes from whoever consumes it
-# (the repo root workspace). Its dev env lives at the repo root
-# (dev-demo-app) for the same reason.
+# demo-app: application, internal-only package-only manifest. Lives in
+# the root workspace's `app` environment (its portable-enginelib run-dep
+# cannot share an env with the microarch-optimized enginelib builds).
 [package]
 name = "demo-app"
 version = "0.1.0"
@@ -14,17 +13,12 @@ backend = { name = "pixi-build-cmake", version = "*" }
 extra-args = ["--preset=default"]
 
 [package.host-dependencies]
-enginelib = { path = "../enginelib" }
+enginelib = { workspace = true }
 # Wrapper source dep (pixi-build-cmake; see external/fmt). fmt IS on
-# conda-forge — wrapped for teaching. Note: a source dep named `fmt`
-# overrides the channel binary for every resolver in this workspace
-# (spdlog's fmt requirement resolves against our wrapper build).
-fmt = { path = "../../external/fmt" }
+# conda-forge — wrapped for teaching. A source dep named `fmt` overrides
+# the channel binary for every resolver in this workspace.
+fmt = { workspace = true }
 
-# The app links enginelib as a shared library, so it needs it (and,
-# transitively, mathkit) at run time too.
-[package.run-dependencies]
-enginelib = { path = "../enginelib" }
-# fmt is linked as a shared library -> needed at run time (manual run-dep
-# until pixi's run-exports path bug is fixed).
-fmt = { path = "../../external/fmt" }
+# No manual run-deps needed: enginelib and fmt weak-export themselves,
+# so host-depending on them delivers them (and mathkit transitively) at
+# run time — THE RUN-DEPENDENCIES RULE, modern form.

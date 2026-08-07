@@ -28,10 +28,10 @@ the support envelope.
 
 Related opt-ins with the same flavor:
 
-- The `v3`/`v4` microarch subpackages assume modern CPUs; the default
-  packages stay portable (x86-64 baseline) so nothing breaks out of the
-  box. (We'd have liked the default env pinned to v3 on linux; current
-  pixi + conda-forge mechanics made portable-by-default the honest
-  choice — see [build-variants.md](build-variants.md).)
+- The default env is **machine-adaptive**: linux machines whose CPU
+  satisfies x86-64-v3 automatically get the v3-optimized enginelib
+  (platform-order selection); older CPUs and Windows get the portable
+  build. Nothing breaks out of the box, and modern machines get modern
+  codegen — see [variants.md](variants.md).
 - fmt/stb wrapper pins track recent upstream; bump or freeze per your
   needs ([versioning.md](versioning.md)).

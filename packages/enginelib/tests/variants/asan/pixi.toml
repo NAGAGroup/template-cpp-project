@@ -13,8 +13,6 @@ path = "../.."
 extra-args = ["--preset=asan"]
 
 [package.host-dependencies]
-enginelib-asan = { path = "../../../variants/asan" }
-catch2 = ">=3.5,<4"
+enginelib-asan = { workspace = true }
+catch2 = { workspace = true }
 
-[package.run-dependencies]
-enginelib-asan = { path = "../../../variants/asan" }

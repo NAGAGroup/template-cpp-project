@@ -19,8 +19,6 @@ clangxx_linux-64 = "*"
 compiler-rt = "*"
 
 [package.host-dependencies]
-enginelib-coverage = { path = "../../../variants/coverage" }
-catch2 = ">=3.5,<4"
+enginelib-coverage = { workspace = true }
+catch2 = { workspace = true }
 
-[package.run-dependencies]
-enginelib-coverage = { path = "../../../variants/coverage" }

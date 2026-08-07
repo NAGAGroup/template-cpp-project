@@ -1,7 +1,5 @@
 # enginelib-relwithdebinfo: preset-variant subpackage (package-only manifest; version
-# kept in sync with the root package — see docs/versioning.md).
-# External consumers:
-#   enginelib-relwithdebinfo = { git = "<this repo>", tag = "enginelib-v0.1.0", subdirectory = "packages/enginelib/variants/relwithdebinfo" }
+# kept in sync with the default package — see docs/versioning.md).
 [package]
 name = "enginelib-relwithdebinfo"
 version = "0.1.0"
@@ -16,10 +14,13 @@ path = "../.."
 extra-args = ["--preset=relwithdebinfo"]
 
 [package.host-dependencies]
-mathkit = { path = "../../../mathkit" }
+mathkit = { workspace = true }
 spdlog = "*"
-stb = { path = "../../../../external/stb" }
+stb = { workspace = true }
 
 [package.run-dependencies]
-mathkit = { path = "../../../mathkit" }
-stb = { path = "../../../../external/stb" }
+mathkit = { workspace = true }
+stb = { workspace = true }
+
+[package.run-exports.weak]
+enginelib-relwithdebinfo = "0.1.*"

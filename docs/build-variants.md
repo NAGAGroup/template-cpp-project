@@ -32,15 +32,24 @@ Three practical consequences (all verified against pixi 0.76):
    dependencies declared in the plain `[package.*-dependencies]` tables —
    entries under `if(...)` conditions or `target.*` tables don't
    participate.
-2. **Non-dependency keys have no env-side selector.** `cxx_compiler` (and
-   custom keys like a stdlib switch) can't be picked per env; multi-value
-   entries resolve arbitrarily. Use them as single-value **global
-   overrides** instead — this workspace restates the Windows default
-   explicitly as the live demo:
+2. **Non-dependency keys select via CUSTOM PLATFORMS.** `cxx_compiler`
+   (and other non-dep keys) can't be picked per env through pins — but a
+   custom platform can scope a SINGLE-VALUE variant override, and an env
+   bound to that platform gets it deterministically. Live demo — the
+   `clang` env delivers a genuinely clang-built enginelib:
    ```toml
-   [workspace.target.win-64.build-variants]
-   cxx_compiler = ["vs2022"]     # swap to change the toolchain workspace-wide
+   platforms = [{ name = "linux-64-clang", platform = "linux-64" }, ...]
+
+   [workspace.target.linux-64-clang.build-variants]
+   cxx_compiler = ["clangxx"]        # conda-forge C++ clang metapackage
+
+   [environments.clang]
+   platforms = ["linux-64-clang"]
    ```
+   (The Windows default restated in `[workspace.target.win-64.build-variants]`
+   is the same mechanism as a plain global override.) Beware metapackage
+   naming: `clangxx`, not `clang` — a wrong name can silently fall back
+   to the system compiler.
 3. **The consuming workspace owns the matrix.** Variant config is NOT
    inherited from a dependency's own workspace — the repo root mirrors
    enginelib's spdlog axis for exactly this reason.
@@ -48,13 +57,15 @@ Three practical consequences (all verified against pixi 0.76):
 ## What we learned (microarch case study) {#what-we-learned}
 
 The obvious design — `x86_64-microarch-level = ["1","3","4"]` as a
-variant axis — fails twice: the conda-forge microarch metapackages are
-unix-only noarch (can't sit in plain tables of a win-supporting package,
-see #1), and their `>=level` run-export semantics are *correctly*
-non-conflicting (a v1 build genuinely runs on a v3 machine), so env
-selection can't work (see the conflict rule). Hence
-`variants/v{1,3,4}`: explicit per-level subpackages with pinned levels —
-deterministic, `__archspec`-protected, and honest.
+variant axis — fails: the conda-forge microarch metapackages are
+unix-only noarch, their `>=level` run-export semantics are *correctly*
+non-conflicting (a v1 build genuinely runs on a v3 machine), and run
+dependencies are not variant-substituted
+([pixi#4303](https://github.com/prefix-dev/pixi/issues/4303)) — so
+pin-based env selection can't engage. Hence `variants/v{1,3,4}`:
+explicit per-level subpackages with pinned levels — deterministic,
+`__archspec`-protected, and honest. (Custom-platform-scoped single-value
+variants would be the alternative expression once #4303 lands.)
 
 When choosing where a new axis lives: if consumers must knowingly choose
 it (ABI, sanitizers) → preset-variant subpackage; if it's a

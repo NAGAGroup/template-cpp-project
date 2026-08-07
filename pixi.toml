@@ -1,87 +1,341 @@
-# Root workspace: ecosystem-level environments and tasks ONLY.
-# It deliberately carries no [package] — each member project under
-# packages/ owns its packages (and, for standalone members, its own
-# workspace with dev/test envs). See docs/variants.md.
+# THE workspace manifest — the ONLY [workspace] in this repository.
+#
+# Monorepo doctrine: one workspace owns every environment, task, and the
+# build-variant matrix; member projects are PACKAGE-ONLY manifests. A
+# monorepo should only contain projects that share a variant matrix —
+# anything needing its own workspace belongs in its own repository.
 [workspace]
 channels = ["conda-forge"]
 name = "template-cpp-project"
-platforms = ["linux-64", "win-64"]
+# Named rich platform entries raise virtual-package floors (__archspec).
+# ORDER IS SELECTION PRIORITY: the v3-floored entry comes first, so linux
+# machines whose CPU satisfies x86-64-v3 automatically get the optimized
+# enginelib build (see the default-env target tables below); older CPUs
+# fall back to linux-64-portable and Windows to win-64. The v4 entry
+# exists for the explicit v4 selector env only.
+platforms = [
+  { name = "linux-64-v3", platform = "linux-64", archspec = "x86_64_v3" },
+  { name = "linux-64-portable", platform = "linux-64" },
+  "win-64",
+  { name = "linux-64-v4", platform = "linux-64", archspec = "x86_64_v4" },
+  # Custom platform carrying a COMPILER variant override: environments
+  # bound to this platform get packages built with clang instead of the
+  # default gcc — deterministic env-side toolchain selection via platform
+  # binding (no run-dep conflicts needed).
+  { name = "linux-64-clang", platform = "linux-64" },
+]
 preview = ["pixi-build"]
 # Fail fast on pixi versions older than the features this workspace uses.
 requires-pixi = ">=0.76.1"
 
-# Build-variant matrices belong to the CONSUMING workspace — they are not
-# inherited from a source dep's own workspace. Mirror the axes of member
-# packages here so root envs resolve the same variant builds.
+# ---- Dependency pool -------------------------------------------------------
+# Single source of truth for every sibling path and shared spec. Package
+# manifests opt in per entry with { workspace = true }; relative paths are
+# re-anchored automatically for each consuming member.
+[workspace.dependencies]
+mathkit = { path = "packages/mathkit" }
+enginelib = { path = "packages/enginelib" }
+enginelib-static = { path = "packages/enginelib/variants/static" }
+enginelib-relwithdebinfo = { path = "packages/enginelib/variants/relwithdebinfo" }
+enginelib-asan = { path = "packages/enginelib/variants/asan" }
+enginelib-tsan = { path = "packages/enginelib/variants/tsan" }
+enginelib-coverage = { path = "packages/enginelib/variants/coverage" }
+enginelib-v1 = { path = "packages/enginelib/variants/v1" }
+enginelib-v3 = { path = "packages/enginelib/variants/v3" }
+enginelib-v4 = { path = "packages/enginelib/variants/v4" }
+enginelib-tests = { path = "packages/enginelib/tests" }
+enginelib-tests-static = { path = "packages/enginelib/tests/variants/static" }
+enginelib-tests-asan = { path = "packages/enginelib/tests/variants/asan" }
+enginelib-tests-tsan = { path = "packages/enginelib/tests/variants/tsan" }
+enginelib-tests-coverage = { path = "packages/enginelib/tests/variants/coverage" }
+mathkit-tests = { path = "packages/mathkit/tests" }
+demo-app = { path = "packages/demo-app" }
+fmt = { path = "external/fmt" }
+stb = { path = "external/stb" }
+catch2 = ">=3.5,<4"
+spdlog = "1.15.*"
+
+# ---- Build-variant matrix --------------------------------------------------
+# Environments select a variant by PINNING the dep; selection works through
+# run-dep conflicts (a 1.14-built enginelib carries spdlog's <1.15
+# run-export, conflicting with a 1.15 pin). Microarch levels are NOT a
+# variant axis: their >=level run-export semantics never conflict (and
+# run-deps aren't variant-substituted — pixi#4303), so they live as
+# explicit per-level subpackages under variants/v{1,3,4}.
 [workspace.build-variants]
 spdlog = ["1.14.*", "1.15.*"]
 
-# The implicit default environment IS the consumer environment: it
-# self-consumes every member package (never declare [environments.default]
-# explicitly). The microarch/spdlog pins select enginelib's build-variants
-# (see packages/enginelib/pixi.toml); OPINIONATED default = x86-64-v3.
-[dependencies]
-mathkit = { path = "packages/mathkit" }
-enginelib = { path = "packages/enginelib" }
-demo-app = { path = "packages/demo-app" }
-spdlog = "1.15.*"
+# Live demo of overriding the backend's default compiler variants: this
+# restates the Windows default (vs2022) explicitly; swap the value to
+# change the toolchain for every package build in this workspace.
+[workspace.target.win-64.build-variants]
+cxx_compiler = ["vs2022"]
 
-# Ecosystem-level demo of a preset-variant consumer: the static variant of
-# enginelib (cannot share an env with the default variant — same files).
-[feature.static.dependencies]
-enginelib-static = { path = "packages/enginelib/variants/static" }
-spdlog = "1.15.*"
+# Compiler axis via CUSTOM PLATFORM: single-valued override scoped to the
+# clang platform; the `clang` env below binds to it.
+[workspace.target.linux-64-clang.build-variants]
+cxx_compiler = ["clangxx"]
+
+# ---- Default environment: the adaptive LIBRARY consumer env ----------------
+# Machine-adaptive: capable linux machines get the v3-optimized enginelib,
+# everyone else the portable build (see the platforms comment). demo-app
+# lives in its own `app` env because its portable-enginelib run-dep cannot
+# coexist with enginelib-v3 in one environment.
+[dependencies]
+spdlog = { workspace = true }
+
+[target.linux-64-v3.dependencies]
+mathkit = { workspace = true }
+enginelib-v3 = { workspace = true }
+
+[target.linux-64-portable.dependencies]
+mathkit = { workspace = true }
+enginelib = { workspace = true }
+
+[target.win-64.dependencies]
+mathkit = { workspace = true }
+enginelib = { workspace = true }
+
+# ---- Consumer environments -------------------------------------------------
+[environments.app]
+no-default-feature = true
+dependencies = { demo-app = { workspace = true }, spdlog = { workspace = true } }
+# Defined on the env, so `pixi run demo` resolves here automatically.
+tasks = { demo = { cmd = "demo-app", description = "Run the demo application" } }
 
 [environments.static]
-features = ["static"]
 no-default-feature = true
+dependencies = { enginelib-static = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true } }
 
-[tasks]
-demo = { cmd = "demo-app", description = "Run the demo application from the consumer environment" }
+# Explicit microarch selector envs (linux-only lineage).
+[environments.v1]
+no-default-feature = true
+platforms = ["linux-64-portable"]
+dependencies = { enginelib-v1 = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true } }
 
-# Thin wrapper tasks so newcomers can drive the common flows from the repo
-# root; the real envs/tasks live in each package's own workspace.
-[tasks.test-mathkit]
-cmd = "pixi run -e test test"
+[environments.v3]
+no-default-feature = true
+platforms = ["linux-64-v3"]
+dependencies = { enginelib-v3 = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true } }
+
+[environments.v4]
+no-default-feature = true
+platforms = ["linux-64-v4"]
+dependencies = { enginelib-v4 = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true } }
+
+# Leaf env for the pixi-pack demo (pixi-pack cannot yet handle envs whose
+# source packages have source run-deps — see docs/consuming.md).
+[environments.header-only]
+no-default-feature = true
+dependencies = { mathkit = { workspace = true } }
+
+# Compiler selector env: bound to the clang custom platform.
+[environments.clang]
+no-default-feature = true
+platforms = ["linux-64-clang"]
+dependencies = { enginelib = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true } }
+
+# spdlog build-variant selector env (the 1.14 branch of the matrix).
+[environments.spdlog14]
+no-default-feature = true
+dependencies = { enginelib = { workspace = true }, mathkit = { workspace = true }, spdlog = "1.14.*" }
+
+# ---- Test environments -----------------------------------------------------
+# Tests are CONSUMER PROJECTS; each env consumes the tests package built
+# against the matching lib variant. The shared `testing` feature carries
+# the runner task; env-specific content is inline.
+[feature.testing.tasks.test]
+cmd = "mathkit-tests && enginelib-tests"
+description = "Run the installed test binaries of this env"
+
+[environments.test]
+features = ["testing"]
+no-default-feature = true
+dependencies = { mathkit-tests = { workspace = true }, enginelib-tests = { workspace = true }, spdlog = { workspace = true } }
+
+[environments.test-static]
+features = ["testing"]
+no-default-feature = true
+dependencies = { mathkit-tests = { workspace = true }, enginelib-tests-static = { workspace = true }, spdlog = { workspace = true } }
+[environments.test-static.tasks.test]
+cmd = "mathkit-tests && enginelib-tests"
+
+[environments.test-asan]
+platforms = ["linux-64-v3", "linux-64-portable"]
+features = ["testing"]
+no-default-feature = true
+dependencies = { enginelib-tests-asan = { workspace = true }, spdlog = { workspace = true } }
+[environments.test-asan.tasks.test]
+cmd = "enginelib-tests"
+
+[environments.test-tsan]
+platforms = ["linux-64-v3", "linux-64-portable"]
+features = ["testing"]
+no-default-feature = true
+dependencies = { enginelib-tests-tsan = { workspace = true }, spdlog = { workspace = true } }
+[environments.test-tsan.tasks.test]
+cmd = "enginelib-tests"
+
+[environments.test-coverage]
+platforms = ["linux-64-v3", "linux-64-portable"]
+features = ["testing"]
+no-default-feature = true
+dependencies = { enginelib-tests-coverage = { workspace = true }, spdlog = { workspace = true }, llvm-tools = ">=20" }
+[environments.test-coverage.tasks.test]
+cmd = "enginelib-tests"
+[environments.test-coverage.tasks.coverage]
+cmd = """
+LLVM_PROFILE_FILE=enginelib-tests.profraw enginelib-tests \
+&& llvm-profdata merge -sparse enginelib-tests.profraw -o enginelib-tests.profdata \
+&& llvm-cov report $(which enginelib-tests) -object "$CONDA_PREFIX/lib/libenginelib.so" -instr-profile=enginelib-tests.profdata \
+&& llvm-cov export $(which enginelib-tests) -object "$CONDA_PREFIX/lib/libenginelib.so" -instr-profile=enginelib-tests.profdata -format=lcov > coverage.info \
+&& echo 'lcov report written to coverage.info'"""
+description = "Run instrumented tests and produce llvm-cov + lcov reports"
+
+# Min-version compatibility check: same deps, solved to the LOWEST
+# direct versions (library best practice).
+[environments.test-lowest]
+features = ["testing"]
+no-default-feature = true
+solve-strategy = "lowest-direct"
+dependencies = { mathkit-tests = { workspace = true }, enginelib-tests = { workspace = true }, spdlog = { workspace = true } }
+[environments.test-lowest.tasks.test]
+cmd = "mathkit-tests && enginelib-tests"
+
+# ---- Dev environments (strictly per-package) -------------------------------
+# A package's dev env = its dependency closure WITHOUT building it, plus
+# dev-only tools. Per-package because a combined env would BUILD sibling
+# packages. Day-to-day work is plain CMake presets inside the env; tasks
+# carry the package cwd.
+[feature.dev-mathkit.dev]
+mathkit = { path = "packages/mathkit" }
+
+[feature.dev-mathkit.dependencies]
+catch2 = { workspace = true }
+clang-tools = "*"
+clang = "*"
+
+[feature.dev-mathkit.tasks.configure]
+cmd = "cmake --preset dev && {% if pixi.is_win %}cmake -E copy_if_different build/dev/compile_commands.json compile_commands.json{% else %}ln -sf build/dev/compile_commands.json compile_commands.json{% endif %}"
 cwd = "packages/mathkit"
+description = "Configure mathkit's in-tree dev build"
 
-[tasks.test-enginelib]
-cmd = "pixi run -e test test"
-cwd = "packages/enginelib"
+[feature.dev-mathkit.tasks.dev-test]
+cmd = """
+cmake --preset dev \
+&& cmake --build build/dev \
+&& cmake --install build/dev --prefix "$CONDA_PREFIX" \
+&& cd tests \
+&& cmake --preset dev \
+&& cmake --build build/dev \
+&& ctest --test-dir build/dev --output-on-failure"""
+cwd = "packages/mathkit"
+description = "Dev loop: cmake-install mathkit into the dev env, then build+run tests against it"
 
-[tasks.test-all]
-depends-on = ["test-mathkit", "test-enginelib"]
-description = "Run every package's default test env"
+[feature.dev-mathkit.tasks.lint]
+cmd = "cd tests && cmake --preset dev && run-clang-tidy -quiet -p build/dev"
+cwd = "packages/mathkit"
+description = "clang-tidy over mathkit's tests tree (header-only: headers lint through consumers)"
 
-# ---- Style / docs environment ---------------------------------------------
-# Zero-system-tooling: formatters, docs generators — and even git for file
-# discovery — come from the env, never the system.
-[feature.style.dependencies]
-clang-format = "*"
-doxygen = "*"
-git = "*"
-
-[feature.style.tasks.format]
-cmd = "git ls-files '*.cpp' '*.hpp' | xargs clang-format -i"
-description = "Format all C++ sources in-place"
-
-[feature.style.tasks.format-check]
-cmd = "git ls-files '*.cpp' '*.hpp' | xargs clang-format --dry-run --Werror"
-description = "Fail if any file is unformatted (CI)"
-
-[feature.style.tasks.docs]
-cmd = "doxygen Doxyfile"
-description = "Generate API docs into docs/api/"
-
-[environments.style]
-features = ["style"]
+[environments.dev-mathkit]
+features = ["dev-mathkit"]
 no-default-feature = true
 
-# demo-app is an internal-only (package-only) project, so its dev env
-# lives here at the root rather than in its own workspace.
+[feature.dev-enginelib.dev]
+enginelib = { path = "packages/enginelib" }
+
+[feature.dev-enginelib.dependencies]
+catch2 = { workspace = true }
+# Pin the variant-expanded dep to the default lineage: an unpinned
+# variant dep in a dev closure makes --locked verification unstable.
+spdlog = { workspace = true }
+clang-tools = "*"
+clang = "*"
+
+[feature.dev-enginelib.tasks.configure]
+cmd = "cmake --preset dev && {% if pixi.is_win %}cmake -E copy_if_different build/dev/compile_commands.json compile_commands.json{% else %}ln -sf build/dev/compile_commands.json compile_commands.json{% endif %}"
+cwd = "packages/enginelib"
+description = "Configure enginelib's in-tree dev build"
+
+[feature.dev-enginelib.tasks.build]
+cmd = "cmake --build build/dev"
+cwd = "packages/enginelib"
+depends-on = ["configure"]
+description = "Build enginelib's in-tree dev tree"
+
+[feature.dev-enginelib.tasks.dev-test]
+cmd = """
+cmake --preset dev \
+&& cmake --build build/dev \
+&& cmake --install build/dev --prefix "$CONDA_PREFIX" \
+&& cd tests \
+&& cmake --preset dev \
+&& cmake --build build/dev \
+&& ctest --test-dir build/dev --output-on-failure"""
+cwd = "packages/enginelib"
+description = "Dev loop: cmake-install enginelib into the dev env, then build+run tests against it"
+
+[feature.dev-enginelib.tasks.lint]
+cmd = "run-clang-tidy -quiet -p build/dev"
+cwd = "packages/enginelib"
+depends-on = ["configure"]
+description = "clang-tidy static analysis over enginelib's dev build"
+
+[environments.dev-enginelib]
+features = ["dev-enginelib"]
+no-default-feature = true
+
 [feature.dev-demo-app.dev]
 demo-app = { path = "packages/demo-app" }
+
+[feature.dev-demo-app.dependencies]
+clang-tools = "*"
+clang = "*"
+
+[feature.dev-demo-app.tasks.configure]
+cmd = "cmake --preset dev && {% if pixi.is_win %}cmake -E copy_if_different build/dev/compile_commands.json compile_commands.json{% else %}ln -sf build/dev/compile_commands.json compile_commands.json{% endif %}"
+cwd = "packages/demo-app"
+description = "Configure demo-app's in-tree dev build"
 
 [environments.dev-demo-app]
 features = ["dev-demo-app"]
 no-default-feature = true
+
+# ---- Style / docs environment ----------------------------------------------
+# Zero-system-tooling: formatters, docs generators — and even git for file
+# discovery — come from the env, never the system.
+[environments.style]
+no-default-feature = true
+dependencies = { clang-format = "*", doxygen = "*", git = "*" }
+[environments.style.tasks.format]
+cmd = "git ls-files '*.cpp' '*.hpp' | xargs clang-format -i"
+description = "Format all C++ sources in-place"
+[environments.style.tasks.format-check]
+cmd = "git ls-files '*.cpp' '*.hpp' | xargs clang-format --dry-run --Werror"
+description = "Fail if any file is unformatted (CI)"
+[environments.style.tasks.docs]
+cmd = "doxygen Doxyfile"
+description = "Generate API docs into docs/api/"
+
+# ---- Workspace-level tasks --------------------------------------------------
+[tasks.publish-local]
+cmd = "pixi publish --to {{ channel }}"
+args = [{ arg = "channel", default = "./local-channel" }]
+description = "Build + publish every opted-in package (both variant builds) into an indexed local channel"
+
+# Fan out across the test envs; each dependency is pinned to ITS env.
+[tasks.test-all]
+depends-on = [
+  { task = "test", environment = "test" },
+  { task = "test", environment = "test-static" },
+]
+description = "Run all cross-platform test envs"
+
+[target."linux-64-*".tasks.test-all]
+depends-on = [
+  { task = "test", environment = "test" },
+  { task = "test", environment = "test-static" },
+  { task = "test", environment = "test-asan" },
+  { task = "test", environment = "test-tsan" },
+]
+description = "Run all test envs (incl. sanitizers)"

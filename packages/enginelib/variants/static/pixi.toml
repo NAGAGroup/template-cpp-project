@@ -1,7 +1,5 @@
 # enginelib-static: preset-variant subpackage (package-only manifest; version
-# kept in sync with the root package — see docs/versioning.md).
-# External consumers:
-#   enginelib-static = { git = "<this repo>", tag = "enginelib-v0.1.0", subdirectory = "packages/enginelib/variants/static" }
+# kept in sync with the default package — see docs/versioning.md).
 [package]
 name = "enginelib-static"
 version = "0.1.0"
@@ -16,10 +14,13 @@ path = "../.."
 extra-args = ["--preset=static"]
 
 [package.host-dependencies]
-mathkit = { path = "../../../mathkit" }
+mathkit = { workspace = true }
 spdlog = "*"
-stb = { path = "../../../../external/stb" }
+stb = { workspace = true }
 
 [package.run-dependencies]
-mathkit = { path = "../../../mathkit" }
-stb = { path = "../../../../external/stb" }
+mathkit = { workspace = true }
+stb = { workspace = true }
+
+[package.run-exports.weak]
+enginelib-static = "0.1.*"

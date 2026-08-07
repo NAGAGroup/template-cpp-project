@@ -21,10 +21,13 @@ clangxx_linux-64 = "*"
 compiler-rt = "*"
 
 [package.host-dependencies]
-mathkit = { path = "../../../mathkit" }
+mathkit = { workspace = true }
 spdlog = "*"
-stb = { path = "../../../../external/stb" }
+stb = { workspace = true }
 
 [package.run-dependencies]
-mathkit = { path = "../../../mathkit" }
-stb = { path = "../../../../external/stb" }
+mathkit = { workspace = true }
+stb = { workspace = true }
+
+[package.run-exports.weak]
+enginelib-coverage = "0.1.*"

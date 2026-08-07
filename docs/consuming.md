@@ -38,22 +38,29 @@ pixi exec pixi-pack --create-executable --environment default --platform linux-6
 cmake -B build -DCMAKE_PREFIX_PATH=$PWD/env
 ```
 
-> **Current limitation:** pixi-pack routes source packages through
-> `pixi publish`, which requires a self-contained publish set — and its
-> discovery skips nested workspaces. In this repo that means packs work
-> for *leaf* packages (mathkit, the wrappers) but not yet for packages
-> with cross-member source run-deps (enginelib, demo-app). Upstream
-> issue pending; the doctrine is unaffected.
+> **Current limitation:** pixi-pack publishes source packages one at a
+> time (`--path` semantics), which forbids source run-deps — so packs
+> work for leaf envs (see the `header-only` env) but not yet for envs
+> with cross-package chains. Workspace-level `pixi publish` handles the
+> full chain fine: `pixi run publish-local` builds every opted-in
+> package (all variant builds included) into an indexed local channel
+> that any conda tool can consume. Upstream issue pending for the pack
+> path.
 
 ## Run-dependency doctrine (for your own packages)
 
 If your package exposes a dependency publicly — its headers appear in
-yours, or your static lib needs it at link time — consumers need it too:
-repeat it in `[package.run-dependencies]` (see enginelib's manifest,
-"THE RUN-DEPENDENCIES RULE"). Binary conda-forge deps usually handle
-this themselves via run-exports (spdlog does). Pixi source packages can
-in principle self-export via `[package.run-exports]`; a path-resolution
-bug currently prevents it (see AGENTS.md) — re-check on pixi upgrades.
+yours, or your static lib needs it at link time — consumers need it too.
+The modern form: the dependency **weak-exports itself**
+(`[package.run-exports.weak] mathkit = "0.1.*"`), so host-depending on
+it is all a consumer writes (mathkit and enginelib both do this; binary
+conda-forge deps like spdlog do it out of the box). Version-spec the
+self-export — unversioned self-exports publish without a constraint.
+Manual `[package.run-dependencies]` remain for cases run-exports can't
+express (enginelib's stb: a private header-only dep that static
+consumers still link through the export set). CAUTION: run-exports (and
+any name-based source reference) break if member manifests carry their
+own [workspace] — keep the single-workspace layout.
 
 ## Support policy
 

@@ -13,8 +13,6 @@ path = "../.."
 extra-args = ["--preset=default"]
 
 [package.host-dependencies]
-enginelib-static = { path = "../../../variants/static" }
-catch2 = ">=3.5,<4"
+enginelib-static = { workspace = true }
+catch2 = { workspace = true }
 
-[package.run-dependencies]
-enginelib-static = { path = "../../../variants/static" }

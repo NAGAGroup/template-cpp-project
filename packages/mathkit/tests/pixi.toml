@@ -1,5 +1,5 @@
 # mathkit-tests: consumer project for mathkit. Package-only manifest,
-# internal-only (consumed by mathkit's test env).
+# internal-only (consumed by the root test envs).
 [package]
 name = "mathkit-tests"
 version = "0.1.0"
@@ -11,5 +11,5 @@ backend = { name = "pixi-build-cmake", version = "*" }
 extra-args = ["--preset=default"]
 
 [package.host-dependencies]
-mathkit = { path = ".." }
-catch2 = ">=3.5,<4"
+mathkit = { workspace = true }
+catch2 = { workspace = true }

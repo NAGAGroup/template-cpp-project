@@ -5,17 +5,16 @@ presets — pixi provides the environment, CMake does the building, no
 packages are built in the loop.
 
 ```sh
-cd packages/enginelib
-pixi run -e dev configure      # cmake --preset dev (+ compile_commands symlink)
-pixi run -e dev build
-pixi run -e dev dev-test       # see below
-pixi run -e dev lint           # run-clang-tidy over the dev build
-pixi run -e dev cmake --preset dev-asan   # any variant, ad hoc
-pixi shell -e dev              # or just live in the env
+# everything from the repo root — tasks carry the package cwd
+pixi run -e dev-enginelib configure   # cmake --preset dev (+ compile_commands link)
+pixi run -e dev-enginelib build
+pixi run -e dev-enginelib dev-test    # see below
+pixi run -e dev-enginelib lint        # run-clang-tidy over the dev build
+pixi shell -e dev-enginelib           # or live in the env (cd packages/enginelib)
 ```
 
 The dev env is the package's **dependency closure without building the
-package** (`[feature.dev.dev]` + `no-default-feature = true`): the same
+package** (`[feature.dev-<pkg>.dev]` + `no-default-feature = true`): the same
 compilers, cmake, ninja and dependency headers/configs the hermetic
 package build uses (`ls .pixi/envs/dev/include/`), plus dev-only tools
 (Catch2, clang-tools) from feature deps. Dev envs are strictly

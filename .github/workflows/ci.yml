@@ -7,8 +7,12 @@ on:
 
 # The entire CI is pixi-first: every job provisions its toolchain and
 # tasks through pixi environments — no system compilers, no setup-cpp,
-# no vcpkg/Conan. Jobs cd into member workspaces because envs live with
-# the workspace that owns them.
+# no vcpkg/Conan. One workspace at the repo root owns everything.
+#
+# frozen: install exactly what pixi.lock records. (pixi's --locked
+# satisfiability check re-solves source-package workspaces and is
+# currently unreliable across hosts/clones — upstream bug with repro:
+# CONDA_OVERRIDE_CUDA= pixi install --locked.)
 jobs:
   consume:
     name: consume (${{ matrix.os }})
@@ -22,8 +26,12 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-      - name: Build every member package and run the demo
-        run: pixi run demo
+          frozen: true
+          environments: app
+      - name: Build the app chain (incl. both wrappers) and run the demo
+        run: pixi run --frozen demo
+      - name: Adaptive default env (library consumers)
+        run: pixi install --frozen
 
   test:
     name: test (${{ matrix.os }})
@@ -31,45 +39,33 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            envs: test test-static test-asan test-tsan
+          - os: windows-latest
+            envs: test test-static
     steps:
       - uses: actions/checkout@v4
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          manifest-path: packages/mathkit/pixi.toml
-      - name: mathkit tests
-        working-directory: packages/mathkit
-        run: pixi run -e test test
-      - name: enginelib tests (default variant)
-        working-directory: packages/enginelib
-        run: pixi run -e test test
-      - name: enginelib tests (static variant)
-        working-directory: packages/enginelib
-        run: pixi run -e test-static test
+          frozen: true
+          environments: ${{ matrix.envs }}
+      - name: Run every test env for this platform
+        run: pixi run --frozen test-all
 
-  sanitize:
-    name: sanitize (linux)
+  test-lowest:
+    name: min-version compatibility (linux)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          working-directory: packages/enginelib
-          # frozen (install exactly the lock) instead of locked: pixi's
-          # --locked satisfiability check of dev-package closures with
-          # variant-expanded deps is influenced by HOST virtual packages
-          # (repro: CONDA_OVERRIDE_CUDA= pixi install --locked) — upstream
-          # bug; the lock itself is still what gets installed.
           frozen: true
-          environments: test-asan test-tsan
-      - name: ASan + UBSan
-        working-directory: packages/enginelib
-        run: pixi run -e test-asan test
-      - name: TSan
-        working-directory: packages/enginelib
-        run: pixi run -e test-tsan test
+          environments: test-lowest
+      - name: Tests against lowest direct dependency versions
+        run: pixi run --frozen -e test-lowest test
 
   coverage:
     name: coverage (linux, llvm-cov)
@@ -79,44 +75,30 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          working-directory: packages/enginelib
-          # frozen (install exactly the lock) instead of locked: pixi's
-          # --locked satisfiability check of dev-package closures with
-          # variant-expanded deps is influenced by HOST virtual packages
-          # (repro: CONDA_OVERRIDE_CUDA= pixi install --locked) — upstream
-          # bug; the lock itself is still what gets installed.
           frozen: true
           environments: test-coverage
       - name: Instrumented tests + report
-        working-directory: packages/enginelib
-        run: pixi run -e test-coverage coverage
+        run: pixi run --frozen -e test-coverage coverage
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-lcov
-          path: packages/enginelib/coverage.info
+          path: coverage.info
 
   variants:
-    name: build-variants (linux)
+    # Selector envs: microarch subpackages (v4 skipped — runners lack
+    # AVX-512, __archspec would refuse), the clang custom-platform
+    # compiler axis, and the spdlog build-variant matrix.
+    name: variants (linux)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          working-directory: packages/enginelib
-          # frozen (install exactly the lock) instead of locked: pixi's
-          # --locked satisfiability check of dev-package closures with
-          # variant-expanded deps is influenced by HOST virtual packages
-          # (repro: CONDA_OVERRIDE_CUDA= pixi install --locked) — upstream
-          # bug; the lock itself is still what gets installed.
           frozen: true
-          environments: v1 v3 spdlog14
-      - name: microarch v1 + v3 (v4 skipped — runners lack AVX-512, __archspec would refuse)
-        working-directory: packages/enginelib
-        run: pixi install -e v1 && pixi install -e v3
-      - name: spdlog 1.14 matrix env
-        working-directory: packages/enginelib
-        run: pixi install -e spdlog14
+          environments: v1 v3 clang spdlog14
+      - name: Publish-set validation (dependency-ordered, self-contained)
+        run: pixi publish --dry-run --to ./local-channel
 
   style:
     name: style + docs + lint (linux)
@@ -126,21 +108,21 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
+          frozen: true
+          environments: style dev-enginelib
       - name: clang-format check
-        run: pixi run -e style format-check
+        run: pixi run --frozen -e style format-check
       - name: Doxygen
-        run: pixi run -e style docs
+        run: pixi run --frozen -e style docs
       - name: clang-tidy (enginelib)
-        working-directory: packages/enginelib
-        run: pixi run -e dev lint
+        run: pixi run --frozen -e dev-enginelib lint
 
   pack:
-    # The non-pixi consumption path. NOTE: pixi-pack (via pixi publish)
-    # requires a self-contained publish set, and the publish walker skips
-    # nested workspaces — so packs currently work for LEAF packages only
-    # (no cross-member source run-deps). mathkit demonstrates the flow;
-    # see docs/consuming.md for the upstream limitation affecting
-    # app-level packs.
+    # The non-pixi consumption path. NOTE: pixi-pack publishes source
+    # packages per-package (--path semantics), which forbids source
+    # run-deps — so packing envs with cross-package chains awaits an
+    # upstream fix (workspace `pixi publish` handles the same set fine;
+    # see the publish-local task). mathkit demonstrates the pack flow.
     name: pixi-pack (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
@@ -152,14 +134,14 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          manifest-path: packages/mathkit/pixi.toml
-      - name: Pack mathkit's consumer environment
-        working-directory: packages/mathkit
-        run: pixi exec pixi-pack --create-executable --environment default --platform ${{ runner.os == 'Windows' && 'win-64' || 'linux-64' }} pixi.toml
+          frozen: true
+          environments: header-only
+      - name: Pack the header-only library environment
+        run: pixi exec pixi-pack --create-executable --environment header-only --platform ${{ runner.os == 'Windows' && 'win-64' || 'linux-64' }} pixi.toml
       - uses: actions/upload-artifact@v4
         with:
           name: packed-env-${{ matrix.os }}
           path: |
-            packages/mathkit/environment.sh
-            packages/mathkit/environment.ps1
+            environment.sh
+            environment.ps1
           if-no-files-found: warn

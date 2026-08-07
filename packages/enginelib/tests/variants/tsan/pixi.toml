@@ -13,8 +13,6 @@ path = "../.."
 extra-args = ["--preset=tsan"]
 
 [package.host-dependencies]
-enginelib-tsan = { path = "../../../variants/tsan" }
-catch2 = ">=3.5,<4"
+enginelib-tsan = { workspace = true }
+catch2 = { workspace = true }
 
-[package.run-dependencies]
-enginelib-tsan = { path = "../../../variants/tsan" }

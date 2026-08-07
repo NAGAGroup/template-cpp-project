@@ -26,3 +26,7 @@ tag = "11.2.0"
 
 [package.build.config]
 extra-args = ["-DFMT_TEST=OFF", "-DFMT_DOC=OFF"]
+
+# Weak self-export: consumers that host-depend on fmt get it at run time.
+[package.run-exports.weak]
+fmt = "11.2.*"

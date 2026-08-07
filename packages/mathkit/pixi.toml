@@ -1,19 +1,7 @@
-# mathkit: header-only library, standalone-consumable.
-# This root manifest is BOTH the workspace (dev/test envs, tasks) AND the
-# default package + version anchor. External consumers:
+# mathkit: header-only library. PACKAGE-ONLY manifest — the single
+# workspace at the repo root owns all environments, tasks, and the
+# variant matrix. External consumers:
 #   mathkit = { git = "<this repo>", tag = "mathkit-v0.1.0", subdirectory = "packages/mathkit" }
-[workspace]
-channels = ["conda-forge"]
-name = "mathkit"
-platforms = ["linux-64", "win-64"]
-preview = ["pixi-build"]
-# Fail fast on pixi versions older than the features this workspace uses.
-requires-pixi = ">=0.76.1"
-
-# Implicit default env = consumer env (self-consumes the package).
-[dependencies]
-mathkit = { path = "." }
-
 [package]
 name = "mathkit"
 version = "0.1.0"
@@ -29,61 +17,5 @@ extra-args = ["--preset=default"]
 # build cache.
 extra-input-globs = ["include/**/*.hpp"]
 
-# NOTE(run-exports): pixi >=0.74 supports [package.run-exports] so a
-# library can weak-export itself (consumers host-dep it and receive it as
-# a run dep automatically). As of pixi 0.76.1 a path-resolution bug makes
-# any run-exports table break sibling path deps when a member workspace is
-# used directly (upstream issue pending), so this template uses explicit
-# [package.run-dependencies] in consumers instead. See docs/consuming.md.
-
-# ---- Test environment ------------------------------------------------------
-# Tests are a CONSUMER PROJECT (tests/); the test env consumes the tests
-# package (mathkit arrives transitively as its host dep).
-[feature.test.dependencies]
-mathkit-tests = { path = "tests" }
-
-[environments.test]
-features = ["test"]
-no-default-feature = true
-
-[feature.test.tasks.test]
-cmd = "mathkit-tests"
-description = "Run the installed test binary (use with -e test)"
-
-# ---- Dev environment -------------------------------------------------------
-# The package's dependency closure WITHOUT building it, plus dev-only
-# tools (zero-system-tooling tenet: Catch2 for the dev test loop).
-[feature.dev.dev]
-mathkit = { path = "." }
-
-[feature.dev.dependencies]
-catch2 = ">=3.5,<4"
-clang-tools = "*"
-# clang-tools ships clang-tidy but not the clang builtin headers
-# (resource dir); the clang package provides them.
-clang = "*"
-
-[feature.dev.tasks.configure]
-# MiniJinja + the pixi.* context make tasks cross-platform (no symlinks on win).
-cmd = "cmake --preset dev && {% if pixi.is_win %}cmake -E copy_if_different build/dev/compile_commands.json compile_commands.json{% else %}ln -sf build/dev/compile_commands.json compile_commands.json{% endif %}"
-description = "Configure the in-tree dev build (and refresh the clangd compile_commands link)"
-
-[feature.dev.tasks.dev-test]
-cmd = """
-cmake --preset dev \
-&& cmake --build build/dev \
-&& cmake --install build/dev --prefix "$CONDA_PREFIX" \
-&& cd tests \
-&& cmake --preset dev \
-&& cmake --build build/dev \
-&& ctest --test-dir build/dev --output-on-failure"""
-description = "Dev-loop testing: cmake-install mathkit into the dev env, then build+run tests against it (no packages involved)"
-
-[feature.dev.tasks.lint]
-cmd = "cd tests && cmake --preset dev && run-clang-tidy -quiet -p build/dev"
-description = "clang-tidy over the tests tree (header-only lib: headers get linted through their consumers)"
-depends-on = ["dev-test"]
-
-[environments.dev]
-features = ["dev"]
-no-default-feature = true
+[package.run-exports.weak]
+mathkit = "0.1.*"

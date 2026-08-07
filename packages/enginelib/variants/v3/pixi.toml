@@ -1,14 +1,11 @@
 # enginelib-v3: x86-64-v3 microarchitecture performance variant
 # (linux-only: conda-forge's microarch metapackages are unix-only noarch).
 # The pinned metapackage sets -march via its activation script during the
-# isolated package build — never hand-edit CXXFLAGS. Its run-export
-# (_x86_64-microarch-level >=3) makes __archspec refuse installation on
-# older CPUs.
-#
-# NOTE: this is an explicit per-level subpackage rather than a
-# build-variant matrix because variant selection happens through run-dep
-# conflicts, and microarch's >=level run-export semantics (correctly)
-# never conflict — see docs/build-variants.md.
+# hermetic build — never hand-edit CXXFLAGS — and its run-export
+# (_x86_64-microarch-level >=3) makes __archspec refuse installation
+# on older CPUs. Explicit per-level subpackages because microarch
+# run-export semantics (correctly) never conflict and run-deps aren't
+# variant-substituted (pixi#4303) — see docs/build-variants.md.
 [package]
 name = "enginelib-v3"
 version = "0.1.0"
@@ -23,12 +20,15 @@ path = "../.."
 extra-args = ["--preset=default"]
 
 [package.host-dependencies]
-mathkit = { path = "../../../mathkit" }
+mathkit = { workspace = true }
 spdlog = "*"
-stb = { path = "../../../../external/stb" }
+stb = { workspace = true }
 x86_64-microarch-level = "3.*"
 
 [package.run-dependencies]
-mathkit = { path = "../../../mathkit" }
-stb = { path = "../../../../external/stb" }
+mathkit = { workspace = true }
+stb = { workspace = true }
 x86_64-microarch-level = "3.*"
+
+[package.run-exports.weak]
+enginelib-v3 = "0.1.*"
