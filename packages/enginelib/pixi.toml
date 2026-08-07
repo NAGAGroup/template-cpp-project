@@ -14,11 +14,15 @@
 channels = ["conda-forge"]
 name = "enginelib"
 # Named rich platform entries raise virtual-package floors (here:
-# __archspec) so microarch-pinned envs can lock; features opt in by name.
+# __archspec). ORDER IS SELECTION PRIORITY: the v3-floored entry comes
+# first, so machines whose CPU satisfies x86-64-v3 automatically get the
+# v3-optimized build via the target tables below, while older machines
+# and Windows fall back to the portable build. The v4 entry exists for
+# the explicit v4 selector env only.
 platforms = [
-  "linux-64",
-  "win-64",
   { name = "linux-64-v3", platform = "linux-64", archspec = "x86_64_v3" },
+  { name = "linux-64-portable", platform = "linux-64" },
+  "win-64",
   { name = "linux-64-v4", platform = "linux-64", archspec = "x86_64_v4" },
 ]
 preview = ["pixi-build"]
@@ -48,12 +52,22 @@ cxx_compiler = ["vs2022"]
 # x86-64-v3 microarchitecture (see docs/tooling-versions.md). If your users
 # may run older CPUs, change both pins below to "1".
 [dependencies]
-enginelib = { path = "." }
 spdlog = "1.15.*"
+
+# Machine-adaptive default: capable linux machines get the v3 build,
+# everyone else the portable build (see the platforms comment above).
+[target.linux-64-v3.dependencies]
+enginelib-v3 = { path = "variants/v3" }
+
+[target.linux-64-portable.dependencies]
+enginelib = { path = "." }
+
+[target.win-64.dependencies]
+enginelib = { path = "." }
 
 # Bound to the archspec-floored platform (and thereby linux-only).
 [feature.v1]
-platforms = ["linux-64"]
+platforms = ["linux-64-portable"]
 
 [feature.v1.dependencies]
 enginelib-v1 = { path = "variants/v1" }
