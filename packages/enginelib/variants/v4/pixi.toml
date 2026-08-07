@@ -1,0 +1,32 @@
+# enginelib-v4: x86-64-v4 microarchitecture performance variant
+# (linux-only: conda-forge's microarch metapackages are unix-only noarch).
+# The pinned metapackage sets -march via its activation script during the
+# isolated package build — never hand-edit CXXFLAGS. Its run-export
+# (_x86_64-microarch-level >=4) makes __archspec refuse installation on
+# older CPUs.
+#
+# NOTE: this is an explicit per-level subpackage rather than a
+# build-variant matrix because variant selection happens through run-dep
+# conflicts, and microarch's >=level run-export semantics (correctly)
+# never conflict — see docs/build-variants.md.
+[package]
+name = "enginelib-v4"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=default"]
+
+[package.host-dependencies]
+mathkit = { path = "../../../mathkit" }
+spdlog = "*"
+x86_64-microarch-level = "4.*"
+
+[package.run-dependencies]
+mathkit = { path = "../../../mathkit" }
+x86_64-microarch-level = "4.*"

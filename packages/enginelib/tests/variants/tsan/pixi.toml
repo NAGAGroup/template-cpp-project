@@ -1,0 +1,20 @@
+# enginelib-tests-tsan: tests built against (and like) enginelib-tsan.
+[package]
+name = "enginelib-tests-tsan"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=tsan"]
+
+[package.host-dependencies]
+enginelib-tsan = { path = "../../../variants/tsan" }
+catch2 = ">=3.5,<4"
+
+[package.run-dependencies]
+enginelib-tsan = { path = "../../../variants/tsan" }

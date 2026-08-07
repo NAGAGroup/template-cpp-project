@@ -1,0 +1,18 @@
+# enginelib-tests: consumer project for enginelib's DEFAULT variant.
+# Package-only manifest, internal-only (consumed by enginelib's test envs).
+[package]
+name = "enginelib-tests"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.config]
+extra-args = ["--preset=default"]
+
+[package.host-dependencies]
+enginelib = { path = ".." }
+catch2 = ">=3.5,<4"
+
+[package.run-dependencies]
+enginelib = { path = ".." }

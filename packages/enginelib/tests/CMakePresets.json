@@ -1,0 +1,59 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "default",
+      "displayName": "Default (package variant)",
+      "inherits": "base"
+    },
+    {
+      "name": "asan",
+      "displayName": "ASan+UBSan (matches enginelib-asan)",
+      "inherits": "base",
+      "cacheVariables": {
+        "ENGINELIB_TESTS_SANITIZER": "address,undefined",
+        "ENGINELIB_TESTS_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "tsan",
+      "displayName": "TSan (matches enginelib-tsan)",
+      "inherits": "base",
+      "cacheVariables": {
+        "ENGINELIB_TESTS_SANITIZER": "thread",
+        "ENGINELIB_TESTS_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "coverage",
+      "displayName": "Coverage (matches enginelib-coverage)",
+      "inherits": "base",
+      "cacheVariables": {
+        "ENGINELIB_TESTS_COVERAGE": "ON",
+        "ENGINELIB_TESTS_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "dev",
+      "displayName": "Dev (in-tree, against the dev env prefix)",
+      "inherits": "base",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_PREFIX_PATH": "$env{CONDA_PREFIX}"
+      }
+    }
+  ],
+  "buildPresets": [{ "name": "dev", "configurePreset": "dev" }],
+  "testPresets": [
+    { "name": "dev", "configurePreset": "dev", "output": { "outputOnFailure": true } }
+  ]
+}

@@ -13,10 +13,41 @@ project(
 option(ENGINELIB_SHARED "Build enginelib as a shared library" ON)
 set(ENGINELIB_BUILD_TYPE "" CACHE STRING
     "Override the build type (empty = respect CMAKE_BUILD_TYPE)")
+set(ENGINELIB_SANITIZER "" CACHE STRING
+    "Sanitizers to enable (e.g. 'address,undefined' or 'thread')")
+option(ENGINELIB_COVERAGE "Enable llvm-cov source-based coverage" OFF)
 
 set(BUILD_SHARED_LIBS ${ENGINELIB_SHARED})
 if(ENGINELIB_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE ${ENGINELIB_BUILD_TYPE})
+endif()
+if(ENGINELIB_SANITIZER)
+  add_compile_options(-fsanitize=${ENGINELIB_SANITIZER} -fno-omit-frame-pointer)
+  add_link_options(-fsanitize=${ENGINELIB_SANITIZER})
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # Static sanitizer runtimes: consumers of the packaged variant would
+    # otherwise need gcc's dynamic libasan/libtsan at run time.
+    foreach(san IN ITEMS address thread undefined)
+      if(ENGINELIB_SANITIZER MATCHES ${san})
+        string(REGEX REPLACE "address" "asan" flag ${san})
+        string(REGEX REPLACE "thread" "tsan" flag ${flag})
+        string(REGEX REPLACE "undefined" "ubsan" flag ${flag})
+        add_link_options(-static-lib${flag})
+      endif()
+    endforeach()
+  endif()
+endif()
+if(ENGINELIB_COVERAGE)
+  add_compile_options(-fprofile-instr-generate -fcoverage-mapping)
+  add_link_options(-fprofile-instr-generate)
+endif()
+
+# Installed artifacts must resolve their conda-env dependencies without
+# falling back to SYSTEM libraries (zero-system-tooling tenet). Package
+# builds get RPATH patching from the build backend; this covers dev-flow
+# `cmake --install` into the dev env prefix.
+if(UNIX)
+  set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif()
 
 # ---- Dependencies ----------------------------------------------------------

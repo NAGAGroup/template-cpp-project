@@ -1,0 +1,23 @@
+# enginelib-relwithdebinfo: preset-variant subpackage (package-only manifest; version
+# kept in sync with the root package — see docs/versioning.md).
+# External consumers:
+#   enginelib-relwithdebinfo = { git = "<this repo>", tag = "enginelib-v0.1.0", subdirectory = "packages/enginelib/variants/relwithdebinfo" }
+[package]
+name = "enginelib-relwithdebinfo"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=relwithdebinfo"]
+
+[package.host-dependencies]
+mathkit = { path = "../../../mathkit" }
+spdlog = "*"
+
+[package.run-dependencies]
+mathkit = { path = "../../../mathkit" }

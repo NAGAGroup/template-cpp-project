@@ -1,0 +1,26 @@
+# enginelib-tests-coverage: instrumented tests against enginelib-coverage.
+# BYO clang (llvm coverage instrumentation), like the lib variant.
+[package]
+name = "enginelib-tests-coverage"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=coverage"]
+compilers = []
+
+[package.build-dependencies]
+clangxx_linux-64 = "*"
+compiler-rt = "*"
+
+[package.host-dependencies]
+enginelib-coverage = { path = "../../../variants/coverage" }
+catch2 = ">=3.5,<4"
+
+[package.run-dependencies]
+enginelib-coverage = { path = "../../../variants/coverage" }

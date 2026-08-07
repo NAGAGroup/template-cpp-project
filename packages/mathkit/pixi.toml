@@ -33,9 +33,43 @@ extra-input-globs = ["include/**/*.hpp"]
 # used directly (upstream issue pending), so this template uses explicit
 # [package.run-dependencies] in consumers instead. See docs/consuming.md.
 
-# Dev env: the package's dependency closure WITHOUT building it.
+# ---- Test environment ------------------------------------------------------
+# Tests are a CONSUMER PROJECT (tests/); the test env consumes the tests
+# package (mathkit arrives transitively as its host dep).
+[feature.test.dependencies]
+mathkit-tests = { path = "tests" }
+
+[environments.test]
+features = ["test"]
+no-default-feature = true
+
+[feature.test.tasks.test]
+cmd = "mathkit-tests"
+description = "Run the installed test binary (use with -e test)"
+
+# ---- Dev environment -------------------------------------------------------
+# The package's dependency closure WITHOUT building it, plus dev-only
+# tools (zero-system-tooling tenet: Catch2 for the dev test loop).
 [feature.dev.dev]
 mathkit = { path = "." }
+
+[feature.dev.dependencies]
+catch2 = ">=3.5,<4"
+
+[feature.dev.tasks.configure]
+cmd = "cmake --preset dev"
+description = "Configure the in-tree dev build"
+
+[feature.dev.tasks.dev-test]
+cmd = """
+cmake --preset dev \
+&& cmake --build build/dev \
+&& cmake --install build/dev --prefix "$CONDA_PREFIX" \
+&& cd tests \
+&& cmake --preset dev \
+&& cmake --build build/dev \
+&& ctest --test-dir build/dev --output-on-failure"""
+description = "Dev-loop testing: cmake-install mathkit into the dev env, then build+run tests against it (no packages involved)"
 
 [environments.dev]
 features = ["dev"]

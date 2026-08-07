@@ -1,0 +1,20 @@
+# enginelib-tests-static: tests built against (and like) enginelib-static.
+[package]
+name = "enginelib-tests-static"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=default"]
+
+[package.host-dependencies]
+enginelib-static = { path = "../../../variants/static" }
+catch2 = ">=3.5,<4"
+
+[package.run-dependencies]
+enginelib-static = { path = "../../../variants/static" }

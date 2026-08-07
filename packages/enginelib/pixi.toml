@@ -1,18 +1,179 @@
-# enginelib: compiled library, standalone-consumable. THE variant teacher —
-# preset-variant subpackages live under variants/, pixi build-variants are
-# configured here (see step-2 additions + docs/variants.md).
+# enginelib: compiled library, standalone-consumable. THE variant teacher.
+#
+# Two orthogonal variant systems (docs/variants.md, docs/build-variants.md):
+#   * preset-variants  = how THIS project's code is configured; distinct
+#     package names under variants/ (enginelib-static, enginelib-asan, ...)
+#     that consumers knowingly choose.
+#   * build-variants   = what the package is built AGAINST; same package
+#     name, different build string, selected per-environment by pinning a
+#     dependency (microarch level, spdlog version).
+#
 # External consumers:
 #   enginelib = { git = "<this repo>", tag = "enginelib-v0.1.0", subdirectory = "packages/enginelib" }
 [workspace]
 channels = ["conda-forge"]
 name = "enginelib"
-platforms = ["linux-64", "win-64"]
+# Named rich platform entries raise virtual-package floors (here:
+# __archspec) so microarch-pinned envs can lock; features opt in by name.
+platforms = [
+  "linux-64",
+  "win-64",
+  { name = "linux-64-v3", platform = "linux-64", archspec = "x86_64_v3" },
+  { name = "linux-64-v4", platform = "linux-64", archspec = "x86_64_v4" },
+]
 preview = ["pixi-build"]
 
-# Implicit default env = consumer env (self-consumes the package).
+# ---- pixi build-variants ---------------------------------------------------
+# Environments select a variant by PINNING the dependency (see the env
+# tables below). Keys that are not dependencies (e.g. cxx_compiler) cannot
+# be selected per-env in current pixi — see docs/build-variants.md for the
+# single-value override pattern instead.
+# Build-variant matrix: environments select a variant by pinning the dep;
+# selection works through RUN-DEP CONFLICTS (a 1.14-built enginelib carries
+# spdlog's >=1.14,<1.15 run-export, which conflicts with a 1.15 pin).
+# Microarch levels are NOT a build-variant axis: their >=level run-export
+# semantics never conflict, so they live as explicit per-level
+# subpackages under variants/v{1,3,4} instead (linux-only).
+[workspace.build-variants]
+spdlog = ["1.14.*", "1.15.*"]
+
+# Live demo of overriding the backend's default variants: this restates
+# the Windows default (vs2022) explicitly; swap the value to change the
+# toolchain for every package build in this workspace.
+[workspace.target.win-64.build-variants]
+cxx_compiler = ["vs2022"]
+
+# ---- Consumer environments -------------------------------------------------
+# Implicit default env = consumer env. OPINIONATED: pinned to
+# x86-64-v3 microarchitecture (see docs/tooling-versions.md). If your users
+# may run older CPUs, change both pins below to "1".
 [dependencies]
 enginelib = { path = "." }
+spdlog = "1.15.*"
 
+# Bound to the archspec-floored platform (and thereby linux-only).
+[feature.v1]
+platforms = ["linux-64"]
+
+[feature.v1.dependencies]
+enginelib-v1 = { path = "variants/v1" }
+spdlog = "1.15.*"
+
+# Bound to the archspec-floored platform (and thereby linux-only).
+[feature.v4]
+platforms = ["linux-64-v4"]
+
+[feature.v4.dependencies]
+enginelib-v4 = { path = "variants/v4" }
+spdlog = "1.15.*"
+
+[feature.spdlog14.dependencies]
+enginelib = { path = "." }
+spdlog = "1.14.*"
+
+# Bound to the archspec-floored platform (and thereby linux-only).
+[feature.v3]
+platforms = ["linux-64-v3"]
+
+[feature.v3.dependencies]
+enginelib-v3 = { path = "variants/v3" }
+spdlog = "1.15.*"
+
+[environments.v1]
+features = ["v1"]
+no-default-feature = true
+
+[environments.v3]
+features = ["v3"]
+no-default-feature = true
+
+[environments.v4]
+features = ["v4"]
+no-default-feature = true
+
+[environments.spdlog14]
+features = ["spdlog14"]
+no-default-feature = true
+
+# ---- Test environments -----------------------------------------------------
+# Tests are CONSUMER PROJECTS (tests/): each test env consumes the tests
+# package built against the matching lib variant. Sanitizer/coverage test
+# envs are linux-only.
+[feature.test.dependencies]
+enginelib-tests = { path = "tests" }
+spdlog = "1.15.*"
+
+[feature.test-static.dependencies]
+enginelib-tests-static = { path = "tests/variants/static" }
+spdlog = "1.15.*"
+
+[feature.test-asan.target.linux-64.dependencies]
+enginelib-tests-asan = { path = "tests/variants/asan" }
+spdlog = "1.15.*"
+
+[feature.test-tsan.target.linux-64.dependencies]
+enginelib-tests-tsan = { path = "tests/variants/tsan" }
+spdlog = "1.15.*"
+
+[feature.test-coverage.target.linux-64.dependencies]
+enginelib-tests-coverage = { path = "tests/variants/coverage" }
+spdlog = "1.15.*"
+# Coverage tooling (llvm-profdata / llvm-cov) is a dev-only tool, so it is
+# allowed in feature deps (zero-system-tooling tenet).
+llvm-tools = ">=20"
+
+[environments.test]
+features = ["test"]
+no-default-feature = true
+
+[environments.test-static]
+features = ["test-static"]
+no-default-feature = true
+
+[environments.test-asan]
+features = ["test-asan"]
+no-default-feature = true
+
+[environments.test-tsan]
+features = ["test-tsan"]
+no-default-feature = true
+
+[environments.test-coverage]
+features = ["test-coverage"]
+no-default-feature = true
+
+# Task visibility follows features: a task must live in a feature that the
+# target env includes (the [tasks] table belongs to the default feature).
+[feature.test.tasks.test]
+cmd = "enginelib-tests"
+description = "Run the installed test binary (use with -e test)"
+
+[feature.test-static.tasks.test]
+cmd = "enginelib-tests"
+description = "Run the installed test binary (use with -e test-static)"
+
+[feature.test-asan.tasks.test]
+cmd = "enginelib-tests"
+description = "Run the installed test binary (use with -e test-asan)"
+
+[feature.test-tsan.tasks.test]
+cmd = "enginelib-tests"
+description = "Run the installed test binary (use with -e test-tsan)"
+
+[feature.test-coverage.tasks.test]
+cmd = "enginelib-tests"
+description = "Run the installed test binary (use with -e test-coverage)"
+
+[feature.test-coverage.tasks.coverage]
+cmd = """
+LLVM_PROFILE_FILE=enginelib-tests.profraw enginelib-tests \
+&& llvm-profdata merge -sparse enginelib-tests.profraw -o enginelib-tests.profdata \
+&& llvm-cov report $(which enginelib-tests) -object "$CONDA_PREFIX/lib/libenginelib.so" -instr-profile=enginelib-tests.profdata \
+&& llvm-cov export $(which enginelib-tests) -object "$CONDA_PREFIX/lib/libenginelib.so" -instr-profile=enginelib-tests.profdata -format=lcov > coverage.info \
+&& echo 'lcov report written to coverage.info'"""
+description = "Run instrumented tests and produce llvm-cov + lcov reports (use with -e test-coverage)"
+
+# ---- Package definition (the DEFAULT variant: Release, shared) -------------
 [package]
 name = "enginelib"
 version = "0.1.0"
@@ -24,25 +185,51 @@ backend = { name = "pixi-build-cmake", version = "*" }
 extra-args = ["--preset=default"]
 
 [package.host-dependencies]
-# Sibling source dep: mathkit weak-exports itself, so listing it here is
-# all we need — it propagates to our consumers automatically.
+# Sibling source dep (public: appears in our headers).
 mathkit = { path = "../mathkit" }
-# Boring happy path: a plain conda-forge BINARY dependency (used privately
-# in src/). Prefer binaries whenever conda-forge has the package.
-spdlog = ">=1.14,<2"
+# Boring happy path: plain conda-forge BINARY deps. "*" specs participate
+# in the build-variant matrix above.
+spdlog = "*"
 
 # THE RUN-DEPENDENCIES RULE: mathkit appears in our PUBLIC headers, so our
-# consumers' compilers need it too — it must be a run dependency. (spdlog
-# is private; its runtime lib reaches consumers via the conda-forge
-# package's own run-exports, so it is NOT repeated here.)
-# When pixi's [package.run-exports] path bug is fixed upstream, this
-# manual repetition can be replaced by a weak self-export in mathkit.
+# consumers' compilers need it too. The microarch level is repeated so the
+# built variant is env-selectable AND so __archspec protects consumers from
+# installing e.g. a v3 build on a v1 CPU. (spdlog is private; its runtime
+# lib reaches consumers via the conda-forge package's own run-exports.)
+# When pixi's [package.run-exports] path bug is fixed upstream, mathkit's
+# manual repetition can become a weak self-export instead.
 [package.run-dependencies]
 mathkit = { path = "../mathkit" }
 
-# Dev env: the package's dependency closure WITHOUT building it.
+# ---- Dev environment -------------------------------------------------------
+# The package's dependency closure WITHOUT building it, plus dev-only
+# tools. Day-to-day work happens here via CMake presets — no packages
+# involved.
 [feature.dev.dev]
 enginelib = { path = "." }
+
+[feature.dev.dependencies]
+catch2 = ">=3.5,<4"
+
+[feature.dev.tasks.configure]
+cmd = "cmake --preset dev"
+description = "Configure the in-tree dev build"
+
+[feature.dev.tasks.build]
+cmd = "cmake --build build/dev"
+description = "Build the in-tree dev tree"
+depends-on = ["configure"]
+
+[feature.dev.tasks.dev-test]
+cmd = """
+cmake --preset dev \
+&& cmake --build build/dev \
+&& cmake --install build/dev --prefix "$CONDA_PREFIX" \
+&& cd tests \
+&& cmake --preset dev \
+&& cmake --build build/dev \
+&& ctest --test-dir build/dev --output-on-failure"""
+description = "Dev-loop testing: cmake-install the lib into the dev env, then build+run tests against it (no packages involved)"
 
 [environments.dev]
 features = ["dev"]

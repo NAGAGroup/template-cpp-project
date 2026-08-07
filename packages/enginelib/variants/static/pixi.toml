@@ -1,0 +1,23 @@
+# enginelib-static: preset-variant subpackage (package-only manifest; version
+# kept in sync with the root package — see docs/versioning.md).
+# External consumers:
+#   enginelib-static = { git = "<this repo>", tag = "enginelib-v0.1.0", subdirectory = "packages/enginelib/variants/static" }
+[package]
+name = "enginelib-static"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=static"]
+
+[package.host-dependencies]
+mathkit = { path = "../../../mathkit" }
+spdlog = "*"
+
+[package.run-dependencies]
+mathkit = { path = "../../../mathkit" }

@@ -8,16 +8,48 @@ name = "template-cpp-project"
 platforms = ["linux-64", "win-64"]
 preview = ["pixi-build"]
 
+# Build-variant matrices belong to the CONSUMING workspace — they are not
+# inherited from a source dep's own workspace. Mirror the axes of member
+# packages here so root envs resolve the same variant builds.
+[workspace.build-variants]
+spdlog = ["1.14.*", "1.15.*"]
+
 # The implicit default environment IS the consumer environment: it
 # self-consumes every member package (never declare [environments.default]
-# explicitly).
+# explicitly). The microarch/spdlog pins select enginelib's build-variants
+# (see packages/enginelib/pixi.toml); OPINIONATED default = x86-64-v3.
 [dependencies]
 mathkit = { path = "packages/mathkit" }
 enginelib = { path = "packages/enginelib" }
 demo-app = { path = "packages/demo-app" }
+spdlog = "1.15.*"
+
+# Ecosystem-level demo of a preset-variant consumer: the static variant of
+# enginelib (cannot share an env with the default variant — same files).
+[feature.static.dependencies]
+enginelib-static = { path = "packages/enginelib/variants/static" }
+spdlog = "1.15.*"
+
+[environments.static]
+features = ["static"]
+no-default-feature = true
 
 [tasks]
 demo = { cmd = "demo-app", description = "Run the demo application from the consumer environment" }
+
+# Thin wrapper tasks so newcomers can drive the common flows from the repo
+# root; the real envs/tasks live in each package's own workspace.
+[tasks.test-mathkit]
+cmd = "pixi run -e test test"
+cwd = "packages/mathkit"
+
+[tasks.test-enginelib]
+cmd = "pixi run -e test test"
+cwd = "packages/enginelib"
+
+[tasks.test-all]
+depends-on = ["test-mathkit", "test-enginelib"]
+description = "Run every package's default test env"
 
 # demo-app is an internal-only (package-only) project, so its dev env
 # lives here at the root rather than in its own workspace.

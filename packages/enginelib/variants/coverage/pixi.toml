@@ -1,0 +1,28 @@
+# enginelib-coverage: llvm-cov instrumented variant. Doubles as the
+# BRING-YOUR-OWN-COMPILER teaching case: llvm source-based coverage needs
+# clang, so this variant disables the backend's default compiler
+# provisioning and declares its own toolchain (docs/toolchains.md).
+[package]
+name = "enginelib-coverage"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=coverage"]
+compilers = []
+
+[package.build-dependencies]
+clangxx_linux-64 = "*"
+compiler-rt = "*"
+
+[package.host-dependencies]
+mathkit = { path = "../../../mathkit" }
+spdlog = "*"
+
+[package.run-dependencies]
+mathkit = { path = "../../../mathkit" }
