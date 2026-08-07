@@ -1,0 +1,49 @@
+# enginelib: compiled library, standalone-consumable. THE variant teacher —
+# preset-variant subpackages live under variants/, pixi build-variants are
+# configured here (see step-2 additions + docs/variants.md).
+# External consumers:
+#   enginelib = { git = "<this repo>", tag = "enginelib-v0.1.0", subdirectory = "packages/enginelib" }
+[workspace]
+channels = ["conda-forge"]
+name = "enginelib"
+platforms = ["linux-64", "win-64"]
+preview = ["pixi-build"]
+
+# Implicit default env = consumer env (self-consumes the package).
+[dependencies]
+enginelib = { path = "." }
+
+[package]
+name = "enginelib"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.config]
+extra-args = ["--preset=default"]
+
+[package.host-dependencies]
+# Sibling source dep: mathkit weak-exports itself, so listing it here is
+# all we need — it propagates to our consumers automatically.
+mathkit = { path = "../mathkit" }
+# Boring happy path: a plain conda-forge BINARY dependency (used privately
+# in src/). Prefer binaries whenever conda-forge has the package.
+spdlog = ">=1.14,<2"
+
+# THE RUN-DEPENDENCIES RULE: mathkit appears in our PUBLIC headers, so our
+# consumers' compilers need it too — it must be a run dependency. (spdlog
+# is private; its runtime lib reaches consumers via the conda-forge
+# package's own run-exports, so it is NOT repeated here.)
+# When pixi's [package.run-exports] path bug is fixed upstream, this
+# manual repetition can be replaced by a weak self-export in mathkit.
+[package.run-dependencies]
+mathkit = { path = "../mathkit" }
+
+# Dev env: the package's dependency closure WITHOUT building it.
+[feature.dev.dev]
+enginelib = { path = "." }
+
+[environments.dev]
+features = ["dev"]
+no-default-feature = true

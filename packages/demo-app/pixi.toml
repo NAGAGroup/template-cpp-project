@@ -1,0 +1,21 @@
+# demo-app: application, internal-only. This is a PACKAGE-ONLY manifest
+# (no [workspace]) — the workspace context comes from whoever consumes it
+# (the repo root workspace). Its dev env lives at the repo root
+# (dev-demo-app) for the same reason.
+[package]
+name = "demo-app"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.config]
+extra-args = ["--preset=default"]
+
+[package.host-dependencies]
+enginelib = { path = "../enginelib" }
+
+# The app links enginelib as a shared library, so it needs it (and,
+# transitively, mathkit) at run time too.
+[package.run-dependencies]
+enginelib = { path = "../enginelib" }

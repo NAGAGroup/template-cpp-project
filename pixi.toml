@@ -1,0 +1,29 @@
+# Root workspace: ecosystem-level environments and tasks ONLY.
+# It deliberately carries no [package] — each member project under
+# packages/ owns its packages (and, for standalone members, its own
+# workspace with dev/test envs). See docs/variants.md.
+[workspace]
+channels = ["conda-forge"]
+name = "template-cpp-project"
+platforms = ["linux-64", "win-64"]
+preview = ["pixi-build"]
+
+# The implicit default environment IS the consumer environment: it
+# self-consumes every member package (never declare [environments.default]
+# explicitly).
+[dependencies]
+mathkit = { path = "packages/mathkit" }
+enginelib = { path = "packages/enginelib" }
+demo-app = { path = "packages/demo-app" }
+
+[tasks]
+demo = { cmd = "demo-app", description = "Run the demo application from the consumer environment" }
+
+# demo-app is an internal-only (package-only) project, so its dev env
+# lives here at the root rather than in its own workspace.
+[feature.dev-demo-app.dev]
+demo-app = { path = "packages/demo-app" }
+
+[environments.dev-demo-app]
+features = ["dev-demo-app"]
+no-default-feature = true

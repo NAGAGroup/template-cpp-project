@@ -1,0 +1,11 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+# mathkit is a PUBLIC dependency (appears in our headers).
+find_dependency(mathkit)
+# spdlog is PRIVATE, but static-library consumers still need it at link
+# time, so we always resolve it.
+find_dependency(spdlog)
+
+include("${CMAKE_CURRENT_LIST_DIR}/enginelibTargets.cmake")
+check_required_components(enginelib)

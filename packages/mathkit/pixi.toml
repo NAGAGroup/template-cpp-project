@@ -1,0 +1,42 @@
+# mathkit: header-only library, standalone-consumable.
+# This root manifest is BOTH the workspace (dev/test envs, tasks) AND the
+# default package + version anchor. External consumers:
+#   mathkit = { git = "<this repo>", tag = "mathkit-v0.1.0", subdirectory = "packages/mathkit" }
+[workspace]
+channels = ["conda-forge"]
+name = "mathkit"
+platforms = ["linux-64", "win-64"]
+preview = ["pixi-build"]
+
+# Implicit default env = consumer env (self-consumes the package).
+[dependencies]
+mathkit = { path = "." }
+
+[package]
+name = "mathkit"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.config]
+extra-args = ["--preset=default"]
+# Header-only: no TU includes these headers during the package's own
+# build, so without this glob header edits would NOT invalidate pixi's
+# build cache.
+extra-input-globs = ["include/**/*.hpp"]
+
+# NOTE(run-exports): pixi >=0.74 supports [package.run-exports] so a
+# library can weak-export itself (consumers host-dep it and receive it as
+# a run dep automatically). As of pixi 0.76.1 a path-resolution bug makes
+# any run-exports table break sibling path deps when a member workspace is
+# used directly (upstream issue pending), so this template uses explicit
+# [package.run-dependencies] in consumers instead. See docs/consuming.md.
+
+# Dev env: the package's dependency closure WITHOUT building it.
+[feature.dev.dev]
+mathkit = { path = "." }
+
+[environments.dev]
+features = ["dev"]
+no-default-feature = true

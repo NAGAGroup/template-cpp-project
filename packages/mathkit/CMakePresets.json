@@ -1,0 +1,32 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "default",
+      "displayName": "Default (package variant)",
+      "inherits": "base"
+    },
+    {
+      "name": "dev",
+      "displayName": "Dev (in-tree)",
+      "inherits": "base",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_PREFIX_PATH": "$env{CONDA_PREFIX}"
+      }
+    }
+  ],
+  "buildPresets": [{ "name": "dev", "configurePreset": "dev" }],
+  "testPresets": [
+    { "name": "dev", "configurePreset": "dev", "output": { "outputOnFailure": true } }
+  ]
+}

@@ -1,0 +1,11 @@
+# pixi
+.pixi/
+
+# CMake build trees (dev presets)
+build/
+compile_commands.json
+
+# Editors
+.cache/
+.vscode/
+.idea/
