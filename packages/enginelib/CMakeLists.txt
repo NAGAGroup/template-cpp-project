@@ -53,6 +53,7 @@ endif()
 # ---- Dependencies ----------------------------------------------------------
 find_package(mathkit CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(stb CONFIG REQUIRED)
 
 # ---- Library ---------------------------------------------------------------
 add_library(enginelib src/engine.cpp)
@@ -66,7 +67,7 @@ target_compile_features(enginelib PUBLIC cxx_std_23)
 target_link_libraries(
   enginelib
   PUBLIC mathkit::mathkit
-  PRIVATE spdlog::spdlog)
+  PRIVATE spdlog::spdlog stb::stb)
 
 include(GenerateExportHeader)
 generate_export_header(enginelib EXPORT_FILE_NAME

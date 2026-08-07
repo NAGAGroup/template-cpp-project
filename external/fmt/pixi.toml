@@ -1,0 +1,27 @@
+# WRAPPER PACKAGE: fmt, built from upstream source with pixi-build-cmake.
+#
+# The escape-hatch decision tree for external dependencies
+# (docs/external-deps.md):
+#   1. conda-forge has a binary  -> use it            (spdlog in enginelib)
+#   2. upstream has sane CMake   -> THIS wrapper      (pixi-build-cmake)
+#   3. upstream CMake is broken  -> rattler-build     (../stb)
+#   4. FetchContent/CPM          -> NEVER
+#
+# (fmt IS on conda-forge — it is wrapped here for teaching. The pin is
+# UPSTREAM's tag; tag-then-re-pin flow: bump the tag, `pixi update`.)
+#
+# NOTE: upstream projects have no CMakePresets, so wrappers are the one
+# place where raw -D flags in extra-args are correct.
+[package]
+name = "fmt"
+version = "11.2.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.source]
+git = "https://github.com/fmtlib/fmt"
+tag = "11.2.0"
+
+[package.build.config]
+extra-args = ["-DFMT_TEST=OFF", "-DFMT_DOC=OFF"]

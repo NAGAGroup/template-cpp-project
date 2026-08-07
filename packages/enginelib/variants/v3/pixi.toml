@@ -25,6 +25,7 @@ extra-args = ["--preset=default"]
 [package.host-dependencies]
 mathkit = { path = "../../../mathkit" }
 spdlog = "*"
+stb = { path = "../../../../external/stb" }
 x86_64-microarch-level = "3.*"
 
 [package.run-dependencies]

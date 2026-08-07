@@ -18,3 +18,9 @@ TEST_CASE("engine accumulates time", "[engine]") {
 TEST_CASE("combine exercises the public mathkit dependency", "[mathkit]") {
   STATIC_REQUIRE(enginelib::combine(2.0, 3.0) == 5.0);
 }
+
+TEST_CASE("noise is deterministic for a given state", "[noise]") {
+  enginelib::Engine a;
+  enginelib::Engine b;
+  REQUIRE(a.noise(0.25, 0.75) == b.noise(0.25, 0.75));
+}

@@ -190,6 +190,9 @@ mathkit = { path = "../mathkit" }
 # Boring happy path: plain conda-forge BINARY deps. "*" specs participate
 # in the build-variant matrix above.
 spdlog = "*"
+# Escape-hatch wrapper dep (rattler-build; see external/stb). PRIVATE and
+# header-only, so nothing propagates to run-deps or the CMake config.
+stb = { path = "../../external/stb" }
 
 # THE RUN-DEPENDENCIES RULE: mathkit appears in our PUBLIC headers, so our
 # consumers' compilers need it too. The microarch level is repeated so the

@@ -23,6 +23,7 @@ compiler-rt = "*"
 [package.host-dependencies]
 mathkit = { path = "../../../mathkit" }
 spdlog = "*"
+stb = { path = "../../../../external/stb" }
 
 [package.run-dependencies]
 mathkit = { path = "../../../mathkit" }

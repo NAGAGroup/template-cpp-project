@@ -18,6 +18,7 @@ extra-args = ["--preset=asan"]
 [package.host-dependencies]
 mathkit = { path = "../../../mathkit" }
 spdlog = "*"
+stb = { path = "../../../../external/stb" }
 
 [package.run-dependencies]
 mathkit = { path = "../../../mathkit" }

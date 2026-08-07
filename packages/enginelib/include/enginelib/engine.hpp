@@ -18,6 +18,11 @@ class ENGINELIB_EXPORT Engine {
 
   [[nodiscard]] double elapsed() const noexcept { return elapsed_; }
 
+  /// Sample deterministic Perlin noise at (x, y) for the current elapsed
+  /// time. Implemented with stb_perlin — a PRIVATE header-only dependency
+  /// provided by the rattler-build wrapper package (external/stb).
+  [[nodiscard]] double noise(double x, double y) const;
+
  private:
   double elapsed_{0.0};
 };

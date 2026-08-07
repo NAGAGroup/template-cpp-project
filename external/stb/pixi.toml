@@ -1,0 +1,15 @@
+# WRAPPER PACKAGE: stb, via the pixi-build-rattler-build ESCAPE HATCH.
+#
+# stb has NO build system and installs no CMake config — the class of
+# upstream (like pre-1.79 boost) where pixi-build-cmake can't help. The
+# recipe.yaml next to this manifest owns the build: it installs the
+# headers and a HAND-WRITTEN stbConfig.cmake so downstream
+# find_package(stb) works like any well-behaved dependency.
+#
+# stb has no releases; the pin is an upstream commit sha (rev).
+[package]
+name = "stb"
+version = "2026.8.6"
+
+[package.build]
+backend = { name = "pixi-build-rattler-build", version = "*" }

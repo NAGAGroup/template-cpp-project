@@ -14,8 +14,16 @@ extra-args = ["--preset=default"]
 
 [package.host-dependencies]
 enginelib = { path = "../enginelib" }
+# Wrapper source dep (pixi-build-cmake; see external/fmt). fmt IS on
+# conda-forge — wrapped for teaching. Note: a source dep named `fmt`
+# overrides the channel binary for every resolver in this workspace
+# (spdlog's fmt requirement resolves against our wrapper build).
+fmt = { path = "../../external/fmt" }
 
 # The app links enginelib as a shared library, so it needs it (and,
 # transitively, mathkit) at run time too.
 [package.run-dependencies]
 enginelib = { path = "../enginelib" }
+# fmt is linked as a shared library -> needed at run time (manual run-dep
+# until pixi's run-exports path bug is fixed).
+fmt = { path = "../../external/fmt" }

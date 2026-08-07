@@ -1,12 +1,13 @@
 #include <enginelib/engine.hpp>
-#include <print>
+#include <fmt/format.h>
 
 int main() {
   enginelib::Engine engine;
   for (int i = 0; i < 5; ++i) {
     engine.advance(0.25);
   }
-  std::println("demo-app: elapsed = {} (combine test: {})", engine.elapsed(),
-               enginelib::combine(1.5, 2.5));
+  fmt::print("demo-app: elapsed = {:.2f} (combine: {}, noise: {:+.3f})\n",
+             engine.elapsed(), enginelib::combine(1.5, 2.5),
+             engine.noise(0.5, 0.5));
   return 0;
 }
