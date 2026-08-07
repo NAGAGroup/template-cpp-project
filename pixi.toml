@@ -183,17 +183,12 @@ cmd = "enginelib-tests"
 platforms = ["linux-64-v3", "linux-64-portable"]
 features = ["testing"]
 no-default-feature = true
-dependencies = { enginelib-tests-coverage = { workspace = true }, spdlog = { workspace = true }, llvm-tools = ">=20" }
+dependencies = { enginelib-tests-coverage = { workspace = true }, spdlog = { workspace = true }, llvm-tools = ">=20", nushell = "*" }
 [environments.test-coverage.tasks.test]
 cmd = "enginelib-tests"
 [environments.test-coverage.tasks.coverage]
-cmd = """
-LLVM_PROFILE_FILE=enginelib-tests.profraw enginelib-tests \
-&& llvm-profdata merge -sparse enginelib-tests.profraw -o enginelib-tests.profdata \
-&& llvm-cov report $(which enginelib-tests) -object "$CONDA_PREFIX/lib/libenginelib.so" -instr-profile=enginelib-tests.profdata \
-&& llvm-cov export $(which enginelib-tests) -object "$CONDA_PREFIX/lib/libenginelib.so" -instr-profile=enginelib-tests.profdata -format=lcov > coverage.info \
-&& echo 'lcov report written to coverage.info'"""
-description = "Run instrumented tests and produce llvm-cov + lcov reports"
+cmd = "nu scripts/coverage.nu"
+description = "Run instrumented tests; lcov report + structured per-file coverage table"
 
 # Min-version compatibility check: same deps, solved to the LOWEST
 # direct versions (library best practice).
@@ -214,25 +209,17 @@ cmd = "mathkit-tests && enginelib-tests"
 mathkit = { path = "packages/mathkit" }
 
 [feature.dev-mathkit.dependencies]
+nushell = "*"
 catch2 = { workspace = true }
 clang-tools = "*"
 clang = "*"
 
 [feature.dev-mathkit.tasks.configure]
-cmd = "cmake --preset dev && {% if pixi.is_win %}cmake -E copy_if_different build/dev/compile_commands.json compile_commands.json{% else %}ln -sf build/dev/compile_commands.json compile_commands.json{% endif %}"
-cwd = "packages/mathkit"
+cmd = "nu scripts/configure-dev.nu packages/mathkit"
 description = "Configure mathkit's in-tree dev build"
 
 [feature.dev-mathkit.tasks.dev-test]
-cmd = """
-cmake --preset dev \
-&& cmake --build build/dev \
-&& cmake --install build/dev --prefix "$CONDA_PREFIX" \
-&& cd tests \
-&& cmake --preset dev \
-&& cmake --build build/dev \
-&& ctest --test-dir build/dev --output-on-failure"""
-cwd = "packages/mathkit"
+cmd = "nu scripts/dev-test.nu packages/mathkit"
 description = "Dev loop: cmake-install mathkit into the dev env, then build+run tests against it"
 
 [feature.dev-mathkit.tasks.lint]
@@ -248,6 +235,7 @@ no-default-feature = true
 enginelib = { path = "packages/enginelib" }
 
 [feature.dev-enginelib.dependencies]
+nushell = "*"
 catch2 = { workspace = true }
 # Pin the variant-expanded dep to the default lineage: an unpinned
 # variant dep in a dev closure makes --locked verification unstable.
@@ -256,8 +244,7 @@ clang-tools = "*"
 clang = "*"
 
 [feature.dev-enginelib.tasks.configure]
-cmd = "cmake --preset dev && {% if pixi.is_win %}cmake -E copy_if_different build/dev/compile_commands.json compile_commands.json{% else %}ln -sf build/dev/compile_commands.json compile_commands.json{% endif %}"
-cwd = "packages/enginelib"
+cmd = "nu scripts/configure-dev.nu packages/enginelib"
 description = "Configure enginelib's in-tree dev build"
 
 [feature.dev-enginelib.tasks.build]
@@ -267,15 +254,7 @@ depends-on = ["configure"]
 description = "Build enginelib's in-tree dev tree"
 
 [feature.dev-enginelib.tasks.dev-test]
-cmd = """
-cmake --preset dev \
-&& cmake --build build/dev \
-&& cmake --install build/dev --prefix "$CONDA_PREFIX" \
-&& cd tests \
-&& cmake --preset dev \
-&& cmake --build build/dev \
-&& ctest --test-dir build/dev --output-on-failure"""
-cwd = "packages/enginelib"
+cmd = "nu scripts/dev-test.nu packages/enginelib"
 description = "Dev loop: cmake-install enginelib into the dev env, then build+run tests against it"
 
 [feature.dev-enginelib.tasks.lint]
@@ -292,12 +271,12 @@ no-default-feature = true
 demo-app = { path = "packages/demo-app" }
 
 [feature.dev-demo-app.dependencies]
+nushell = "*"
 clang-tools = "*"
 clang = "*"
 
 [feature.dev-demo-app.tasks.configure]
-cmd = "cmake --preset dev && {% if pixi.is_win %}cmake -E copy_if_different build/dev/compile_commands.json compile_commands.json{% else %}ln -sf build/dev/compile_commands.json compile_commands.json{% endif %}"
-cwd = "packages/demo-app"
+cmd = "nu scripts/configure-dev.nu packages/demo-app"
 description = "Configure demo-app's in-tree dev build"
 
 [environments.dev-demo-app]
@@ -309,12 +288,12 @@ no-default-feature = true
 # discovery — come from the env, never the system.
 [environments.style]
 no-default-feature = true
-dependencies = { clang-format = "*", doxygen = "*", git = "*" }
+dependencies = { clang-format = "*", doxygen = "*", git = "*", nushell = "*" }
 [environments.style.tasks.format]
-cmd = "git ls-files '*.cpp' '*.hpp' | xargs clang-format -i"
-description = "Format all C++ sources in-place"
+cmd = "nu scripts/format.nu"
+description = "Format all C++ sources in-place (parallel)"
 [environments.style.tasks.format-check]
-cmd = "git ls-files '*.cpp' '*.hpp' | xargs clang-format --dry-run --Werror"
+cmd = "nu scripts/format.nu --check"
 description = "Fail if any file is unformatted (CI)"
 [environments.style.tasks.docs]
 cmd = "doxygen Doxyfile"

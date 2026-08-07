@@ -38,7 +38,10 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
    envs are strictly per-package (a shared dev env would build sibling
    packages); their tasks carry the package `cwd`. Toolchains live in
    package dep tables; dev-only *tools* live in feature/env deps.
-   **Zero system tooling.**
+   **Zero system tooling.** Scripting: one-liners are inline tasks;
+   anything multi-step/platform-conditional is a NUSHELL script under
+   `scripts/` (nushell dep in the env that runs it) — never bash/bat
+   pairs, never Python-for-scripting.
 4. **Tests are standalone consumer projects** (`tests/` with its own
    manifests) that `find_package()` the installed lib. Test variants
    mirror the lib variant they test (a sanitized lib gets sanitized

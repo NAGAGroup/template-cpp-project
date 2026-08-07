@@ -57,8 +57,11 @@ pixi run publish-local              # every package into an indexed local channe
 4. **External code is wrapped, never vendored.** conda-forge binary if it
    exists → cmake-backend wrapper if upstream CMake is sane →
    rattler-build recipe if it isn't. **FetchContent/CPM: never.**
-5. **Zero system tooling.** Compilers, clangd, formatters, doxygen — all
-   from pixi envs. Every developer, every CI job, identical tooling.
+5. **Zero system tooling.** Compilers, clangd, formatters, doxygen —
+   even the scripting runtime — all from pixi envs. Every developer,
+   every CI job, identical tooling. Scripts are **nushell** (`scripts/`):
+   one cross-platform script set, structured-data pipelines instead of
+   awk-scraping (see the coverage table `scripts/coverage.nu` prints).
 
 Deep dives live in [`docs/`](docs/): [why pixi](docs/why-pixi.md) ·
 [consuming these packages](docs/consuming.md) ·

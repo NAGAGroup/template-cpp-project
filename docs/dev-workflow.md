@@ -41,6 +41,19 @@ libraries.
 (from the env, not the system) picks it up. Warnings-as-errors are on in
 dev presets (`<PKG>_DEV_MODE`) and off in package builds.
 
+## Scripting doctrine: nushell
+
+One-liners stay inline pixi tasks (deno_task_shell is already
+cross-platform). Anything multi-step or platform-conditional becomes a
+**nushell script** under `scripts/` — one script for every OS, no
+bash/bat pairs, and no Python-for-scripting (overkill). Nushell comes
+from the env like every other tool (`nushell = "*"` in the feature that
+runs it — zero-system-tooling), aborts on the first failing external
+command, and treats command output as structured data:
+`scripts/coverage.nu` turns llvm-cov's JSON into a per-file coverage
+table in four pipeline steps, and `scripts/format.nu` fans clang-format
+out with `par-each`.
+
 ## Formatting & docs
 
 Repo-wide, from the root workspace: `pixi run -e style format`,
