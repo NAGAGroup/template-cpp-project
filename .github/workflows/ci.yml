@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
       - name: Build every member package and run the demo
@@ -34,7 +34,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
           manifest-path: packages/mathkit/pixi.toml
@@ -53,19 +53,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.10.0
         with:
-          # cache requires setup-pixi's own install, which we skip (see below)
-          cache: false
-          manifest-path: packages/enginelib/pixi.toml
-          # pixi's --locked verification is cwd-sensitive for workspaces
-          # with variant-expanded dev closures (upstream bug): it fails via
-          # --manifest-path from outside but passes in-directory — so we
-          # run the locked install ourselves.
-          run-install: false
-      - name: Locked install (in-directory)
-        working-directory: packages/enginelib
-        run: pixi install --locked
+          cache: true
+          # working-directory makes setup-pixi run FROM the package dir.
+          # (pixi's --locked verification is cwd-sensitive for workspaces
+          # with variant-expanded dev closures — upstream bug — so
+          # --manifest-path from the repo root would false-fail.)
+          working-directory: packages/enginelib
+          environments: test-asan test-tsan
       - name: ASan + UBSan
         working-directory: packages/enginelib
         run: pixi run -e test-asan test
@@ -78,19 +74,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.10.0
         with:
-          # cache requires setup-pixi's own install, which we skip (see below)
-          cache: false
-          manifest-path: packages/enginelib/pixi.toml
-          # pixi's --locked verification is cwd-sensitive for workspaces
-          # with variant-expanded dev closures (upstream bug): it fails via
-          # --manifest-path from outside but passes in-directory — so we
-          # run the locked install ourselves.
-          run-install: false
-      - name: Locked install (in-directory)
-        working-directory: packages/enginelib
-        run: pixi install --locked
+          cache: true
+          # working-directory makes setup-pixi run FROM the package dir.
+          # (pixi's --locked verification is cwd-sensitive for workspaces
+          # with variant-expanded dev closures — upstream bug — so
+          # --manifest-path from the repo root would false-fail.)
+          working-directory: packages/enginelib
+          environments: test-coverage
       - name: Instrumented tests + report
         working-directory: packages/enginelib
         run: pixi run -e test-coverage coverage
@@ -104,19 +96,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.10.0
         with:
-          # cache requires setup-pixi's own install, which we skip (see below)
-          cache: false
-          manifest-path: packages/enginelib/pixi.toml
-          # pixi's --locked verification is cwd-sensitive for workspaces
-          # with variant-expanded dev closures (upstream bug): it fails via
-          # --manifest-path from outside but passes in-directory — so we
-          # run the locked install ourselves.
-          run-install: false
-      - name: Locked install (in-directory)
-        working-directory: packages/enginelib
-        run: pixi install --locked
+          cache: true
+          # working-directory makes setup-pixi run FROM the package dir.
+          # (pixi's --locked verification is cwd-sensitive for workspaces
+          # with variant-expanded dev closures — upstream bug — so
+          # --manifest-path from the repo root would false-fail.)
+          working-directory: packages/enginelib
+          environments: v1 v3 spdlog14
       - name: microarch v1 + v3 (v4 skipped — runners lack AVX-512, __archspec would refuse)
         working-directory: packages/enginelib
         run: pixi install -e v1 && pixi install -e v3
@@ -129,7 +117,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
       - name: clang-format check
@@ -155,7 +143,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
           manifest-path: packages/mathkit/pixi.toml
