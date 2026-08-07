@@ -22,7 +22,10 @@ platforms = [
   # bound to this platform get packages built with clang instead of the
   # default gcc — deterministic env-side toolchain selection via platform
   # binding (no run-dep conflicts needed).
-  { name = "linux-64-clang", platform = "linux-64" },
+  # The explicit glibc floor equals pixi's portable default — it exists
+  # only to make this entry's content-identity distinct from
+  # linux-64-portable (lock aliases map back by contents).
+  { name = "linux-64-clang", platform = "linux-64", glibc = "2.28" },
 ]
 preview = ["pixi-build"]
 # Fail fast on pixi versions older than the features this workspace uses.
