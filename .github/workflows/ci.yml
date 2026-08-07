@@ -56,11 +56,13 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          # working-directory makes setup-pixi run FROM the package dir.
-          # (pixi's --locked verification is cwd-sensitive for workspaces
-          # with variant-expanded dev closures — upstream bug — so
-          # --manifest-path from the repo root would false-fail.)
           working-directory: packages/enginelib
+          # frozen (install exactly the lock) instead of locked: pixi's
+          # --locked satisfiability check of dev-package closures with
+          # variant-expanded deps is influenced by HOST virtual packages
+          # (repro: CONDA_OVERRIDE_CUDA= pixi install --locked) — upstream
+          # bug; the lock itself is still what gets installed.
+          frozen: true
           environments: test-asan test-tsan
       - name: ASan + UBSan
         working-directory: packages/enginelib
@@ -77,11 +79,13 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          # working-directory makes setup-pixi run FROM the package dir.
-          # (pixi's --locked verification is cwd-sensitive for workspaces
-          # with variant-expanded dev closures — upstream bug — so
-          # --manifest-path from the repo root would false-fail.)
           working-directory: packages/enginelib
+          # frozen (install exactly the lock) instead of locked: pixi's
+          # --locked satisfiability check of dev-package closures with
+          # variant-expanded deps is influenced by HOST virtual packages
+          # (repro: CONDA_OVERRIDE_CUDA= pixi install --locked) — upstream
+          # bug; the lock itself is still what gets installed.
+          frozen: true
           environments: test-coverage
       - name: Instrumented tests + report
         working-directory: packages/enginelib
@@ -99,11 +103,13 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           cache: true
-          # working-directory makes setup-pixi run FROM the package dir.
-          # (pixi's --locked verification is cwd-sensitive for workspaces
-          # with variant-expanded dev closures — upstream bug — so
-          # --manifest-path from the repo root would false-fail.)
           working-directory: packages/enginelib
+          # frozen (install exactly the lock) instead of locked: pixi's
+          # --locked satisfiability check of dev-package closures with
+          # variant-expanded deps is influenced by HOST virtual packages
+          # (repro: CONDA_OVERRIDE_CUDA= pixi install --locked) — upstream
+          # bug; the lock itself is still what gets installed.
+          frozen: true
           environments: v1 v3 spdlog14
       - name: microarch v1 + v3 (v4 skipped — runners lack AVX-512, __archspec would refuse)
         working-directory: packages/enginelib
