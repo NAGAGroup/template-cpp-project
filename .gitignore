@@ -11,6 +11,7 @@ compile_commands.json
 .idea/
 environment.sh
 environment.ps1
+/coverage/
 coverage.info
 *.profraw
 *.profdata
