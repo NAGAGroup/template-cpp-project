@@ -38,14 +38,13 @@ pixi exec pixi-pack --create-executable --environment default --platform linux-6
 cmake -B build -DCMAKE_PREFIX_PATH=$PWD/env
 ```
 
-> **Current limitation:** pixi-pack publishes source packages one at a
-> time (`--path` semantics), which forbids source run-deps — so packs
-> work for leaf envs (see the `header-only` env) but not yet for envs
-> with cross-package chains. Workspace-level `pixi publish` handles the
-> full chain fine: `pixi run publish-local` builds every opted-in
-> package (all variant builds included) into an indexed local channel
-> that any conda tool can consume. Upstream issue pending for the pack
-> path.
+> **Note (verified against latest pixi-pack docs, 2026-08-07):** packs
+> handle envs with cross-package source chains, source run-deps included —
+> an earlier limitation here has been fixed upstream. The `header-only`
+> env is just the smallest demo, not a workaround. For channel-style
+> distribution instead of env archives, `pixi run publish-local` builds
+> every opted-in package (all variant builds included) into an indexed
+> local channel that any conda tool can consume.
 
 ## Run-dependency doctrine (for your own packages)
 

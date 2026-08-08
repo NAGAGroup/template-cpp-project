@@ -126,8 +126,9 @@ no-default-feature = true
 platforms = ["linux-64-v4"]
 dependencies = { enginelib-v4 = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true } }
 
-# Leaf env for the pixi-pack demo (pixi-pack cannot yet handle envs whose
-# source packages have source run-deps — see docs/consuming.md).
+# Minimal env for the pixi-pack demo — smallest packable surface (see
+# docs/consuming.md; packing envs with cross-package source chains works
+# too, this one just keeps the demo tiny).
 [environments.header-only]
 no-default-feature = true
 dependencies = { mathkit = { workspace = true } }
