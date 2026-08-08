@@ -75,9 +75,13 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
   satisfiability re-solve is also buggy — repro:
   `CONDA_OVERRIDE_CUDA= pixi install --locked`). CI and consumers use
   DEFAULT resolution semantics; the committed lock still drives it.
-- pixi-pack publishes source packages per-package (--path semantics, no
-  source run-deps) → packs limited to leaf envs; workspace
-  `pixi publish` (publish-local task) handles full chains fine.
+- (historical: pre-0.75) publishing was per-package (--path semantics)
+  and packs were limited to leaf envs. Since pixi 0.75 (#6526),
+  `pixi publish` walks the workspace (gitignore-aware, nested
+  workspaces skipped) for packages opting in with `publish = true` and
+  builds/uploads the full chain in dependency order — verified on
+  0.76.1: a root `pixi publish --dry-run` discovers all 4 publish
+  packages / 5 outputs.
 - conda-forge microarch metapackages are unix-only noarch → no win-64
   microarch story.
 
