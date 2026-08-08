@@ -68,7 +68,7 @@ Deep dives live in [`docs/`](docs/): [why pixi](docs/why-pixi.md) ·
 [variants](docs/variants.md) · [build-variants](docs/build-variants.md) ·
 [external deps](docs/external-deps.md) · [versioning](docs/versioning.md) ·
 [toolchains](docs/toolchains.md) · [dev workflow](docs/dev-workflow.md) ·
-[tooling versions](docs/tooling-versions.md)
+[publishing](docs/publishing.md) · [tooling versions](docs/tooling-versions.md)
 
 ## Opinionated tooling versions — read this
 
