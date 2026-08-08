@@ -121,10 +121,20 @@ jobs:
           # setup-pixi rejects cache + run-install: false.
           cache: false
           run-install: false
+      # Two steps instead of one `pixi publish --to`: pixi (<= 0.76.1) parses
+      # only the LAST path segment of the --to URL as the channel name, so a
+      # user-scoped channel (prefix.dev/<user>/<channel>) uploads to the wrong
+      # channel and gets a 403. `pixi upload prefix` takes the channel name
+      # verbatim — same backend, same OIDC exchange, same attestation.
+      # See docs/publishing.md (footgun #6).
+      - name: Build the library packages (dependency-ordered publish set)
+        run: pixi publish --to ./dist
       # --generate-attestation adds sigstore build provenance (prefix.dev):
       # consumers can verify who built the package and from which workflow.
-      - name: Build and publish the library packages
-        run: pixi publish --to https://prefix.dev/jackm97/naga-labs --generate-attestation
+      - name: Upload to prefix.dev (trusted publishing + attestation)
+        run: |
+          shopt -s globstar
+          pixi upload prefix -c jackm97/naga-labs --generate-attestation --skip-existing ./dist/**/*.conda
 
   style:
     name: style + docs + lint (linux)

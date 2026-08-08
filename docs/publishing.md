@@ -93,6 +93,16 @@ to decide **deliberately** rather than discover later.
    variants of the same idea (this template's `acpp` branch publishes
    SYCL-flavored siblings), suffix them rather than letting two different
    things fight over one name.
+6. **`--to` mis-parses user-scoped channel URLs.** pixi (as of 0.76.1) takes
+   only the *last* path segment of the `--to` URL as the channel name, so
+   `--to https://prefix.dev/<user>/<channel>` uploads to `<channel>` — a
+   channel that isn't yours — and fails with an opaque `HTTP 403: Not
+   authorized` (your trusted-publishing setup is fine; the token went to the
+   wrong door). Single-segment channels are unaffected. Workaround: build
+   into a local channel first (`pixi publish --to ./dist`), then upload with
+   `pixi upload prefix -c <user>/<channel> ./dist/**/*.conda`, which takes
+   the channel name verbatim through the same backend (OIDC and
+   `--generate-attestation` included). This is what this template's CI does.
 
 Test the whole flow against `--to ./local-channel` first: it produces a real
 indexed channel you can add to another workspace's `channels` and install
