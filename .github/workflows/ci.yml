@@ -121,14 +121,10 @@ jobs:
           # setup-pixi rejects cache + run-install: false.
           cache: false
           run-install: false
-      # Two steps on purpose: `pixi publish --to <remote>` does not appear to
-      # perform the OIDC token exchange (it went straight to an unauthorized
-      # upload), while `rattler-build upload prefix` does. Building into an
-      # indexed local channel first also means the artifacts are inspectable.
-      - name: Build the library packages into a local channel
-        run: pixi publish --to ./local-channel
-      - name: Upload to prefix.dev (OIDC trusted publishing)
-        run: pixi exec rattler-build upload prefix -c jackm97/naga-labs local-channel/*/*.conda
+      # --generate-attestation adds sigstore build provenance (prefix.dev):
+      # consumers can verify who built the package and from which workflow.
+      - name: Build and publish the library packages
+        run: pixi publish --to https://prefix.dev/jackm97/naga-labs --generate-attestation
 
   style:
     name: style + docs + lint (linux)
