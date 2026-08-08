@@ -101,6 +101,28 @@ jobs:
       - name: Publish-set validation (dependency-ordered, self-contained)
         run: pixi publish --dry-run --to ./local-channel
 
+  publish:
+    # Real publishing with OIDC trusted publishing: the channel trusts this
+    # repo + workflow, so no API key is stored anywhere. See docs/publishing.md
+    # for the channel-side setup and the local/API-key alternative.
+    # Only libraries are published — the demo app is not in the publish set.
+    name: publish (linux)
+    needs: [consume, test, style]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC; nothing else needs write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: prefix-dev/setup-pixi@v0.10.0
+        with:
+          cache: true
+          locked: false
+          run-install: false
+      - name: Build and publish the library packages
+        run: pixi publish --to https://prefix.dev/jackm97/naga-labs
+
   style:
     name: style + docs + lint (linux)
     runs-on: ubuntu-latest

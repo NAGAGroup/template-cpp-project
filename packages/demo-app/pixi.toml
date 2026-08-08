@@ -4,7 +4,9 @@
 [package]
 name = "demo-app"
 version = "0.1.0"
-publish = true
+# NOT published: a channel is for libraries other projects consume, not for
+# demo applications. (Omitting `publish = true` keeps it out of the set that
+# `pixi publish` walks.)
 
 [package.build]
 backend = { name = "pixi-build-cmake", version = "*" }

@@ -61,6 +61,11 @@ consumers still link through the export set). CAUTION: run-exports (and
 any name-based source reference) break if member manifests carry their
 own [workspace] — keep the single-workspace layout.
 
+## Publishing your own
+
+See [publishing.md](publishing.md) for `pixi publish`, trusted-publishing auth,
+and the namespace footguns worth deciding deliberately.
+
 ## Support policy
 
 The pixi pipeline above is the only officially supported consumption
