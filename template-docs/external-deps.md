@@ -44,8 +44,12 @@ FetchContent.
 pixi's source-package identifier hash excludes recipe CONTENT, so
 changing `recipe.yaml` alone leaves the old metadata in `pixi.lock` —
 your change looks like it had no effect (we once concluded a pixi
-feature was broken from exactly this artifact). Force re-resolution
-with `pixi update <package>`; it re-queries the backend and rolls the
+feature was broken from exactly this artifact). This silently pins ALL
+recipe-level metadata (run_exports, requirements, everything), and the
+sharp edge is that the backend DECLARES the recipe file as a metadata
+input — lock satisfiability just doesn't consult that declaration on
+recipe-only edits (upstream candidate). Force re-resolution with
+`pixi update <package>`; it re-queries the backend and rolls the
 record hash. Targeted updates reject the whole command if any named
 package is only a transitive dep, so name a direct one.
 
