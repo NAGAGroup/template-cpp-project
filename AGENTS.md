@@ -30,9 +30,13 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
 3. **Environment doctrine.** ONE workspace manifest at the repo root —
    member projects are PACKAGE-ONLY manifests (a monorepo only holds
    projects sharing a variant matrix; anything else is its own repo).
-   Implicit default env = the adaptive library-consumer env (never
-   declare `[environments.default]`); demo-app lives in the `app` env
-   (portable chain can't coexist with microarch builds). Single-use env
+   Implicit default env = the library-consumer env, portable by
+   contract (= the v1 microarch tier; never declare
+   `[environments.default]`); demo-app lives in the `app` env (an app
+   is not a library-consumer surface). Platforms: bare entries for
+   everything a normal user touches (bare linux-64 FIRST); rich inline
+   entries are CAPABILITY GATES only (microarch tiers, cuda-class) —
+   never selection routers, never content-identity hacks. Single-use env
    content is defined INLINE on environments; features carry only SHARED
    content. All non-default envs use `no-default-feature = true`. Dev
    envs are strictly per-package (a shared dev env would build sibling
@@ -67,9 +71,23 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
 - Nested [workspace] sections in member manifests break name-based
   source refs (run-exports, version-string run-deps) — avoided by the
   single-workspace layout (rule 3/5).
-- Env-side variant selection works via run-dep conflicts OR custom-
-  platform-scoped single-value variants; run-deps are not
-  variant-substituted (pixi#4303) → microarch is per-level subpackages.
+- Env-side variant selection works via run-dep conflicts; run-deps are
+  not variant-substituted (pixi#4303, re-verified 0.76.1) → the
+  microarch axis is HOST-consumed (host tables variant-expand; the
+  runtime gate reaches run-deps via the flag-setter's strong
+  run-export). HOST placement (not build) is load-bearing — from
+  build-deps the strong export contaminates the package's own host
+  solve and binds building to the build machine.
+- pixi does not MATCH archspec at install/run (deliberate, pixi#3281;
+  feature request #5285): microarch tier envs are solve-time gated
+  only — a weaker machine installs/runs them silently (SIGILL later).
+  Advisory `check-microarch` task + docs warning stand in until
+  upstream lands; the gates then enforce with zero changes here.
+- pixi-build-cmake has no build-number config → conda-forge's
+  per-level build-number prioritisation is not expressible; among
+  multiple CPU-compatible optimized builds the solver ties (v4 env may
+  resolve a lower build). Tracked; rattler-build backend = escape
+  hatch.
 - `--locked`/`--frozen` are developer-side tools for already-installed
   envs; virtual packages legitimately differ across hosts (and their
   satisfiability re-solve is also buggy — repro:
@@ -91,9 +109,10 @@ Run before claiming anything works (all from the repo root):
 `pixi run demo && pixi run test-all`; `pixi run -e test-coverage
 coverage`; `pixi run -e dev-enginelib dev-test` and `lint`;
 `pixi run -e dev-mathkit dev-test`; `pixi run -e style format-check`;
-`pixi install -e clang -e v3 -e spdlog14`; `pixi publish --dry-run --to
-./local-channel`. Windows: the same minus sanitizers/coverage/microarch/
-clang envs.
+`pixi run check-microarch`; `pixi install -e clang -e v0 -e v3 -e
+spdlog14`; `pixi exec --spec nushell nu ci/check-publish-set.nu`.
+Windows: the same
+minus sanitizers/coverage/microarch/clang envs.
 
 ## Divergence checklist (for agents auditing OTHER NAGA repos)
 
