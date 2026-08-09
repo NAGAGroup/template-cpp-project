@@ -474,10 +474,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: demo-app-mingw[a866ab18] @ packages/demo-app/variants/mingw
-      - conda_source: enginelib-mingw[22b9a815] @ packages/enginelib/variants/mingw
+      - conda_source: demo-app-mingw[f08f2652] @ packages/demo-app/variants/mingw
+      - conda_source: enginelib-mingw[2f17f041] @ packages/enginelib/variants/mingw
+      - conda_source: fmt-mingw[63891cd0] @ external/fmt-mingw
       - conda_source: mathkit[d827603a] @ packages/mathkit
-      - conda_source: spdlog-mingw[cc6830e4] @ external/spdlog-mingw
+      - conda_source: spdlog-mingw[d0639d3a] @ external/spdlog-mingw
       - conda_source: stb[3851d148] @ external/stb
   demo-static:
     channels:
@@ -1577,9 +1578,9 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: enginelib-mingw[22b9a815] @ packages/enginelib/variants/mingw
+      - conda_source: enginelib-mingw[2f17f041] @ packages/enginelib/variants/mingw
       - conda_source: mathkit[d827603a] @ packages/mathkit
-      - conda_source: spdlog-mingw[cc6830e4] @ external/spdlog-mingw
+      - conda_source: spdlog-mingw[d0639d3a] @ external/spdlog-mingw
       - conda_source: stb[3851d148] @ external/stb
   header-only:
     channels:
@@ -2103,10 +2104,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: enginelib-mingw[22b9a815] @ packages/enginelib/variants/mingw
-      - conda_source: enginelib-tests-mingw[04eff193] @ packages/enginelib/tests/variants/mingw
+      - conda_source: enginelib-mingw[2f17f041] @ packages/enginelib/variants/mingw
+      - conda_source: enginelib-tests-mingw[87499741] @ packages/enginelib/tests/variants/mingw
       - conda_source: mathkit[d827603a] @ packages/mathkit
-      - conda_source: spdlog-mingw[cc6830e4] @ external/spdlog-mingw
+      - conda_source: spdlog-mingw[d0639d3a] @ external/spdlog-mingw
       - conda_source: stb[3851d148] @ external/stb
   test-lowest:
     channels:
@@ -4505,7 +4506,7 @@ packages:
   - conda_source: fmt[f052f783] @ external/fmt
   - conda_source: mathkit[d827603a] @ packages/mathkit
   - conda_source: stb[3851d148] @ external/stb
-- conda_source: demo-app-mingw[a866ab18] @ packages/demo-app/variants/mingw
+- conda_source: demo-app-mingw[f08f2652] @ packages/demo-app/variants/mingw
   variants:
     cmake: '4.4'
     m2w64_cxx_compiler: gxx
@@ -4515,12 +4516,15 @@ packages:
   - libstdcxx >=14
   - libgcc >=14
   - ucrt >=10.0.20348.0
+  - fmt-mingw >=11.2,<11.3
   - enginelib-mingw >=0.1.0,<0.2
   source:
     path: ../..
   source_depends:
     enginelib-mingw:
       path: ../../../enginelib/variants/mingw
+    fmt-mingw:
+      path: ../../../../external/fmt-mingw
   build_packages:
   - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-h4c7d964_0.conda
   - conda: https://conda.anaconda.org/conda-forge/noarch/libgcc-devel_win-64-14.4.0-h4af83d7_101.conda
@@ -4573,10 +4577,10 @@ packages:
   - conda: https://conda.anaconda.org/conda-forge/win-64/vc-14.5-ha367084_41.conda
   - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
   - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda_source: enginelib-mingw[22b9a815] @ packages/enginelib/variants/mingw
-  - conda_source: fmt-mingw[4389834c] @ external/fmt-mingw
+  - conda_source: enginelib-mingw[2f17f041] @ packages/enginelib/variants/mingw
+  - conda_source: fmt-mingw[63891cd0] @ external/fmt-mingw
   - conda_source: mathkit[d827603a] @ packages/mathkit
-  - conda_source: spdlog-mingw[cc6830e4] @ external/spdlog-mingw
+  - conda_source: spdlog-mingw[d0639d3a] @ external/spdlog-mingw
   - conda_source: stb[3851d148] @ external/stb
 - conda_source: demo-app-static[718e4846] @ packages/demo-app/variants/static
   variants:
@@ -5336,7 +5340,7 @@ packages:
   - conda: https://conda.anaconda.org/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
   - conda_source: mathkit[9987d90e] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-mingw[22b9a815] @ packages/enginelib/variants/mingw
+- conda_source: enginelib-mingw[2f17f041] @ packages/enginelib/variants/mingw
   variants:
     cmake: '4.4'
     m2w64_cxx_compiler: gxx
@@ -5346,10 +5350,10 @@ packages:
   - mathkit
   - mathkit >=0.1.0,<0.2
   - stb
-  - spdlog-mingw
   - libstdcxx >=14
   - libgcc >=14
   - ucrt >=10.0.20348.0
+  - spdlog-mingw >=1.15.3,<1.16
   run_exports:
     weak:
     - enginelib-mingw >=0.1.0,<0.2
@@ -5417,7 +5421,7 @@ packages:
   - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
   - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
   - conda_source: mathkit[d827603a] @ packages/mathkit
-  - conda_source: spdlog-mingw[cc6830e4] @ external/spdlog-mingw
+  - conda_source: spdlog-mingw[d0639d3a] @ external/spdlog-mingw
   - conda_source: stb[3851d148] @ external/stb
 - conda_source: enginelib-relwithdebinfo[7b4d7345] @ packages/enginelib/variants/relwithdebinfo
   variants:
@@ -5966,7 +5970,7 @@ packages:
   - conda_source: enginelib-coverage[87499ba4] @ packages/enginelib/variants/coverage
   - conda_source: mathkit[9987d90e] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests-mingw[04eff193] @ packages/enginelib/tests/variants/mingw
+- conda_source: enginelib-tests-mingw[87499741] @ packages/enginelib/tests/variants/mingw
   variants:
     cmake: '4.4'
     m2w64_cxx_compiler: gxx
@@ -6035,9 +6039,9 @@ packages:
   - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
   - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
   - conda_source: catch2-mingw[bf3ffaab] @ external/catch2-mingw
-  - conda_source: enginelib-mingw[22b9a815] @ packages/enginelib/variants/mingw
+  - conda_source: enginelib-mingw[2f17f041] @ packages/enginelib/variants/mingw
   - conda_source: mathkit[d827603a] @ packages/mathkit
-  - conda_source: spdlog-mingw[cc6830e4] @ external/spdlog-mingw
+  - conda_source: spdlog-mingw[d0639d3a] @ external/spdlog-mingw
   - conda_source: stb[3851d148] @ external/stb
 - conda_source: enginelib-tests-tsan[f016e3e9] @ packages/enginelib/tests/variants/tsan
   variants:
@@ -7228,7 +7232,7 @@ packages:
   - conda: https://conda.anaconda.org/conda-forge/noarch/x86_64-microarch-level-2-4_level2.conda
   - conda_source: mathkit[9987d90e] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: fmt-mingw[4389834c] @ external/fmt-mingw
+- conda_source: fmt-mingw[63891cd0] @ external/fmt-mingw
   variants:
     cmake: '4.4'
     target_platform: win-64
@@ -7236,6 +7240,12 @@ packages:
   - libstdcxx >=14
   - libgcc >=14
   - ucrt >=10.0.20348.0
+  run_exports:
+    weak:
+    - fmt-mingw >=11.2,<11.3
+  source_depends:
+    fmt-mingw:
+      path: .
   build_packages:
   - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-h4c7d964_0.conda
   - conda: https://conda.anaconda.org/conda-forge/noarch/libgcc-devel_win-64-14.4.0-h4af83d7_101.conda
@@ -7610,7 +7620,7 @@ packages:
   - conda: https://conda.anaconda.org/conda-forge/win-64/vc-14.5-ha367084_41.conda
   - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
   - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-- conda_source: spdlog-mingw[cc6830e4] @ external/spdlog-mingw
+- conda_source: spdlog-mingw[d0639d3a] @ external/spdlog-mingw
   variants:
     cmake: '4.4'
     target_platform: win-64
@@ -7618,6 +7628,12 @@ packages:
   - libstdcxx >=14
   - libgcc >=14
   - ucrt >=10.0.20348.0
+  run_exports:
+    weak:
+    - spdlog-mingw >=1.15.3,<1.16
+  source_depends:
+    spdlog-mingw:
+      path: .
   build_packages:
   - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-h4c7d964_0.conda
   - conda: https://conda.anaconda.org/conda-forge/noarch/libgcc-devel_win-64-14.4.0-h4af83d7_101.conda

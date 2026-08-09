@@ -74,10 +74,16 @@ machinery, and the preset is exactly where configure detail lives.)
   conda-forge spdlog win-64 artifact ships
   `INTERFACE_COMPILE_OPTIONS "/Zc:__cplusplus;$<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:MSVC>>:/utf-8>"`
   — note the asymmetry: `/utf-8` properly genex-guarded,
-  `/Zc:__cplusplus` UNCONDITIONAL (baked by a plain `if(MSVC)` at
-  spdlog's own configure time), and it sits on the
+  `/Zc:__cplusplus` UNCONDITIONAL, and it sits on the
   `spdlog_header_only` target too. g++ parses that flag as an input
-  file. So header-only consumption does NOT escape the regime — you
+  file. This is an UPSTREAM bug, not conda-forge packaging sloppiness:
+  spdlog's own `CMakeLists.txt` (v1.15.3) sets it inside an `if(MSVC)`
+  block — a BUILD-time check that says nothing about the CONSUMER's
+  compiler — while the very next lines wrap `/utf-8` in a
+  `$<CXX_COMPILER_ID:MSVC>` genex; the fix pattern is sitting four
+  lines below the defect. **Generalizable smell: `if(MSVC)`-guarded
+  INTERFACE properties in any C++ package you consume** — a build-time
+  condition writing a consumer-time flag. So header-only consumption does NOT escape the regime — you
   still import the config. **In-regime pixi SOURCE packages are what
   actually solve it**: the mingw lane consumes `external/spdlog-mingw`
   / `fmt-mingw` / `catch2-mingw` wrapper rebuilds, whose own builds

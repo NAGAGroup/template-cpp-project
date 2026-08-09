@@ -54,6 +54,15 @@ coincidentally also the highest in range: a degenerate observable).
 Min-version testing composes with run-export floors; it does not
 bypass them. An unconstrained direct dep resolves genuinely lowest.
 
+Why floors happen at all: a consumed source package's HOST deps are
+resolved in a NESTED solve that does not inherit the env's strategy,
+and their run-exports are baked into the source record as floors — the
+env solve then applies lowest-direct faithfully to an already-floored
+candidate set. Spotting it in a lock: a **doubled spec on a source
+record** (the raw spec plus a tighter pin) is the fingerprint of a
+run-export floor. So state the guarantee precisely: `test-lowest`
+lowers every UNFLOORED direct dep and cannot lower floored ones.
+
 ## Task features
 
 `style-tasks` (format/format-check/docs/open-docs → default env),

@@ -39,6 +39,16 @@ escape hatch is total: whatever upstream's build looks like, the result
 is a normal conda package, and nothing ever forces you back to
 FetchContent.
 
+## ⚠ Editing a recipe does not invalidate its lock record
+
+pixi's source-package identifier hash excludes recipe CONTENT, so
+changing `recipe.yaml` alone leaves the old metadata in `pixi.lock` —
+your change looks like it had no effect (we once concluded a pixi
+feature was broken from exactly this artifact). Force re-resolution
+with `pixi update <package>`; it re-queries the backend and rolls the
+record hash. Targeted updates reject the whole command if any named
+package is only a transitive dep, so name a direct one.
+
 ## Propagation rules for wrapper deps
 
 Same as any dep: public in your headers → the dep weak-exports itself
