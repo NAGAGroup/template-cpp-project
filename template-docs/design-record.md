@@ -5,7 +5,7 @@ are carried VERBATIM (where quoted) from the ratified design spec
 (TEMPLATE-FULL-SPEC.md, Jack Myers, 2026-08). Any amendment must cite
 the IDs it touches. Mechanically-checkable constraints are CI-asserted
 (`ci/check-publish-set.nu`, `ci/check-lock-tiers.nu`,
-`ci/check-spec-forms.nu`, `ci/check-lock-tiers.nu`).
+`ci/check-spec-forms.nu`, `ci/check-ci-shape.nu`).
 
 - **C-01** No microarch variant naming. (Origin of the constraints
   doctrine: spoken, never written, once violated by `enginelib-v1/v3/v4`.)
