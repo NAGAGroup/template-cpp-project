@@ -16,13 +16,6 @@ set(ENGINELIB_BUILD_TYPE "" CACHE STRING
 set(ENGINELIB_SANITIZER "" CACHE STRING
     "Sanitizers to enable (e.g. 'address,undefined' or 'thread')")
 option(ENGINELIB_COVERAGE "Enable llvm-cov source-based coverage" OFF)
-# ABI-REGIME CLOSURE knob (the mingw lesson): a GNU-on-Windows build
-# cannot link the channel's MSVC-built spdlog/fmt import libraries —
-# every native-code dependency must match the toolchain's ABI regime.
-# Header-only consumption compiles those deps into this library and
-# removes the foreign-ABI imports entirely.
-option(ENGINELIB_HEADER_ONLY_DEPS
-       "Consume spdlog/fmt header-only (required off-regime, e.g. mingw)" OFF)
 
 set(BUILD_SHARED_LIBS ${ENGINELIB_SHARED})
 if(ENGINELIB_BUILD_TYPE)
@@ -79,30 +72,16 @@ target_include_directories(
          $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
          $<INSTALL_INTERFACE:include>)
 target_compile_features(enginelib PUBLIC cxx_std_23)
-if(ENGINELIB_HEADER_ONLY_DEPS)
-  # Regime closure reaches CMake METADATA too: configs exported from an
-  # MSVC build bake MSVC-only flags into INTERFACE_COMPILE_OPTIONS
-  # (spdlog bakes /Zc:__cplusplus via a plain if(MSVC) at its own
-  # configure time — g++ parses that as an input file). Header-only
-  # consumption needs none of those options; scrub them.
-  foreach(dep_tgt spdlog::spdlog_header_only fmt::fmt fmt::fmt-header-only)
-    if(TARGET ${dep_tgt})
-      set_target_properties(${dep_tgt} PROPERTIES INTERFACE_COMPILE_OPTIONS "")
-    endif()
-  endforeach()
-  target_link_libraries(
-    enginelib
-    PUBLIC mathkit::mathkit
-    PRIVATE spdlog::spdlog_header_only stb::stb)
-  # spdlog's header-only target still interface-links the external fmt;
-  # FMT_HEADER_ONLY inlines it so no fmt import symbols remain.
-  target_compile_definitions(enginelib PRIVATE FMT_HEADER_ONLY)
-else()
-  target_link_libraries(
-    enginelib
-    PUBLIC mathkit::mathkit
-    PRIVATE spdlog::spdlog stb::stb)
-endif()
+# Regime note: on the mingw lane, find_package(spdlog) resolves the
+# spdlog-mingw SOURCE wrapper's own GNU-regime config — the manifests
+# swap the DEPENDENCY, never this file. (The channel's MSVC config
+# bakes MSVC-only flags into its exported interface, so no consumption
+# mode of that artifact works cross-regime; see
+# template-docs/variants.md.)
+target_link_libraries(
+  enginelib
+  PUBLIC mathkit::mathkit
+  PRIVATE spdlog::spdlog stb::stb)
 
 include(GenerateExportHeader)
 generate_export_header(enginelib EXPORT_FILE_NAME

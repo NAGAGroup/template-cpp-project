@@ -73,6 +73,8 @@ demo-app-mingw = { path = "packages/demo-app/variants/mingw" }
 fmt = { path = "external/fmt" }
 stb = { path = "external/stb" }
 catch2-mingw = { path = "external/catch2-mingw" }
+spdlog-mingw = { path = "external/spdlog-mingw" }
+fmt-mingw = { path = "external/fmt-mingw" }
 catch2 = ">=3.5,<4"
 spdlog = ">=1.15,<1.16"
 
@@ -195,11 +197,14 @@ spdlog = { workspace = true }
 # linux that IS the default enginelib (gcc prod); on win it is the
 # mingw NAMED variant. Shared deps sit in the base table; target
 # tables carry only the per-platform delta.
-[feature.gnu.dependencies]
-spdlog = { workspace = true }
-
+# spdlog is LINUX-scoped here: on linux the gnu realization is the
+# channel-binary flavor (the pin keeps variant selection
+# deterministic); on win the mingw lane consumes the spdlog-mingw
+# source wrapper through enginelib-mingw's own closure — the channel
+# spdlog would be dead weight in the env.
 [feature.gnu.target.linux-64.dependencies]
 enginelib = { workspace = true }
+spdlog = { workspace = true }
 
 [feature.gnu.target.win-64.dependencies]
 enginelib-mingw = { workspace = true }
@@ -296,11 +301,13 @@ features = ["demo-tasks"]
 no-default-feature = true
 dependencies = { demo-app-clang = { workspace = true }, spdlog = { workspace = true } }
 
+# No spdlog pin here: the mingw closure is fully in-regime source
+# wrappers — nothing in this env participates in the spdlog axis.
 [environments.demo-gnu-windows]
 platforms = ["win-64"]
 features = ["demo-tasks"]
 no-default-feature = true
-dependencies = { demo-app-mingw = { workspace = true }, spdlog = { workspace = true } }
+dependencies = { demo-app-mingw = { workspace = true } }
 
 # Environments show capability, not just CI need: every preset variant
 # has a consuming env — the template is a tutorial surface, and users

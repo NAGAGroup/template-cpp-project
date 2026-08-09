@@ -63,22 +63,33 @@ machinery, and the preset is exactly where configure detail lives.)
   link-compatible with MSVC consumers. The lock metadata shows the two
   regimes directly: `enginelib-clang` (win) carries `vc14_runtime`;
   `enginelib-mingw` carries `libstdcxx`/`libgcc`.
-- **Regime closure (learned the hard way — the first mingw CI build
-  failed at link):** the regime requirement extends to every
-  NATIVE-CODE dependency. A mingw object cannot link the channel's
-  MSVC-built import libraries (`undefined reference to __imp_…` with
-  GNU mangling). Two escapes, both demonstrated: header-only
-  consumption compiles the dep in (`--preset=mingw` sets
-  `*_HEADER_ONLY_DEPS`, switching to `spdlog::spdlog_header_only` /
-  `fmt::fmt-header-only`); compiled deps with no header-only mode get
-  an in-regime wrapper rebuild (`external/catch2-mingw`, consumed only
-  by the mingw tests — a TARBALL-source rattler recipe: pixi's all-refs
-  git fetch of upstream Catch2 hard-fails on Windows' case-insensitive
-  filesystem). Header-only deps (mathkit, stb) are regime-neutral and
-  need nothing. Closure even reaches CMAKE METADATA: configs exported
-  from an MSVC build can bake MSVC-only flags into interface options
-  (spdlog bakes `/Zc:__cplusplus`) — the header-only branch scrubs
-  `INTERFACE_COMPILE_OPTIONS` on the foreign-regime targets.
+- **Regime closure (learned the hard way — the first mingw CI builds
+  failed, each failure a distinct lesson):** the regime requirement
+  extends to every NATIVE-CODE dependency, and it reaches further than
+  binaries. (a) *Link regime:* a mingw object cannot link the
+  channel's MSVC-built import libraries (`undefined reference to
+  __imp_…` with GNU mangling). (b) *Exported-interface regime — the
+  decisive one:* a foreign-regime package contaminates you through its
+  EXPORTED CMAKE CONFIG, not merely its binaries. The actual
+  conda-forge spdlog win-64 artifact ships
+  `INTERFACE_COMPILE_OPTIONS "/Zc:__cplusplus;$<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:MSVC>>:/utf-8>"`
+  — note the asymmetry: `/utf-8` properly genex-guarded,
+  `/Zc:__cplusplus` UNCONDITIONAL (baked by a plain `if(MSVC)` at
+  spdlog's own configure time), and it sits on the
+  `spdlog_header_only` target too. g++ parses that flag as an input
+  file. So header-only consumption does NOT escape the regime — you
+  still import the config. **In-regime pixi SOURCE packages are what
+  actually solve it**: the mingw lane consumes `external/spdlog-mingw`
+  / `fmt-mingw` / `catch2-mingw` wrapper rebuilds, whose own builds
+  export GNU-regime configs; the CMakeLists never changes per regime,
+  only the manifest dependency swaps. (c) *Fetch regime:* those
+  wrappers use TARBALL sources (url + sha256, rattler recipes) —
+  pixi's all-refs git fetch of upstream Catch2 hard-fails on Windows'
+  case-insensitive filesystem (case-conflicting refs in repo history;
+  the tag trees are case-clean, verified). Header-only deps you own
+  (mathkit, stb) are regime-neutral and need nothing. The spdlog
+  build-variant axis deliberately does not reach the mingw lane — the
+  axis belongs to the channel-binary happy path.
 - Header-only packages (mathkit, stb) get NO compiler variants: their
   generated CMake config is byte-identical across compilers (verified) —
   no artifact, no ABI, nothing to name.

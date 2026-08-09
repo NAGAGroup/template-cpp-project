@@ -1,0 +1,12 @@
+# WRAPPER PACKAGE: fmt, rebuilt from upstream IN THE MINGW ABI REGIME
+# (rattler-build escape hatch, release-tarball source). Same version as
+# the ../fmt wrapper; consumed only by demo-app-mingw, whose direct
+# fmt::fmt usage needs a GNU-regime config + library (see
+# ../spdlog-mingw for the exported-CMake-interface contamination
+# lesson that makes in-regime rebuilds the real fix).
+[package]
+name = "fmt-mingw"
+version = "11.2.0"
+
+[package.build]
+backend = { name = "pixi-build-rattler-build", version = "==0.4.5" }

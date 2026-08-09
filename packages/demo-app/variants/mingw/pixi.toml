@@ -11,12 +11,12 @@ backend = { name = "pixi-build-cmake", version = "==0.4.5" }
 [package.build.source]
 path = "../.."
 
-# --preset=mingw consumes fmt header-only (ABI-regime closure — see
-# packages/enginelib/variants/mingw).
 [package.build.config]
-extra-args = ["--preset=mingw"]
+extra-args = ["--preset=default"]
 compilers = ["m2w64_cxx"]
 
+# fmt-mingw, not the MSVC-regime fmt wrapper: regime closure via
+# in-regime source packages (see packages/enginelib/variants/mingw).
 [package.host-dependencies]
 enginelib-mingw = { workspace = true }
-fmt = { workspace = true }
+fmt-mingw = { workspace = true }

@@ -22,18 +22,23 @@ backend = { name = "pixi-build-cmake", version = "==0.4.5" }
 [package.build.source]
 path = "../.."
 
-# The mingw preset consumes spdlog/fmt HEADER-ONLY: the ABI-regime
-# lesson with teeth — this GNU-regime build cannot link the channel's
-# MSVC-built import libraries, so every native-code dep must be
-# in-regime (header-only compiles them in; catch2 gets an in-regime
-# wrapper rebuild for the tests — see external/catch2-mingw).
 [package.build.config]
-extra-args = ["--preset=mingw"]
+extra-args = ["--preset=default"]
 compilers = ["m2w64_cxx"]
 
+# REGIME CLOSURE: every native-code dep is in-regime — spdlog comes
+# from the spdlog-mingw SOURCE wrapper, not the channel's MSVC build.
+# The channel package contaminates through its EXPORTED CMAKE
+# INTERFACE (an unconditional /Zc:__cplusplus in the config's
+# INTERFACE_COMPILE_OPTIONS — even on the header-only target), so no
+# consumption mode of the MSVC artifact escapes; an in-regime source
+# package is the actual fix. mathkit/stb are header-only and
+# regime-neutral. Note the spdlog build-variant axis deliberately does
+# NOT reach this lane (the wrapper pins one lineage) — the axis
+# belongs to the channel-binary happy path.
 [package.host-dependencies]
 mathkit = { workspace = true }
-spdlog = "*"
+spdlog-mingw = { workspace = true }
 stb = { workspace = true }
 
 [package.run-dependencies]
