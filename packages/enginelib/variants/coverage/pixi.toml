@@ -7,7 +7,7 @@ name = "enginelib-coverage"
 version = "0.1.0"
 
 [package.build]
-backend = { name = "pixi-build-cmake", version = "*" }
+backend = { name = "pixi-build-cmake", version = "==0.4.5" }
 
 [package.build.source]
 path = "../.."
@@ -17,8 +17,8 @@ extra-args = ["--preset=coverage"]
 compilers = []
 
 [package.build-dependencies]
-clangxx_linux-64 = "*"
-compiler-rt = "*"
+clangxx_linux-64 = ">=22.1,<22.2"
+compiler-rt = ">=22.1,<22.2"
 
 [package.host-dependencies]
 mathkit = { workspace = true }

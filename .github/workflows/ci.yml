@@ -107,6 +107,8 @@ jobs:
         run: pixi exec --spec nushell nu ci/check-publish-set.nu
       - name: Lock tier-selection assertion (nondeterministic source-variant guard)
         run: pixi exec --spec nushell nu ci/check-lock-tiers.nu
+      - name: Spec-form assertion (wildcards only as variant placeholders)
+        run: pixi exec --spec nushell nu ci/check-spec-forms.nu
 
   publish:
     # Real publishing with OIDC trusted publishing: the channel trusts this

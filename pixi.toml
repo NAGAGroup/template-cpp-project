@@ -243,7 +243,7 @@ cmd = "enginelib-tests"
 platforms = ["linux-64"]
 features = ["testing"]
 no-default-feature = true
-dependencies = { enginelib-tests-coverage = { workspace = true }, spdlog = { workspace = true }, llvm-tools = ">=20", nushell = "*" }
+dependencies = { enginelib-tests-coverage = { workspace = true }, spdlog = { workspace = true }, llvm-tools = ">=20", nushell = ">=0.114,<0.115" }
 [environments.test-coverage.tasks.test]
 cmd = "enginelib-tests"
 [environments.test-coverage.tasks.coverage]
@@ -269,10 +269,10 @@ cmd = "mathkit-tests && enginelib-tests"
 mathkit = { path = "packages/mathkit" }
 
 [feature.dev-mathkit.dependencies]
-nushell = "*"
+nushell = ">=0.114,<0.115"
 catch2 = { workspace = true }
-clang-tools = "*"
-clang = "*"
+clang-tools = ">=22.1,<22.2"
+clang = ">=22.1,<22.2"
 
 [feature.dev-mathkit.tasks.configure]
 cmd = "nu scripts/configure-dev.nu packages/mathkit"
@@ -295,13 +295,13 @@ no-default-feature = true
 enginelib = { path = "packages/enginelib" }
 
 [feature.dev-enginelib.dependencies]
-nushell = "*"
+nushell = ">=0.114,<0.115"
 catch2 = { workspace = true }
 # Pin the variant-expanded dep to the default lineage: an unpinned
 # variant dep in a dev closure makes --locked verification unstable.
 spdlog = { workspace = true }
-clang-tools = "*"
-clang = "*"
+clang-tools = ">=22.1,<22.2"
+clang = ">=22.1,<22.2"
 
 [feature.dev-enginelib.tasks.configure]
 cmd = "nu scripts/configure-dev.nu packages/enginelib"
@@ -331,9 +331,9 @@ no-default-feature = true
 demo-app = { path = "packages/demo-app" }
 
 [feature.dev-demo-app.dependencies]
-nushell = "*"
-clang-tools = "*"
-clang = "*"
+nushell = ">=0.114,<0.115"
+clang-tools = ">=22.1,<22.2"
+clang = ">=22.1,<22.2"
 
 [feature.dev-demo-app.tasks.configure]
 cmd = "nu scripts/configure-dev.nu packages/demo-app"
@@ -348,7 +348,7 @@ no-default-feature = true
 # discovery — come from the env, never the system.
 [environments.style]
 no-default-feature = true
-dependencies = { clang-format = "*", doxygen = "*", git = "*", nushell = "*" }
+dependencies = { clang-format = ">=22.1,<22.2", doxygen = ">=1.17,<1.18", git = ">=2.55,<2.56", nushell = ">=0.114,<0.115" }
 [environments.style.tasks.format]
 cmd = "nu scripts/format.nu"
 description = "Format all C++ sources in-place (parallel)"

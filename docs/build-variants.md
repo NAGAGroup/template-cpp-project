@@ -25,8 +25,16 @@ dependencies = { enginelib = { workspace = true }, spdlog = ">=1.14,<1.15" }  # 
 ```
 
 (Spec-form rule, repo-wide: prefer `pixi add` over hand-writing specs;
-hand-written specs use `">=x"`, `">=a.b,<c"`, or `"==a.b.c"` — never
-`"X.*"`.)
+hand-written specs use `">=x"`, `">=a.b,<a.c"`, or `"==a.b.c"` — never
+`"X.*"`, never bare `"*"`… with ONE deliberate carve-out: **a dep that
+participates in the build-variant matrix is declared `"*"`** — that is
+the documented variant-substitution placeholder (pixi's variants page:
+`python = "*"`, "Used to be 3.12.*"; the axis fills it). Do not "fix"
+these — a blanket no-wildcard rule breaks variant expansion.
+`ci/check-spec-forms.nu` enforces exactly this distinction. Build
+BACKENDS are exact-pinned (`==version`) per R11: they version
+independently of pixi and are the real behavior surface for source
+packages — a backend bump is a deliberate PR, like the pixi floor.)
 
 An environment picks a variant build **through run-dependency
 conflicts**: the 1.14-built enginelib carries spdlog's `<1.15`

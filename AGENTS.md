@@ -91,8 +91,12 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
   until green. Binary consumers select correctly (verified) and are
   unaffected.
 - Spec-form rule (Jack): prefer `pixi add`; hand-written specs use
-  `">=x"` / `">=a.b,<c"` / `"==a.b.c"` — never `"X.*"`. Microarch
-  levels have no minor versions: pin `==N`.
+  `">=x"` / `">=a.b,<a.c"` / `"==a.b.c"` — never `"X.*"`, never bare
+  `"*"` EXCEPT variant-substitution placeholders (deps in the
+  build-variant matrix are declared `"*"` — documented mechanism; CI
+  enforces the distinction via ci/check-spec-forms.nu). Microarch
+  levels have no minor versions: pin `==N`. Build backends are
+  exact-pinned (`==version`, R11); bumping one is a deliberate PR.
 - Manifest composition rule: share features across envs that share
   deps (tier envs = shared `consumer` feature + selector-only tier
   features); a feature needing different solve semantics carries its
