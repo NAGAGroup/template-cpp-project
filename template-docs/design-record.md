@@ -90,3 +90,44 @@ the IDs it touches. Mechanically-checkable constraints are CI-asserted
   mingw carries `libstdcxx`/`libgcc`/`ucrt`, enginelib-clang (win)
   carries `vc14_runtime` — the two win regimes visibly distinct,
   asserted implicitly by every solved install.
+
+## A check is worth nothing until it has been observed EXECUTING
+
+Recorded as doctrine because it arrived three separate ways in one
+night, each time disguised as a different problem, and each time the
+underlying mistake was the same: **confirming that a check is CORRECT
+is not confirming that it RUNS.**
+
+1. **A new assert that never ran.** `ci/check-doc-refs.nu` was written,
+   its pass and fail paths verified locally, and pushed — onto a branch
+   the CI workflow did not trigger on, because the trigger list named
+   only `main`. Three commits landed unvalidated. Written up
+   afterwards as: *I was watching for the assert to be correct rather
+   than for it to run.*
+2. **Fail paths never exercised.** Three asserts shipped with failure
+   paths that had never been executed. Two died on nushell string
+   interpolation instead of reporting the real problem — a
+   parenthesised aside inside an interpolated string is a
+   SUBEXPRESSION, so the first word of the prose gets run as a command.
+   The assert "passed" for months of green runs precisely because
+   nothing ever made it fail.
+3. **A check deferred to a platform nobody was running.** The win
+   compile cell was assumed to be covered long before CI actually
+   compiled it; when it did, it found real regime-closure failures
+   immediately.
+
+The general rule, and the one worth carrying to other repos:
+
+> **Before trusting a check, observe it execute — and observe it FAIL.**
+> A check that has only ever passed is indistinguishable from a check
+> that never ran, and both are indistinguishable from a check that
+> agrees with you.
+
+The corollary applies to tools as much as to asserts: a command that
+silently does nothing looks exactly like a command that confirms you.
+`pixi lock` is a no-op once the lock is satisfiable, so a retry loop
+that never deletes the lock re-checks one artifact forever; `pixi exec`
+reuses cached environments, so repeated arms of an experiment stop
+being independent trials. Look for the STATE CHANGE — did the file
+change, did the hash roll — or force freshness, or prefer static
+evidence like published metadata, which no cache can distort.
