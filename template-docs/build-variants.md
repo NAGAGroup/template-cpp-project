@@ -18,17 +18,17 @@ Two live axes in this repo, one per selection style:
 
 ```toml
 [workspace.build-variants]
-spdlog = ["1.14", "1.15"]        # variant VALUES: bare and exact
+spdlog = ["1.15", "1.16"]        # variant VALUES: bare and exact
 
-[feature.spdlog14.dependencies]  # the 1.14 FLAVOR feature
+[feature.spdlog16.dependencies]  # the 1.16 FLAVOR feature
 enginelib = { workspace = true }
-spdlog = ">=1.14,<1.15"          # dependency SPECS: real bounds
+spdlog = ">=1.16,<1.17"          # dependency SPECS: real bounds
 
-[environments.spdlog14]
-features = ["header-only", "spdlog14"]
+[environments.spdlog16]
+features = ["header-only", "spdlog16"]
 ```
 
-Variant VALUES are bare and exact (`"1.14"` prefix-matches the series —
+Variant VALUES are bare and exact (`"1.15"` prefix-matches the series —
 the conda-forge pinning-feedstock idiom); dependency SPECS carry real
 bounds. Never ranges or wildcards as variant values.
 
@@ -45,8 +45,8 @@ pixi and are the real behavior surface for source packages — a backend
 bump is a deliberate PR, like the pixi floor.)
 
 An environment picks a variant build **through run-dependency
-conflicts**: the 1.14-built enginelib carries spdlog's `<1.15`
-run-export, which conflicts with a `>=1.15` pin, forcing the solver onto
+conflicts**: the 1.15-built enginelib carries spdlog's `<1.16`
+run-export, which conflicts with a `>=1.16` pin, forcing the solver onto
 the other variant. Tight run-export ceilings ⇒ pins select uniquely.
 If no run-dep distinguishes the variants, the solver happily reuses one
 build for every env — which is exactly the microarch situation below.
@@ -56,9 +56,9 @@ dependency specs across the features composed into an env. A selector
 feature therefore composes onto a base flavor only when it pins
 packages the base does NOT declare (the microarch tiers pin the
 underscore gate — `prod` never mentions it). Disjoint pins on a
-declared dep (spdlog `>=1.14,<1.15` vs prod's `>=1.15,<1.16`) are
+declared dep (spdlog `>=1.16,<1.17` vs prod's `>=1.15,<1.16`) are
 UNSOLVABLE when composed — that axis needs its own complete flavor
-feature (`spdlog14` above), not a stacked selector.
+feature (`spdlog16` above), not a stacked selector.
 
 ## Axis 2: microarch — open floors, capability gates
 

@@ -5,6 +5,27 @@
 # level, so a bad re-lock can never land silently. (Binary consumers of
 # the published packages are unaffected; this guards the in-workspace
 # source path only.)
+#
+# ⚠ MEASURED, 2026-08-09 — READ BEFORE YOU "JUST RE-RUN IT". A tier
+# env pins `x86_64-microarch-level ==N`, and a level-M build carries
+# the metapackage's OPEN floor `>=M`. That excludes M greater than N
+# and admits every M at or below it, so the chooser is free within
+# 1..N and the tier env can legitimately end up with a lower-level
+# binary than its name promises. Over 10 fresh solves (the lock
+# DELETED each time — note that `pixi lock` is a no-op once the file is
+# satisfiable, so a retry loop that does not delete it re-checks one
+# artifact and proves nothing): v2 landed correct 5/10, v3 3/10, v4
+# 1/10, independently. All three aligning is a ~1-in-60 event, and a
+# fresh clone of main at the same commit fails this assert too. So the
+# committed tier-correct lock is a historical artifact preserved by
+# lock satisfiability, NOT something re-derivable on demand.
+#
+# This assert therefore currently measures LUCK. Fixing it means making
+# selection forced rather than admissible — an exact-pinned marker that
+# only the matching build satisfies — which conda-forge's open-floor
+# metapackages do not provide on their own. Until that lands, treat a
+# red result here as "the microarch teaching is not currently true of
+# this lock", not as "re-roll until green".
 let lock = (open --raw pixi.lock | from yaml)
 
 def enginelib-level [env_name: string] {
@@ -29,6 +50,10 @@ for e in ($expect | transpose env level) {
   if $got != $e.level { $bad = ($bad | append $e.env) }
 }
 if ($bad | is-not-empty) {
-  error make { msg: $"committed lock has wrong tier selection for: ($bad | str join ', ') — re-run `pixi lock` until tiers select their own level (nondeterministic source-variant selection)" }
+  # NOTE: no backticks in this message. Nushell treats a backtick as a
+  # quoting form INSIDE string interpolation, so the previous wording
+  # turned a word of prose into an external command and the assert died
+  # with "command not found" instead of reporting the real failure.
+  error make { msg: $"committed lock has wrong tier selection for: ($bad | str join ', ') — re-run pixi lock until tiers select their own level (source-variant selection is nondeterministic across solves)" }
 }
 print "lock tier selections OK"

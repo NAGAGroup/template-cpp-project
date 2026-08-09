@@ -110,7 +110,7 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
   they pin packages the base
   flavor does NOT declare — pixi INTERSECTS specs across features, so
   disjoint pins on a declared dep are a separate FLAVOR feature
-  (spdlog14), never a stacked selector.
+  (spdlog16), never a stacked selector.
 - Capability-demonstration doctrine (Jack): environments aren't just
   what CI needs — they show capability. The template is a tutorial
   surface, a compilation of possibilities, NOT a hard requirement set;
@@ -140,7 +140,7 @@ coverage`; `pixi run -e dev-enginelib dev-test` and `lint`;
 `pixi run -e dev-mathkit dev-test`; `pixi run format-check` (default
 env); `pixi run check-microarch`; `pixi install -e prod -e clang -e gnu -e
 microarch-v0 -e microarch-v2 -e microarch-v3 -e static -e reldbg -e
-spdlog14 -e demo-static -e demo-clang`;
+spdlog16 -e demo-static -e demo-clang`;
 `pixi exec --spec nushell nu ci/check-publish-set.nu`;
 `pixi exec --spec nushell nu ci/check-lock-tiers.nu`;
 `pixi exec --spec nushell nu ci/check-ci-shape.nu`;

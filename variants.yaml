@@ -41,13 +41,29 @@ zip_keys:
   - [c_compiler_version, cxx_compiler_version]
   - [m2w64_c_compiler_version, m2w64_cxx_compiler_version]
 
-# Redistributability floor — EXPLICIT, decision not drift. glibc 2.28
-# is Jack's DELIBERATE floor (SYCL tooling required the bump above
-# conda-forge's 2.17 baseline; same wall hit building OpenMDAO
-# optimizers). The pin lands verbatim in every published package's run
-# requirements as `__glibc >=2.28`. (c_stdlib derivation is
-# channel-gated — see template-docs; on non-conda-forge single-channel
-# workspaces use an explicit sysroot dep + dep-name axis instead.)
+# Redistributability floor — and on THIS branch it is LOAD-BEARING, not
+# merely explicit: nothing derives a glibc floor here.
+#
+# pixi's automatic stdlib derivation fires only for the literal
+# `conda-forge` channel, and this workspace resolves through a single
+# `naga-labs` channel. The explicit pair below is therefore the ONLY
+# thing that puts `__glibc` into a built package's run requirements.
+# Verified with a discriminating pair (2026-08-09, pixi 0.76.1,
+# pixi-build-cmake 0.4.5, one compiled TU, this channel): WITH these
+# two keys the artifact's `info/index.json` depends carries
+# `__glibc >=2.28,<3.0.a0`; with them removed, no `__glibc` entry at
+# all — same channel, same everything else.
+#
+# Deleting these keys as "redundant with conda-forge's defaults" would
+# ship packages installable on machines whose glibc is too old, failing
+# at LOAD time in a user's environment, with a green build and a
+# successful upload on our side. `ci/check-stdlib-floor.nu` reads the
+# built artifact and fails if the floor is missing, because a manifest
+# cannot prove what actually shipped.
+#
+# The VALUE is Jack's deliberate decision: 2.28, above conda-forge's
+# 2.17 baseline (SYCL tooling required the bump; the same wall came up
+# building OpenMDAO optimizers).
 c_stdlib:
   - if: linux
     then: sysroot
@@ -81,14 +97,8 @@ m2w64_cxx_compiler_version:
   - if: win
     then: "14"
 
-# mingw lane stdlib keys: INERT for pixi-build backends (verified in
-# backend source: stdlib injection only ever consults `c_stdlib`) —
-# kept for rattler-build recipe wrappers that render stdlib('m2w64_c'),
-# and as the documented conda-forge shape. mingw run metadata arrives
-# via the compiler run-exports instead.
-m2w64_c_stdlib:
-  - if: win
-    then: m2w64-sysroot
-m2w64_c_stdlib_version:
-  - if: win
-    then: "12"
+# (The `m2w64_c_stdlib*` keys that live here on main are DELETED on this
+# branch — DELTA.md D-03. They were never consulted by the backend
+# (`stdlib_for_language()` maps every language to `c`), no recipe in
+# this tree renders `stdlib('m2w64_c')`, and D-06 removes the mingw lane
+# that was the only reason to keep them as documentation.)

@@ -5,7 +5,17 @@
 # monorepo should only contain projects that share a variant matrix —
 # anything needing its own workspace belongs in its own repository.
 [workspace]
-channels = ["conda-forge"]
+# SINGLE CHANNEL, and it is not conda-forge. `naga-labs` LAYERS
+# conda-forge server-side (its served repodata carries
+# `info.channel_relations.base = "../../conda-forge"`), so one entry
+# still reaches all of upstream — a consumer never has to know our
+# packages come from an overlay. Two consequences worth knowing before
+# you copy this: (1) pixi's automatic stdlib derivation fires only for
+# the literal `conda-forge` channel, so the explicit c_stdlib pin in
+# variants.yaml is LOAD-BEARING here, not redundant (see DELTA.md
+# D-02); (2) the overlay is PREFERRED, not exclusive — a spec above an
+# overlay package's version falls through to upstream and resolves.
+channels = ["https://prefix.dev/jackm97/naga-labs"]
 name = "template-cpp-project"
 # Platform doctrine: BARE platforms for everything a normal user touches
 # (bare linux-64 FIRST — every machine solves and installs it). Rich
@@ -81,7 +91,7 @@ spdlog = ">=1.15,<1.16"
 # ---- Build-variant matrix --------------------------------------------------
 # Two live axes, both SAME NAME / different build strings:
 # - spdlog: envs select by PINNING the dep; selection works through
-#   run-dep conflicts (a 1.14-built enginelib carries spdlog's <1.15
+#   run-dep conflicts (a 1.16-built enginelib carries spdlog's >=1.16
 #   run-export, conflicting with a 1.15 pin). The happy path: tight
 #   run-export ceilings make pins select uniquely.
 # - x86_64-microarch-level: the conda-forge flag-setter as a
@@ -93,11 +103,11 @@ spdlog = ">=1.15,<1.16"
 #   ourselves. Floors are deliberately open (a v3 CPU runs a v1 build),
 #   so tier envs additionally pin the UNDERSCORE runtime package.
 # One `pixi publish` builds the full matrix on the default platforms.
-# Variant VALUES are bare and exact ("1.14" — prefix-matches the series,
+# Variant VALUES are bare and exact ("1.15" — prefix-matches the series,
 # the conda-forge pinning-feedstock idiom); dependency SPECS elsewhere
 # carry real bounds. Never ranges or wildcards as variant values.
 [workspace.build-variants]
-spdlog = ["1.14", "1.15"]
+spdlog = ["1.15", "1.16"]
 x86_64-microarch-level = ["1", "2", "3", "4"]
 
 # Compiler + stdlib + build-tool pins live in ./variants.yaml (see the
@@ -245,16 +255,37 @@ spdlog = { workspace = true }
 llvm-tools = ">=20"
 nushell = ">=0.114,<0.115"
 
-# spdlog build-variant FLAVOR (the 1.14 branch of the matrix). This is
+# spdlog build-variant FLAVOR (the 1.16 branch of the matrix). This is
 # deliberately a complete flavor surface, NOT a selector stacked on
 # `prod`: pixi INTERSECTS dependency specs across composed features, so
-# prod's `>=1.15,<1.16` + a `>=1.14,<1.15` selector is unsolvable
+# prod's `>=1.15,<1.16` + a `>=1.16,<1.17` selector is unsolvable
 # (verified 0.76.1). Selectors compose only when they pin packages the
 # base flavor does NOT declare (the microarch tiers); disjoint pins on
 # a declared dep are a different FLAVOR.
-[feature.spdlog14.dependencies]
+#
+# WHY 1.16 AND NOT 1.14 (this branch only — DELTA.md D-20). Main runs
+# this axis as 1.14/1.15. On the single `naga-labs` channel it cannot:
+# our own `fmt` WRAPPER is published there at 11.2.0, and under strict
+# channel priority a name found in the highest-priority channel is
+# resolved ONLY from that channel. spdlog 1.14 requires `fmt <11`,
+# every candidate lives upstream, and the solver refuses all of them
+# ("excluded because due to strict channel priority"). Channel layering
+# does not save you: the base presents as a separate, lower-priority
+# channel, so it loses the name too.
+#
+# The per-dependency `channel` override — the documented escape hatch —
+# is NOT available here: pixi rejects an override naming a channel that
+# is not in the workspace `channels` list, and adding one is precisely
+# what the single-channel invariant forbids. Verified both spellings.
+#
+# So the axis moves to a version pair that both resolve against the
+# fmt our channel offers. The LESSON is unchanged — a build-variant
+# axis over a dependency version — and the constraint that forced the
+# move is itself worth teaching: publishing a wrapper under an upstream
+# name caps every single-channel consumer at the versions YOU ship.
+[feature.spdlog16.dependencies]
 enginelib = { workspace = true }
-spdlog = ">=1.14,<1.15"
+spdlog = ">=1.16,<1.17"
 
 # Solve-strategy is a FEATURE concern (C-09): composing this feature
 # makes an env solve its DIRECT deps lowest — the min-version
@@ -409,10 +440,10 @@ no-default-feature = true
 features = ["header-only", "gnu"]
 no-default-feature = true
 
-# spdlog build-variant flavor env (the 1.14 branch of the matrix — see
+# spdlog build-variant flavor env (the 1.16 branch of the matrix — see
 # the feature comment for why this is a flavor, not a prod+selector).
-[environments.spdlog14]
-features = ["header-only", "spdlog14"]
+[environments.spdlog16]
+features = ["header-only", "spdlog16"]
 no-default-feature = true
 
 # ---- Test environments -----------------------------------------------------

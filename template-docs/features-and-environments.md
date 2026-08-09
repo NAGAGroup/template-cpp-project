@@ -28,7 +28,7 @@ flavor + orthogonal task/selector features.
 | `static` / `reldbg` / `clang` | the matching variant + spdlog |
 | `asan` / `tsan` / `coverage` | linux-only variants + spdlog (+ sanitizer activation env vars; coverage also carries llvm-tools) |
 | `gnu` | target-table showcase: linux → enginelib, win → enginelib-mingw |
-| `spdlog14` | enginelib + the 1.14 spdlog pin (a FLAVOR, see below) |
+| `spdlog16` | enginelib + the 1.16 spdlog pin (a FLAVOR, see below) |
 
 ## Selectors and the intersection law
 
@@ -36,7 +36,7 @@ Selector features (`microarch-v2/-v3/-v4`) compose onto the shared
 surface because they pin a package the base flavor does NOT declare
 (the underscore runtime gate). **Pixi INTERSECTS dependency specs
 across composed features** (verified 0.76.1): disjoint pins on a
-declared dep are unsolvable, which is why `spdlog14` is a complete
+declared dep are unsolvable, which is why `spdlog16` is a complete
 flavor feature rather than a selector stacked on `prod`.
 
 ## Solve strategy is a feature concern
@@ -77,7 +77,7 @@ shadows composed feature content, which is the precedence lesson.
 - **default** — tooling + style tasks (cheap; carries `check-microarch`).
 - **Consumers**: `prod` (recommended; = the v1 tier), `microarch-v0`
   (teaching entry, not recommended), `microarch-v2/-v3/-v4` (gate-bound
-  tiers), `static`, `reldbg`, `clang`, `gnu`, `spdlog14`,
+  tiers), `static`, `reldbg`, `clang`, `gnu`, `spdlog16`,
   `header-only` (doubles as the pixi-pack demo).
 - **Tests**: `test`, `test-clang`, `test-gnu-windows` (win-only — the
   env-platform-limiting showcase), `test-asan`, `test-tsan`,
