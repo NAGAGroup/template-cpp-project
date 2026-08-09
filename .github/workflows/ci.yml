@@ -47,11 +47,12 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            envs: test test-asan test-tsan
+            envs: test
           - os: windows-latest
-            # Windows mirrors every cross-platform test env; sanitizers
-            # stay linux-only (C-10). There is no per-compiler test env
-            # here — one toolchain, nothing to compare against (AM-1).
+            # Windows mirrors every cross-platform test env. There is no
+            # per-compiler test env here — one toolchain, nothing to
+            # compare against (AM-1) — and no sanitizer envs at all,
+            # because the toolchain ships no sanitizer runtimes (D-26).
             envs: test
     steps:
       - uses: actions/checkout@v4
@@ -150,6 +151,12 @@ jobs:
       - name: CI-shape assertion (locked defaults, banned flags)
         if: runner.os == 'Linux'
         run: pixi exec --spec nushell nu ci/check-ci-shape.nu
+      # Expiry check for the nightly-lane substitution: fails when the
+      # release lane's version scheme is fixed, so a deliberately
+      # temporary state cannot quietly become permanent.
+      - name: Nightly-substitution expiry check (D-04)
+        if: runner.os == 'Linux'
+        run: pixi exec --spec nushell --spec zstd --spec curl nu ci/check-nightly-expiry.nu
 
   publish:
     # Real publishing with OIDC trusted publishing: the channel trusts this

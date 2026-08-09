@@ -15,24 +15,6 @@
       "inherits": "base"
     },
     {
-      "name": "asan",
-      "displayName": "ASan+UBSan (matches enginelib-asan)",
-      "inherits": "base",
-      "cacheVariables": {
-        "ENGINELIB_TESTS_SANITIZER": "address,undefined",
-        "ENGINELIB_TESTS_BUILD_TYPE": "RelWithDebInfo"
-      }
-    },
-    {
-      "name": "tsan",
-      "displayName": "TSan (matches enginelib-tsan)",
-      "inherits": "base",
-      "cacheVariables": {
-        "ENGINELIB_TESTS_SANITIZER": "thread",
-        "ENGINELIB_TESTS_BUILD_TYPE": "RelWithDebInfo"
-      }
-    },
-    {
       "name": "coverage",
       "displayName": "Coverage (matches enginelib-coverage)",
       "inherits": "base",

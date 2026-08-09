@@ -18,3 +18,15 @@ extra-args = ["--preset=default"]
 [package.host-dependencies]
 enginelib-static = { workspace = true }
 fmt = { workspace = true }
+
+# WINDOWS SDK — D-08, and the one Windows-specific line in this package.
+# The acpp driver is clang-cl based and targets x86_64-pc-windows-msvc,
+# but the activation packages deliberately declare NO `vs20XX`
+# dependency (verified against the artifacts: acpp-clangxx_win-64 ->
+# acpp-clang_win-64 -> acpp, none of them mentions it). So the MSVC
+# headers, libs and SDK have to come from the build environment, or
+# lld-link fails on `kernel32.lib`. This is a BUILD dependency and
+# never a compiler variant — MSVC is present here as a platform SDK and
+# is not the thing that compiles our code (AM-1).
+[package.target.win-64.build-dependencies]
+vs2026_win-64 = ">=19.51,<20"

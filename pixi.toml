@@ -64,12 +64,8 @@ mathkit = { path = "packages/mathkit" }
 enginelib = { path = "packages/enginelib" }
 enginelib-static = { path = "packages/enginelib/variants/static" }
 enginelib-relwithdebinfo = { path = "packages/enginelib/variants/relwithdebinfo" }
-enginelib-asan = { path = "packages/enginelib/variants/asan" }
-enginelib-tsan = { path = "packages/enginelib/variants/tsan" }
 enginelib-coverage = { path = "packages/enginelib/variants/coverage" }
 enginelib-tests = { path = "packages/enginelib/tests" }
-enginelib-tests-asan = { path = "packages/enginelib/tests/variants/asan" }
-enginelib-tests-tsan = { path = "packages/enginelib/tests/variants/tsan" }
 enginelib-tests-coverage = { path = "packages/enginelib/tests/variants/coverage" }
 mathkit-tests = { path = "packages/mathkit/tests" }
 demo-app = { path = "packages/demo-app" }
@@ -125,13 +121,67 @@ description = "Print this machine's highest supported microarch level (advisory 
 
 # Tooling: lint/format/LSP/docs tools, defined ONCE — shared by the
 # default env AND every dev env. Zero system tooling, ever.
+# NON-CLANG tooling, shared by every env. Nothing here has an opinion
+# about compilers.
 [feature.tooling.dependencies]
-clang-format = ">=22.1,<22.2"
-clang-tools = ">=22.1,<22.2"
-clang = ">=22.1,<22.2"
 doxygen = ">=1.17,<1.18"
 git = ">=2.55,<2.56"
 nushell = ">=0.114,<0.115"
+
+# THE CLANG-FAMILY TOOLS COME IN TWO MUTUALLY EXCLUSIVE FLAVOURS, and
+# that exclusion is enforced by the toolchain rather than chosen by us.
+# Measured, in this order, each result changing the design:
+#   * `acpp` constrains clang/clangxx/llvm out — so the conda-forge
+#     COMPILER cannot share an env with the toolchain (`clang-format`
+#     and `clang-tools` alone were fine against `acpp`).
+#   * removing conda-forge `clang` breaks clang-tidy with
+#     `'stddef.h' file not found` — `clang` supplies the builtin-header
+#     resource dir and `clang-tools` does not.
+#   * `acpp-tools` then constrains `clang-format` out as well, so the
+#     two families cannot be mixed at all.
+# Net: an env either takes upstream's clang tools or the toolchain's,
+# never both. That is the right shape anyway — analysing with a
+# different clang than you build with produces diagnostics that do not
+# match your binaries.
+
+# Upstream flavour: the CHEAP DEFAULT env, which builds nothing and
+# only needs to format and generate docs. Zero source packages, zero
+# naga-labs packages.
+[feature.tooling-upstream-clang.dependencies]
+clang-format = ">=22.1,<22.2"
+clang-tools = ">=22.1,<22.2"
+
+# Toolchain flavour: the DEV envs, which run clang-tidy over a real
+# build and therefore need the resource dir of the compiler that
+# produced it. Nightly stem for the same reason the compiler carries
+# one (D-04) — the release lane cannot currently be built against;
+# drop the `-nightly` infix when ACPP republishes.
+[feature.acpp-toolchain.dependencies]
+# The floor carries the full lane string, for the reason documented in
+# variants.yaml: a bare lower bound sorts ABOVE every published version
+# and matches nothing. Verified against the channel — `>=2026.8.9` gives
+# NO CANDIDATES, `>=2026.8.9_llvm21.1.8` RESOLVES. A floor rather than a
+# pin, so the lane can move forward, which is the point of a nightly.
+acpp-tools-nightly = ">=2026.8.9_llvm21.1.8"
+
+# The COMPILER ACTIVATION, and the one place this template names an
+# activation package on purpose. The rule that a package never names
+# one is about PACKAGE manifests, where `compiler('cxx')` and the
+# variant matrix do the naming; a dev ENVIRONMENT is a consumer
+# choosing a toolchain for an in-tree build, and it has to say which.
+#
+# It is needed because the dev envs configure CMake directly rather
+# than through the build backend: without an activation there is no
+# CXX and cmake fails with "Tell CMake where to find the compiler".
+# main got this implicitly from the conda-forge `clang` package that
+# AM-1 deletes here, which is why it surfaces only now.
+#
+# Target-scoped because the name is platform-suffixed by construction.
+[feature.acpp-toolchain.target.linux-64.dependencies]
+acpp-clangxx-nightly_linux-64 = ">=2026.8.9_llvm21.1.8"
+
+[feature.acpp-toolchain.target.win-64.dependencies]
+acpp-clangxx-nightly_win-64 = ">=2026.8.9_llvm21.1.8"
 
 # Style/docs TASKS, defined once, landing wherever they compose.
 [feature.style-tasks.tasks.format]
@@ -169,7 +219,7 @@ depends-on = ["docs"]
 description = "Generate (if stale) and open the API docs in a browser"
 
 [environments.default]
-features = ["tooling", "style-tasks"]
+features = ["tooling", "tooling-upstream-clang", "style-tasks"]
 
 # Source-consumption surfaces, flavor-scoped and COMPLETE (mixing
 # flavors — a default-variant mathkit with a static enginelib — is
@@ -192,28 +242,16 @@ spdlog = { workspace = true }
 enginelib-relwithdebinfo = { workspace = true }
 spdlog = { workspace = true }
 
-# Sanitizer/coverage flavors (linux-only realization; the consuming envs
-# carry the platform restriction). Coverage also carries the report
-# tooling its script needs — part of the flavor's coherent surface.
-[feature.asan.dependencies]
-enginelib-asan = { workspace = true }
-spdlog = { workspace = true }
-
-# ACTIVATION showcase: env vars set on every activation of an env
-# composing this feature (pixi run / pixi shell). The right layer for
-# SEMANTIC knobs that configure the flavor itself — sanitizer runtime
-# options belong to the sanitizer flavor, not to individual tasks.
-[feature.asan.activation.env]
-ASAN_OPTIONS = "halt_on_error=1:detect_stack_use_after_return=1"
-UBSAN_OPTIONS = "print_stacktrace=1:halt_on_error=1"
-
-[feature.tsan.dependencies]
-enginelib-tsan = { workspace = true }
-spdlog = { workspace = true }
-
-[feature.tsan.activation.env]
-TSAN_OPTIONS = "halt_on_error=1:second_deadlock_stack=1"
-
+# Coverage flavor (linux-only realization; the consuming env carries the
+# platform restriction). It also carries the report tooling its script
+# needs — part of the flavor's coherent surface.
+#
+# THE SANITIZER FLAVORS ARE GONE, and not by choice — DELTA.md D-26.
+# AdaptiveCpp ships no compiler-rt sanitizer runtimes, so asan/tsan
+# cannot link at all here. Their activation-env block was also this
+# template's showcase for env-level SEMANTIC knobs; that teaching moves
+# to the coverage flavor and the microarch tiers until the capability
+# comes back.
 [feature.coverage.dependencies]
 enginelib-coverage = { workspace = true }
 spdlog = { workspace = true }
@@ -364,22 +402,6 @@ features = ["header-only", "prod", "test-tasks"]
 no-default-feature = true
 dependencies = { mathkit-tests = { workspace = true }, enginelib-tests = { workspace = true } }
 
-[environments.test-asan]
-platforms = ["linux-64"]
-features = ["header-only", "asan", "test-tasks"]
-no-default-feature = true
-dependencies = { enginelib-tests-asan = { workspace = true } }
-[environments.test-asan.tasks.test]
-cmd = "enginelib-tests"
-
-[environments.test-tsan]
-platforms = ["linux-64"]
-features = ["header-only", "tsan", "test-tasks"]
-no-default-feature = true
-dependencies = { enginelib-tests-tsan = { workspace = true } }
-[environments.test-tsan.tasks.test]
-cmd = "enginelib-tests"
-
 [environments.test-coverage]
 platforms = ["linux-64"]
 features = ["header-only", "coverage", "test-tasks"]
@@ -436,7 +458,7 @@ cwd = "packages/mathkit"
 description = "clang-tidy over mathkit's tests tree (header-only: headers lint through consumers)"
 
 [environments.dev-mathkit]
-features = ["dev-mathkit", "tooling"]
+features = ["dev-mathkit", "tooling", "acpp-toolchain"]
 no-default-feature = true
 
 [feature.dev-enginelib.dev]
@@ -472,7 +494,7 @@ depends-on = ["configure"]
 description = "clang-tidy static analysis over enginelib's dev build (mode = check|fix)"
 
 [environments.dev-enginelib]
-features = ["dev-enginelib", "tooling"]
+features = ["dev-enginelib", "tooling", "acpp-toolchain"]
 no-default-feature = true
 
 [feature.dev-demo-app.dev]
@@ -483,7 +505,7 @@ cmd = "nu scripts/configure-dev.nu packages/demo-app"
 description = "Configure demo-app's in-tree dev build"
 
 [environments.dev-demo-app]
-features = ["dev-demo-app", "tooling"]
+features = ["dev-demo-app", "tooling", "acpp-toolchain"]
 no-default-feature = true
 
 # (The old `style` env is deleted: it was a dependency set wearing an
@@ -518,7 +540,5 @@ description = "Run all cross-platform test envs"
 [target.linux-64.tasks.test-all]
 depends-on = [
   { task = "test", environment = "test" },
-  { task = "test", environment = "test-asan" },
-  { task = "test", environment = "test-tsan" },
 ]
-description = "Run all test envs (incl. sanitizers)"
+description = "Run all test envs"
