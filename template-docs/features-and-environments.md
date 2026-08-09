@@ -42,13 +42,17 @@ flavor feature rather than a selector stacked on `prod`.
 ## Solve strategy is a feature concern
 
 `solve-lowest` carries `solve-strategy = "lowest-direct"` and composes
-into `test-lowest` (C-09). **Scope caveat (verified 0.76.1):** the
-strategy governs a binary-only env regardless of the feature's list
-position, but is silently IGNORED in any env containing SOURCE
-packages — so `test-lowest` currently resolves like `test`. The shape
-is kept as the intended design; re-verify on every pixi upgrade. The
-day the source-package solve path honors strategies, it starts working
-with zero changes here.
+into `test-lowest` (C-09; verified 0.76.1, including in
+source-package envs, regardless of the feature's list position). Two
+semantic rules shape what you see — misread them and the env looks
+broken when it is exactly right: (1) lowest-**direct** never lowers
+TRANSITIVE deps (catch2 arrives via the tests packages' host-deps and
+stays highest); (2) the chosen source variant's run-dep can FLOOR a
+direct dep (the 1.15-built enginelib carries `spdlog >=1.15.3`, so
+test-lowest's spdlog is 1.15.3 — the lowest *satisfying* version, and
+coincidentally also the highest in range: a degenerate observable).
+Min-version testing composes with run-export floors; it does not
+bypass them. An unconstrained direct dep resolves genuinely lowest.
 
 ## Task features
 

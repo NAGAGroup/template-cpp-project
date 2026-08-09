@@ -250,14 +250,15 @@ spdlog = ">=1.14,<1.15"
 
 # Solve-strategy is a FEATURE concern (C-09): composing this feature
 # makes an env solve its DIRECT deps lowest — the min-version
-# compatibility surface. Verified 0.76.1, scoped precisely: the
-# strategy governs a BINARY-only env regardless of the feature's list
-# position, but is silently IGNORED in any env containing SOURCE
-# packages (discriminating pair verified in THIS workspace; env-level
-# placement is equally inert). So test-lowest below is today a
-# teaching/future-proofing surface, NOT yet a working min-version
-# check — re-verify on every pixi upgrade; the day the source-package
-# solve path honors strategies, this starts working with zero changes.
+# compatibility surface. Verified 0.76.1 (incl. in source-package
+# envs; governs regardless of the feature's list position). Read
+# results with the SEMANTICS in mind: (a) lowest-DIRECT never lowers
+# TRANSITIVE deps (catch2 arrives via the tests packages' host-deps →
+# stays highest); (b) a binary dep can be FLOORED by a chosen source
+# variant's run-dep (enginelib's 1.15-built variant carries
+# spdlog >=1.15.3 — so test-lowest's spdlog lands exactly there, the
+# lowest SATISFYING version). Min-version testing composes with
+# run-export floors; it does not bypass them.
 [feature.solve-lowest]
 solve-strategy = "lowest-direct"
 
@@ -476,9 +477,9 @@ cmd = "nu scripts/coverage.nu"
 description = "Run instrumented tests; lcov report + structured per-file coverage table"
 
 # Min-version compatibility check: the SAME surface as `test`, plus the
-# solve-lowest strategy feature (C-09). ⚠ See the feature comment:
-# strategies are ignored in source-package envs on 0.76.1, so this env
-# currently resolves like `test` — kept as the intended shape.
+# solve-lowest strategy feature (C-09) — direct deps resolve to their
+# lowest SATISFYING versions (see the feature comment for how
+# run-export floors and directness shape the result).
 [environments.test-lowest]
 features = ["solve-lowest", "header-only", "prod", "test-tasks"]
 no-default-feature = true

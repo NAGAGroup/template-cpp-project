@@ -102,12 +102,12 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
 - Manifest composition rule: share features across envs that share
   deps (tier envs = shared `header-only`+`prod` surface +
   selector-only tier features); a feature needing different solve
-  semantics carries its own `solve-strategy` (verified 0.76.1, scoped:
-  governs BINARY-only envs regardless of list position, but silently
-  IGNORED in envs containing source packages — test-lowest is
-  therefore inert today; re-verify on pixi upgrades, upstream
-  intent-search pending). Selectors compose only when they pin
-  packages the base
+  semantics carries its own `solve-strategy` (verified 0.76.1 incl.
+  source-package envs; governs regardless of list position). Read
+  lowest-direct results semantically: transitives are never lowered,
+  and chosen source variants' run-dep floors bound direct deps —
+  lowest-SATISFYING, not lowest-in-spec. Selectors compose only when
+  they pin packages the base
   flavor does NOT declare — pixi INTERSECTS specs across features, so
   disjoint pins on a declared dep are a separate FLAVOR feature
   (spdlog14), never a stacked selector.

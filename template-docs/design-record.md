@@ -37,9 +37,8 @@ the IDs it touches. Mechanically-checkable constraints are CI-asserted
   keep pixi's global default (highest); a `solve-lowest` feature
   carrying `solve-strategy = "lowest-direct"` composes into the
   min-version test env. (Supersedes the earlier default-lowest
-  formulation.) *Implementation status note: on pixi 0.76.1 the
-  strategy is silently ignored in envs containing source packages — the
-  composed shape is in place and inert; see
+  formulation.) *Implemented and verified working on 0.76.1, including
+  in source-package envs — see the semantics notes in
   [features-and-environments.md](features-and-environments.md).*
 - **C-10** Build matrix is UNBOUNDED; TEST matrix is RUNNER-BOUNDED.
   Never assert archspec on an incapable runner to un-skip a tier test.
