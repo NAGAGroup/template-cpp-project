@@ -133,6 +133,25 @@ machinery, and the preset is exactly where configure detail lives.)
   and need nothing. The spdlog build-variant axis deliberately does
   not reach the mingw lane — the axis belongs to the channel-binary
   happy path.
+
+  **Scope the law precisely — it is a C++ closure, not a native-code
+  closure.** The regime boundary is the C++ ABI (name mangling, std::
+  type layouts, exceptions/unwind, import-lib expectations for
+  classes), not machine code per se. Pure-C dependencies (zlib-class
+  libraries) can generally cross regimes on win-64: both regimes speak
+  the platform C ABI and COFF import libs — and, decisively, both
+  target the SAME CRT. The lock shows it: the mingw records carry a
+  `ucrt` run-export just like the MSVC ones, because the gcc_win-64
+  family targets UCRT — so even `malloc`/`free` and `FILE*` crossing
+  the boundary is coherent. (This is NOT true of the legacy
+  msvcrt-based `m2w64-*` packages — never mix those in.) Without this
+  scoping the lesson over-generalizes and someone eventually rebuilds
+  zlib-mingw for no reason. The whole story is machine-checked:
+  `ci/check-regime-markers.nu` asserts every mingw-lane lock record
+  carries `libstdcxx`/`libgcc`/`ucrt` and no foreign-regime C++ dep,
+  and every clang-win record carries `vc14_runtime`/`ucrt` and no GNU
+  markers — the two regimes stay visibly distinct in metadata, which
+  is the C-02 lesson in executable form.
 - Header-only packages (mathkit, stb) get NO compiler variants: their
   generated CMake config is byte-identical across compilers (verified) —
   no artifact, no ABI, nothing to name.

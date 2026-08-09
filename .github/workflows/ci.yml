@@ -149,6 +149,9 @@ jobs:
       - name: CI-shape assertion (locked defaults, banned flags)
         if: runner.os == 'Linux'
         run: pixi exec --spec nushell nu ci/check-ci-shape.nu
+      - name: Regime-marker assertion (win ABI regimes visibly distinct in the lock)
+        if: runner.os == 'Linux'
+        run: pixi exec --spec nushell nu ci/check-regime-markers.nu
 
   publish:
     # Real publishing with OIDC trusted publishing: the channel trusts this
