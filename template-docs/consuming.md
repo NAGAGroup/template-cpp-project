@@ -31,8 +31,7 @@ package + its full runtime closure, requiring *nothing* on your machine.
 
 ```sh
 # producer side (or download the CI "packed-env" artifact):
-cd packages/mathkit
-pixi exec pixi-pack --create-executable --environment default --platform linux-64 pixi.toml
+pixi exec pixi-pack --create-executable --environment header-only --platform linux-64 pixi.toml
 # consumer side:
 ./environment.sh          # creates ./env
 cmake -B build -DCMAKE_PREFIX_PATH=$PWD/env
@@ -51,15 +50,16 @@ cmake -B build -DCMAKE_PREFIX_PATH=$PWD/env
 If your package exposes a dependency publicly — its headers appear in
 yours, or your static lib needs it at link time — consumers need it too.
 The modern form: the dependency **weak-exports itself**
-(`[package.run-exports.weak] mathkit = "0.1.*"`), so host-depending on
-it is all a consumer writes (mathkit and enginelib both do this; binary
-conda-forge deps like spdlog do it out of the box). Version-spec the
-self-export — unversioned self-exports publish without a constraint.
-Manual `[package.run-dependencies]` remain for cases run-exports can't
-express (enginelib's stb: a private header-only dep that static
-consumers still link through the export set). CAUTION: run-exports (and
-any name-based source reference) break if member manifests carry their
-own [workspace] — keep the single-workspace layout.
+(`[package.run-exports.weak] mathkit = ">=0.1.0,<0.2"`), so
+host-depending on it is all a consumer writes (mathkit and enginelib
+both do this; binary conda-forge deps like spdlog do it out of the box).
+Version-spec the self-export — unversioned self-exports publish without
+a constraint. Manual `[package.run-dependencies]` remain for cases
+run-exports can't express (enginelib's stb: a private header-only dep
+that static consumers still link through the export set). CAUTION:
+run-exports (and any name-based source reference) break if member
+manifests carry their own [workspace] — keep the single-workspace
+layout.
 
 ## Publishing your own
 

@@ -29,7 +29,7 @@ recommendations but expect and incorporate corrections:
    upstream build → rattler-build recipe wrapper. Never FetchContent.
 7. **Tooling versions.** Default is leading-edge (CMake ≥4.2, C++23,
    current compilers). Ask explicitly: does their consumer base require
-   downgrading? (docs/tooling-versions.md has the framing.)
+   downgrading? (template-docs/tooling-versions.md has the framing.)
 8. **License + repo details.** MIT is the template default.
 
 Write the agreed design into a short DESIGN.md at the repo root and get
@@ -54,7 +54,7 @@ explicit sign-off before Phase 2.
    zero system tooling, no FetchContent). Do NOT keep the
    template-maintainer content.
 6. Delete `.agents/commands/init-project.md` (and its pointer stubs) and
-   docs/renaming.md.
+   template-docs/renaming.md.
 7. Regenerate all lockfiles (`pixi install` at root and in each member
    workspace) and run the full verification bar from AGENTS.md.
 8. Commit as the project's initial commit; suggest the developer make the

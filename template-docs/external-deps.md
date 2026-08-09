@@ -9,10 +9,11 @@ FetchContent / CPM / vendoring?      -> NEVER
 
 ## 1. conda-forge binary (always prefer this)
 
-`spdlog = "*"` in enginelib's host-deps. Binary packages carry their own
-run-exports, so runtime propagation is automatic. Wrapping something that
-conda-forge already ships is extra maintenance for nothing (fmt is
-wrapped here purely for teaching).
+`spdlog = "*"` in enginelib's host-deps (the `"*"` is the
+variant-substitution placeholder — spdlog is a build-variant axis).
+Binary packages carry their own run-exports, so runtime propagation is
+automatic. Wrapping something that conda-forge already ships is extra
+maintenance for nothing (fmt is wrapped here purely for teaching).
 
 ## 2. cmake-backend wrapper (`external/fmt`)
 
@@ -40,7 +41,9 @@ FetchContent.
 
 ## Propagation rules for wrapper deps
 
-Same as any dep: public in your headers → repeat in run-deps; private +
-shared-linked → runtime closure handles it (fmt in demo-app carries a
-manual run-dep until pixi's run-exports bug is fixed); private +
-header-only compiled in (stb in enginelib) → nothing propagates at all.
+Same as any dep: public in your headers → the dep weak-exports itself
+and host-depending suffices (fmt and the in-tree libraries all do
+this); private + shared-linked → the runtime closure handles it;
+private + header-only compiled in (stb in enginelib) → nothing
+propagates at all, except where the CMake export set still resolves it
+(stb keeps a manual run-dep for static consumers).

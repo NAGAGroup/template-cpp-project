@@ -1,5 +1,5 @@
 # enginelib-clang: NAMED compiler package variant (package-only manifest;
-# version kept in sync with the default package — see docs/versioning.md).
+# version kept in sync with the default package — see template-docs/versioning.md).
 # ONE name, BOTH platforms, platform-realized (C-03: compiler choice is a
 # knowingly-chosen configuration, like asan/static — the naming is
 # configuration-grade, not ABI-regime-grade; on win, clang-cl targets the

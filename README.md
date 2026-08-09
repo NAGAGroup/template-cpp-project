@@ -14,7 +14,7 @@ Everything else in this repo follows from that sentence.
 |---|---|
 | `pixi.toml` | THE workspace — every environment, task, and the variant matrix (members are package-only manifests) |
 | `packages/mathkit` | header-only library (weak self-export teaching case) |
-| `packages/enginelib` | compiled library — the variant teacher: preset-variants (`static`, `asan`, `tsan`, `coverage`, `relwithdebinfo`, `clang`), pixi build-variants (spdlog version matrix + microarch levels under ONE name) |
+| `packages/enginelib` | compiled library — the variant teacher: preset-variants (`static`, `asan`, `tsan`, `coverage`, `relwithdebinfo`, `clang`, `mingw`) across a five-cell compiler/platform matrix, pixi build-variants (spdlog version matrix + microarch levels under ONE name) |
 | `packages/demo-app` | application consuming the libraries (internal-only, package-only manifest) |
 | `external/fmt` | wrapper package building upstream fmt from a git tag (pixi-build-cmake) |
 | `external/stb` | wrapper via the **rattler-build escape hatch** — upstream has no build system; the recipe installs headers + a hand-written CMake config |
@@ -25,31 +25,35 @@ Everything else in this repo follows from that sentence.
 
 This is a GitHub **template repository** — click **“Use this template”** on
 the repo page (or `gh repo create my-project --template NAGAGroup/template-cpp-project`),
-then run the `/init-project` agent command or follow `docs/renaming.md`.
+then run the `/init-project` agent command or follow
+`template-docs/renaming.md`.
 
 To just try it ([install pixi](https://pixi.prefix.dev), nothing else —
 no compiler, no cmake, no system anything):
 
 ```sh
-pixi run demo                       # build the app chain, run it
+pixi run -e demo demo               # build the app chain, run it (try `demo 20`)
 pixi run test-all                   # every test env for this platform
 pixi run -e test-asan test          # sanitized variant, tests built to match
-pixi run -e test-coverage coverage  # llvm-cov report
+pixi run coverage                   # llvm-cov report (resolves without -e: one env owns it)
 pixi run -e dev-enginelib dev-test  # the in-tree dev loop (no packages involved)
-pixi run check-microarch            # what your CPU supports (do this before v3/v4)
+pixi run check-microarch            # what your CPU supports (do this before v2/v3/v4)
 pixi install -e clang               # the clang-built NAMED package variant
 pixi run publish-local              # every package into an indexed local channel
 ```
 
 ## The ideas, in one screen
 
-1. **Environments are the interface.** One root workspace; the default
-   env is the portable-by-contract consumer env (the v1 microarch
-   tier); optimized v3/v4 tiers are explicit opt-in envs (run
-   `pixi run check-microarch` first — see docs/build-variants.md).
-   Test envs consume test packages. Dev envs materialize a package's
-   build closure *without building it* — day-to-day work is plain
-   CMake presets inside that env.
+1. **Environments are the interface; features are the unit of
+   composition.** One root workspace; the default env is CHEAP (tooling
+   + style tasks, zero source packages); `prod` is the recommended
+   consumer env, portable by contract (the v1 microarch tier);
+   optimized tiers are explicit opt-in envs (run
+   `pixi run check-microarch` first — see
+   template-docs/build-variants.md). Test envs compose flavor features
+   and consume test packages. Dev envs materialize a package's build
+   closure *without building it* — day-to-day work is plain CMake
+   presets inside that env.
 2. **A package variant is a CMake preset.** Pixi manifests pass only
    `--preset=<name>`; presets carry *project-owned knobs* which
    CMakeLists maps to real CMake variables. Non-pixi users get the same
@@ -66,12 +70,24 @@ pixi run publish-local              # every package into an indexed local channe
    one cross-platform script set, structured-data pipelines instead of
    awk-scraping (see the coverage table `scripts/coverage.nu` prints).
 
-Deep dives live in [`docs/`](docs/): [why pixi](docs/why-pixi.md) ·
-[consuming these packages](docs/consuming.md) ·
-[variants](docs/variants.md) · [build-variants](docs/build-variants.md) ·
-[external deps](docs/external-deps.md) · [versioning](docs/versioning.md) ·
-[toolchains](docs/toolchains.md) · [dev workflow](docs/dev-workflow.md) ·
-[publishing](docs/publishing.md) · [tooling versions](docs/tooling-versions.md)
+Template deep dives live in [`template-docs/`](template-docs/) — prose
+about the TEMPLATE, self-contained so instantiated projects delete the
+directory in one step: [why pixi](template-docs/why-pixi.md) ·
+[features & environments](template-docs/features-and-environments.md) ·
+[consuming these packages](template-docs/consuming.md) ·
+[variants](template-docs/variants.md) ·
+[build-variants](template-docs/build-variants.md) ·
+[external deps](template-docs/external-deps.md) ·
+[versioning](template-docs/versioning.md) ·
+[toolchains](template-docs/toolchains.md) ·
+[dev workflow](template-docs/dev-workflow.md) ·
+[publishing](template-docs/publishing.md) ·
+[tooling versions](template-docs/tooling-versions.md) ·
+[design record](template-docs/design-record.md)
+
+[`docs/`](docs/index.md), by contrast, documents the DUMMY PROJECT the
+way a real derived project documents its code — it is the example you
+rewrite, not prose you delete.
 
 ## Opinionated tooling versions — read this
 
@@ -83,7 +99,7 @@ consumable by codebases with long histories and slow toolchain migrations,
 **downgrade to your minimum viable versions before you lock out your
 primary userbase.** We fully encourage that divergence; we just don't
 officially support issues specific to downgraded tooling. See
-[docs/tooling-versions.md](docs/tooling-versions.md).
+[template-docs/tooling-versions.md](template-docs/tooling-versions.md).
 
 ## Support policy
 

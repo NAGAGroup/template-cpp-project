@@ -1,0 +1,118 @@
+# Variants: presets as the package interface
+
+## The doctrine line
+
+Two orthogonal variant systems exist, and knowing which one an axis
+belongs to is the design decision:
+
+- **Preset-variants** — *how this project's own code is configured*
+  (linkage, sanitizers, coverage, build type, compiler). Distinct
+  package **names** (`enginelib-static`, `enginelib-asan`,
+  `enginelib-clang`, `enginelib-mingw`) that consumers knowingly
+  choose. Dev-only: none of them publish.
+- **[Build-variants](build-variants.md)** — *what the package is built
+  against* (dependency versions, toolchain pins). Same package name,
+  different build string; environments select via dependency pins.
+
+## A package variant IS a CMake preset
+
+Every variant subpackage manifest says only:
+
+```toml
+[package.build.config]
+extra-args = ["--preset=asan"]
+```
+
+No `-D` soup in manifests — the preset file is the single source of truth,
+and non-pixi users get the identical variant via `cmake --preset asan`.
+
+**Project-owned knobs, not raw CMake variables.** The pixi-build-cmake
+backend passes its own `-D` flags (`BUILD_SHARED_LIBS=ON`,
+`CMAKE_BUILD_TYPE=Release`, …) which outrank preset cacheVariables. So
+variant presets set knobs the project owns (`ENGINELIB_SHARED`,
+`ENGINELIB_SANITIZER`, `ENGINELIB_BUILD_TYPE`, …) and CMakeLists maps
+them with plain `set()` — which always wins. See enginelib/CMakeLists.txt.
+(The `clang-win` preset is the one deliberate exception: selecting a
+compiler driver — `CMAKE_C/CXX_COMPILER=clang-cl` — IS configure
+machinery, and the preset is exactly where configure detail lives.)
+
+## Two preset layers
+
+1. **Variant presets** (`default`, `static`, `asan`, `clang-win`, …):
+   cache variables only — no generator, no binaryDir. Composable with
+   the backend.
+2. **Dev presets** (`dev`, `dev-asan`, …): inherit a variant preset, add
+   Ninja + `build/<preset>` + Debug + `CMAKE_PREFIX_PATH=$env{CONDA_PREFIX}`
+   + `<PKG>_DEV_MODE=ON` (warnings-as-errors). Pure developer UX; never
+   referenced by manifests.
+
+## The compiler matrix (five cells)
+
+| cell | realization |
+|---|---|
+| gcc / linux | the default packages (no suffix) |
+| msvc (vs2026) / win | the default packages (no suffix) |
+| clang / linux | `*-clang` named variants (libstdc++) |
+| clang / win | `*-clang` — same name, realized as clang-cl on the VC runtime |
+| mingw / win | `*-mingw` named variants — **Windows only** (libstdc++ on win) |
+
+- `clang` is ONE name on both platforms because the naming ground is
+  the knowingly-chosen CONFIGURATION (like asan/static) — on win,
+  clang-cl targets the SAME VC runtime as MSVC.
+- `mingw` is a name on ABI-REGIME grounds: a mingw-built lib is not
+  link-compatible with MSVC consumers. The lock metadata shows the two
+  regimes directly: `enginelib-clang` (win) carries `vc14_runtime`;
+  `enginelib-mingw` carries `libstdcxx`/`libgcc`.
+- Header-only packages (mathkit, stb) get NO compiler variants: their
+  generated CMake config is byte-identical across compilers (verified) —
+  no artifact, no ABI, nothing to name.
+- mingw packages also showcase a package limited to one platform: they
+  are only ever referenced from `target.win-64` tables and win-only
+  envs (`gnu`-on-linux is just gcc — the default package).
+
+## Layout and the env matrix
+
+ONE workspace manifest at the repo root owns every environment, task and
+the variant matrix; every package directory is a PACKAGE-ONLY manifest:
+
+```
+pixi.toml                  # THE workspace: pool, variants, envs, tasks
+variants.yaml              # toolchain/stdlib pins (build-variants file)
+packages/enginelib/
+├── pixi.toml              # package-only: the DEFAULT package (Release/shared)
+├── CMakeLists.txt         # knob mapping lives here
+├── CMakePresets.json      # both preset layers
+├── variants/{static,relwithdebinfo,asan,tsan,coverage,clang,mingw}/pixi.toml
+└── tests/                 # consumer project + its own variants/{clang,mingw,asan,tsan,coverage}
+packages/demo-app/
+└── variants/{static,clang,mingw}/pixi.toml
+```
+
+Every variant exists because an env consumes it: `test-asan` composes
+the `asan` flavor feature and consumes `enginelib-tests-asan`, which
+depends on `enginelib-asan` — the test binary is built *like the lib it
+tests*. Sanitizer/coverage envs are linux-only; `clang` envs span both
+platforms; `gnu`/`mingw` test+demo envs are win-only. Sibling
+references flow through the root `[workspace.dependencies]` pool
+(`{ workspace = true }`), which re-anchors relative paths per consumer —
+the single source of truth for every path in the monorepo.
+
+The coverage variant doubles as the **bring-your-own-toolchain**
+example: `compilers = []` + explicit clang build-deps
+([toolchains.md](toolchains.md)). The clang variants extend the same
+mechanics per platform; the mingw variants use the m2w64 compiler-stem
+route instead (`compilers = ["m2w64_cxx"]`).
+
+## Where microarch levels live: NOT here
+
+Microarchitecture levels are a **build-variant axis** (same name,
+different build strings), not package variants — their compatibility is
+fully encoded in dependency metadata, and a bare `enginelib` spec is
+always safe. See [build-variants.md](build-variants.md) for the
+mechanism, the tier envs (`prod`, `microarch-v0/-v2/-v3/-v4`), and the
+**big warning** about pixi not validating archspec yet. (Historical
+note: this template once shipped microarch as named subpackages
+`enginelib-v1/v3/v4` plus an "adaptive default" routed through platform
+ordering — both retired as doctrine violations: names for a
+metadata-encodable axis, and platforms used as selection routers
+instead of capability gates.)

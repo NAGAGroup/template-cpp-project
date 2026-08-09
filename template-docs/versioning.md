@@ -15,7 +15,8 @@
 ## Release flow (tag-then-re-pin)
 
 1. Bump the package version in its root manifest **and every
-   `variants/*/pixi.toml`** (grep for the old version).
+   `variants/*/pixi.toml`** (grep for the old version — including the
+   tests and demo-app variants).
 2. Commit; tag `enginelib-vX.Y.Z`; push tag.
 3. Consumers bump: `tag = "enginelib-vX.Y.Z"` → `pixi update enginelib`.
 

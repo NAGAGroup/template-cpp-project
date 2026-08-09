@@ -7,7 +7,7 @@ and uploads the results to a channel.
 ```sh
 pixi publish --dry-run --to https://prefix.dev/<channel>   # see the set, build nothing
 pixi publish --to ./local-channel                          # indexed local channel (great for testing)
-pixi publish --to https://prefix.dev/<channel>             # the real thing
+pixi publish --to https://prefix.dev/<channel>             # the real thing (see footgun 6!)
 ```
 
 Other destinations work the same way: `https://anaconda.org/<owner>`,
@@ -19,15 +19,19 @@ Other destinations work the same way: `https://anaconda.org/<owner>`,
 |---|---|
 | `mathkit`, `enginelib` (the libraries) | `demo-app` — a channel is for libraries other projects consume, not demo binaries |
 | `external/fmt`, `external/stb` (the wrappers) | the `tests` packages — they exist to verify the install surface |
+| | the preset variants (`*-static`, `*-clang`, `*-mingw`, …) — dev-only, consumed as source |
 
 The wrappers *must* be in the set: **a publish must be self-contained**, so
 every source dependency of a published package has to opt in too. Pixi fails
 the publish rather than leaving a channel referencing packages that were
 never uploaded.
 
-Note the dry-run output lists `enginelib` **twice** — once per `spdlog`
-build-variant. The whole matrix publishes. Use `pixi publish --variant
-spdlog=1.15.*` to publish one slice (handy for splitting CI across jobs).
+Note the dry-run output lists `enginelib` **eight times** — the full
+build-variant matrix (4 microarch levels × 2 spdlog lineages) under ONE
+name. The whole matrix publishes. Use `pixi publish --variant
+spdlog=1.15` to publish one slice (handy for splitting CI across jobs).
+The publish NAME-SET is the naming-doctrine compliance surface —
+`ci/check-publish-set.nu` asserts it every run.
 
 ## Authentication
 
@@ -40,7 +44,7 @@ permissions:
   contents: read
   id-token: write        # this is what makes OIDC work
 steps:
-  - run: pixi publish --to https://prefix.dev/<channel>
+  - run: pixi publish --to ./dist   # then upload, see footgun 6
 ```
 
 Channel side (once): in the channel's settings, add a trusted publisher with

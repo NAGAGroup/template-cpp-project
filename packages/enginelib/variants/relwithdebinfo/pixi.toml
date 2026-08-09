@@ -1,5 +1,5 @@
 # enginelib-relwithdebinfo: preset-variant subpackage (package-only manifest; version
-# kept in sync with the default package — see docs/versioning.md).
+# kept in sync with the default package — see template-docs/versioning.md).
 [package]
 name = "enginelib-relwithdebinfo"
 version = "0.1.0"

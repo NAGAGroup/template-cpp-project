@@ -1,7 +1,7 @@
 # WRAPPER PACKAGE: fmt, built from upstream source with pixi-build-cmake.
 #
 # The escape-hatch decision tree for external dependencies
-# (docs/external-deps.md):
+# (template-docs/external-deps.md):
 #   1. conda-forge has a binary  -> use it            (spdlog in enginelib)
 #   2. upstream has sane CMake   -> THIS wrapper      (pixi-build-cmake)
 #   3. upstream CMake is broken  -> rattler-build     (../stb)

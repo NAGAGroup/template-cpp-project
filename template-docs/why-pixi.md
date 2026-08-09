@@ -22,6 +22,9 @@ pixi (with pixi-build) closes the loop using the conda ecosystem:
   [wrapper packages](external-deps.md) — are built in isolation and
   *installed*, so consumers use `find_package()` against a real install
   surface, not your source tree's internals.
+- **Features compose environments.** Dep-features, task-features and
+  flavor surfaces assemble ~30 envs from ~20 features with near-zero
+  repetition ([features-and-environments.md](features-and-environments.md)).
 - **One mental model from laptop to CI to users.** The same envs run the
   [dev loop](dev-workflow.md), the CI matrix, and the
   [consumer paths](consuming.md) (source deps for pixi users, packed
@@ -32,5 +35,8 @@ install/export rules. What CMake loses: pretending to be a package
 manager. That division of labor is this template's core doctrine.
 
 This template is the living demonstration: three interdependent packages,
-a full variant matrix, two wrapper styles for external code, tests that
-consume like users do, and a CI that never touches a system toolchain.
+a full variant matrix (microarch and dependency-version build-variants;
+compiler, linkage and sanitizer package-variants across a five-cell
+compiler/platform matrix), two wrapper styles for external code, tests
+that consume like users do, and a CI that never touches a system
+toolchain.
