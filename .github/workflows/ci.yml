@@ -100,7 +100,15 @@ jobs:
         with:
           cache: true
           locked: false
-          environments: v0 v2 v3 v4 clang relwithdebinfo spdlog14
+          run-install: false
+      # Staleness guard (FULL-SPEC §8): the committed lock must be
+      # up-to-date ON THE RUNNER before anything installs — a silent
+      # re-solve here would re-roll the nondeterministic tier
+      # selections and invalidate the committed-lock guarantees.
+      - name: Lock staleness guard
+        run: pixi --version && pixi lock --check
+      - name: Install variant envs
+        run: pixi install -e v0 -e v2 -e v3 -e v4 -e clang -e relwithdebinfo -e spdlog14
       - name: Advisory microarch check (what this runner supports)
         run: pixi run check-microarch
       - name: Publish name-set assertion (C-01/C-02 compliance surface)
