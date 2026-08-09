@@ -70,22 +70,56 @@ platform default happens to be, drift instead of decision. Verified
 end-to-end: the pin resolves the matching `sysroot` at build and stamps
 the `__glibc` floor into every published package's run requirements.
 
-**⚠ Channel-dependence (verified, do not copy this pattern blindly):**
-`c_stdlib_version` is a DERIVATION PARAMETER, not a dep-name variant
-key — pixi's stdlib derivation triggers on the literal `conda-forge`
-channel. On a single-channel workspace layering another channel,
-derivation is suppressed, the key is a complete no-op, and — worse —
-published packages lose their `__glibc` floor ENTIRELY (installable
-anywhere, load-time failure). The constitution-compatible equivalent:
-declare `sysroot_linux-64 = "*"` in each compiled package's build-deps
-(restores the run-export) and pin workspace-wide BY DEP NAME:
-`sysroot_linux-64 = ["2.28"]` as the variant axis. Adding conda-forge
-to the channel list is NOT an acceptable fix if your project has a
-single-channel invariant. Windows skips stdlib derivation regardless of
-channel — win runtime metadata (vc14_runtime/ucrt for MSVC and clang;
-libgcc/libstdcxx/ucrt for mingw) arrives via the compiler activation's
-strong run-exports instead, which is why the m2w64 stdlib keys in
-variants.yaml are inert for the backend (kept for rattler recipes).
+**⚠ Channel-dependence — why the pin must be EXPLICIT.** pixi can
+*derive* the `c_stdlib` pair for you, but only on the literal
+`conda-forge` channel (it matches the final segment of the resolved
+channel URL). Off conda-forge, derivation is suppressed — and if you
+were relying on it, your packages ship with **no `__glibc` floor at
+all**: installable on any machine, failing at load time.
+
+The pair itself is **not** channel-dependent. A hand-written variant is
+honoured regardless of channel and stamps exactly the value you pinned:
+derived entries are inserted with `.or_insert_with`, so an explicit key
+always wins, and the backend gates on the *presence* of `c_stdlib`,
+which is provenance-agnostic — variant files feed that key set like any
+other source.
+
+So the risk is not that the key stops working somewhere. It is that on
+conda-forge the pin looks **redundant** — derivation produces a floor
+anyway — and the day you move channels, deleting it as dead weight
+silently removes the only thing producing one.
+
+Verified with three builds of the same trivial package (one compiled
+translation unit, pixi 0.76.1, pixi-build-cmake 0.4.5), reading
+`info/index.json` out of the built `.conda`:
+
+| channel | `c_stdlib` pair | `depends` |
+|---|---|---|
+| `naga-labs` (not conda-forge) | explicit | `__glibc >=2.28,<3.0.a0` |
+| `naga-labs` (not conda-forge) | **absent** | *no `__glibc` entry* |
+| `conda-forge` | **absent** | `__glibc >=2.28,<3.0.a0` |
+
+Rows 2 and 3 are the discriminating pair: identical inputs, only the
+channel differs, opposite outcomes — that is the channel gate. Row 1
+shows the explicit pair working off conda-forge. Rows 1 and 3 produce
+an identical `hash_input.json`
+(`{"c_stdlib": "sysroot", "c_stdlib_version": "2.28", ...}`) and the
+same build string, which is precisely why the pin looks redundant on
+conda-forge: derivation happens to reach the same value.
+
+Note what that value was: derivation supplied **2.28**, matching pixi's
+own documented default virtual `__glibc`, not conda-forge's 2.17
+pinning baseline. So "our pin is above the 2.17 baseline" describes the
+conda-forge *pinning convention* we are diverging from; it does not
+describe what pixi would have derived. Read a derived floor as
+"whatever pixi's default happens to be today" — which is the argument
+for pinning it, since a default is not a decision.
+
+Windows skips stdlib derivation regardless of channel — win runtime
+metadata (vc14_runtime/ucrt for MSVC and clang; libgcc/libstdcxx/ucrt
+for mingw) arrives via the compiler activation's strong run-exports
+instead, which is why the m2w64 stdlib keys in variants.yaml are inert
+for the backend (kept for rattler recipes).
 
 ## Microarch note
 
