@@ -29,4 +29,4 @@ extra-args = ["-DFMT_TEST=OFF", "-DFMT_DOC=OFF"]
 
 # Weak self-export: consumers that host-depend on fmt get it at run time.
 [package.run-exports.weak]
-fmt = "11.2.*"
+fmt = ">=11.2,<11.3"

@@ -23,4 +23,4 @@ mathkit = { workspace = true }
 stb = { workspace = true }
 
 [package.run-exports.weak]
-enginelib-static = "0.1.*"
+enginelib-static = ">=0.1.0,<0.2"

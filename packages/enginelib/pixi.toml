@@ -52,4 +52,4 @@ stb = { workspace = true }
 # enginelib automatically receive it (and, transitively, mathkit) at run
 # time. Version-specced because self-exports publish unversioned otherwise.
 [package.run-exports.weak]
-enginelib = "0.1.*"
+enginelib = ">=0.1.0,<0.2"

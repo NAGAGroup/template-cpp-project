@@ -18,4 +18,4 @@ extra-args = ["--preset=default"]
 extra-input-globs = ["include/**/*.hpp"]
 
 [package.run-exports.weak]
-mathkit = "0.1.*"
+mathkit = ">=0.1.0,<0.2"

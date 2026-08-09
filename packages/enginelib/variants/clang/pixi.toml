@@ -33,4 +33,4 @@ mathkit = { workspace = true }
 stb = { workspace = true }
 
 [package.run-exports.weak]
-enginelib-clang = "0.1.*"
+enginelib-clang = ">=0.1.0,<0.2"

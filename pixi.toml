@@ -55,7 +55,7 @@ demo-app = { path = "packages/demo-app" }
 fmt = { path = "external/fmt" }
 stb = { path = "external/stb" }
 catch2 = ">=3.5,<4"
-spdlog = "1.15.*"
+spdlog = ">=1.15,<1.16"
 
 # ---- Build-variant matrix --------------------------------------------------
 # Two live axes, both SAME NAME / different build strings:
@@ -73,7 +73,7 @@ spdlog = "1.15.*"
 #   so tier envs additionally pin the UNDERSCORE runtime package.
 # One `pixi publish` builds the full matrix on the default platforms.
 [workspace.build-variants]
-spdlog = ["1.14.*", "1.15.*"]
+spdlog = [">=1.14,<1.15", ">=1.15,<1.16"]
 x86_64-microarch-level = ["1", "3", "4"]
 
 # Live demo of overriding the backend's default compiler variants: this
@@ -96,7 +96,7 @@ enginelib = { workspace = true }
 spdlog = { workspace = true }
 
 [target.linux-64.dependencies]
-_x86_64-microarch-level = "1.*"
+_x86_64-microarch-level = "==1"
 
 # Advisory microarch check (see the platforms warning above): prints the
 # machine's CPU family and its highest supported x86-64 level. pixi does
@@ -117,30 +117,53 @@ no-default-feature = true
 dependencies = { enginelib-static = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true } }
 
 # Microarch TIER envs (linux-only lineage; default env = the v1 tier).
+# Manifest composition (C-07 with teeth): the tier envs differ ONLY by
+# their selector pin, so everything common factors into ONE shared
+# feature and each tier feature carries ONLY its selector. An env that
+# carries a selector but not the selected package silently selects
+# nothing — share features across envs that share deps.
+[feature.consumer.dependencies]
+enginelib = { workspace = true }
+mathkit = { workspace = true }
+spdlog = { workspace = true }
+
+# Tier selectors: the UNDERSCORE runtime package, pinned ==N (microarch
+# levels have no minor versions — never write N.*).
+[feature.v3.dependencies]
+_x86_64-microarch-level = "==3"
+
+# KNOWN OPEN (upstream-shaped): in-WORKSPACE source consumption of the
+# v4 tier currently resolves the level-1 build — pixi's source-variant
+# chooser ties among compatible variants (the ==4 pin excludes nothing
+# below it; floors are open by design). BINARY consumers of the
+# published packages select correctly with this exact recipe (verified
+# both ways). Tracked; do not "fix" with build-string pins.
+[feature.v4.dependencies]
+_x86_64-microarch-level = "==4"
+
 # v0: nuclear-conservative fallback — NO microarch machinery at all. On
 # pixi today it resolves the level-1 build anyway (the optimized builds'
 # runtime floors are unsolvable on a bare platform). NOT recommended:
 # any x86-64 CPU from the last ~15 years is v1+; use the default env.
 [environments.v0]
+features = ["consumer"]
 no-default-feature = true
 platforms = ["linux-64"]
-dependencies = { enginelib = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true } }
 
 # v3/v4: OPT-IN tiers. Each binds to its capability-gate platform entry
 # (an env solves for EVERY platform in its list, so the binding is
-# mandatory — the bare entry could not solve these) and pins the
-# underscore RUNTIME package to its level. ⚠ Not enforced at install/run
-# until pixi matches archspec (#3281/#5285): `pixi run check-microarch`
-# first, or a lower CPU gets SIGILL.
+# mandatory — the bare entry could not solve these). ⚠ Not enforced at
+# install/run until pixi matches archspec (#3281/#5285): run
+# `pixi run check-microarch` first, or a lower CPU gets SIGILL.
 [environments.v3]
+features = ["v3", "consumer"]
 no-default-feature = true
 platforms = ["linux-64-v3"]
-dependencies = { enginelib = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true }, _x86_64-microarch-level = "3.*" }
 
 [environments.v4]
+features = ["v4", "consumer"]
 no-default-feature = true
 platforms = ["linux-64-v4"]
-dependencies = { enginelib = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true }, _x86_64-microarch-level = "4.*" }
 
 # Minimal env for the pixi-pack demo — smallest packable surface (see
 # docs/consuming.md; packing envs with cross-package source chains works
@@ -160,7 +183,7 @@ dependencies = { enginelib-clang = { workspace = true }, mathkit = { workspace =
 # spdlog build-variant selector env (the 1.14 branch of the matrix).
 [environments.spdlog14]
 no-default-feature = true
-dependencies = { enginelib = { workspace = true }, mathkit = { workspace = true }, spdlog = "1.14.*" }
+dependencies = { enginelib = { workspace = true }, mathkit = { workspace = true }, spdlog = ">=1.14,<1.15" }
 
 # ---- Test environments -----------------------------------------------------
 # Tests are CONSUMER PROJECTS; each env consumes the tests package built
