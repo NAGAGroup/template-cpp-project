@@ -87,18 +87,49 @@ to decide **deliberately** rather than discover later.
    - *A preferred lower version CASCADES to dependents.* Preferring our
      fmt 11.2.0 selected spdlog 1.16.0 over 1.17.0, because newer
      spdlog builds pin newer fmt.
-   Is the shadow a bug? Usually not: a consumer who takes your real
-   package and transitively receives your wrapper is getting the
-   COHERENT closure — your library was built against your fmt, so
-   receiving your fmt is correct semantics, not contamination. And
-   nobody is trapped: pixi lets a consumer **override the channel for a
-   single dependency in their own manifest**
-   (`fmt = { version = "*", channel = "conda-forge" }`) — that
-   per-dependency escape hatch is the reason a name collision is a
-   choice to understand, not a hazard to mechanise against. ABI is not
-   the issue either — activation packages make duplicates
-   ABI-interchangeable. Know which outcome you're choosing; that is the
-   whole rule.
+   - **⚠ *Fall-through applies to DIRECT specs only.* This is the rule
+     the other two hide, and it is the one that bites.** A requirement
+     that arrives TRANSITIVELY, for a name your channel provides, is
+     *excluded* by strict channel priority rather than falling through
+     — even when your candidate cannot satisfy it, which turns a
+     preference into a hard solve failure. Measured on a one-package
+     workspace, nothing else in it: `fmt <11` alone SOLVES (10.2.1, via
+     fall-through); `spdlog >=1.14,<1.15` alone FAILS, because spdlog
+     needs `fmt >=11.0.1,<11.1` transitively and the solver reports
+     *"excluded because due to strict channel priority"*. Both together
+     SOLVE (fmt 11.0.2) — promoting the requirement to a direct spec
+     rescues it. The control matters: spdlog 1.14 plus a direct
+     `fmt >=11.2`, which cannot admit what spdlog needs, still FAILS.
+     So it is the *admission* that rescues the solve, not the presence
+     of a direct spec.
+
+   Is the shadow a bug? For the package a consumer deliberately takes,
+   usually not: they are getting the COHERENT closure — your library
+   was built against your fmt, so receiving your fmt is correct
+   semantics, not contamination. ABI is not the issue either;
+   activation packages make duplicates ABI-interchangeable.
+
+   **But know the collateral effect, because it is not what the first
+   two rules suggest.** Publishing a name does not merely *offer* your
+   build — it makes every OTHER version of that name unreachable to
+   *transitive* consumers on a single-channel workspace. Two escapes,
+   and both have limits worth knowing before you publish:
+   - The per-dependency channel override
+     (`fmt = { version = "*", channel = "conda-forge" }`) works only
+     for a channel **already in the workspace `channels` list**; pixi
+     rejects an override naming one that is not, so a consumer honouring
+     a single-channel doctrine cannot use it. Verified with both the
+     bare name and the layer-base URL.
+   - Promoting the requirement to a direct spec works — *except* inside
+     a source package's nested host solve, which does not inherit
+     environment specs. There the promotion has to live in the package
+     manifest, which means a package pinning something it does not use
+     to steer what its declared dependency drags in.
+
+   This repo is its own existence proof: our published `fmt` broke our
+   own spdlog-1.14 variant cell, and no source packages or run-export
+   floors were involved — pure channel priority on a transitive edge.
+   Know which outcome you're choosing; that is the whole rule.
 2. **Strong run-exports travel with what you build.** A compiler activation
    package that declares a strong run-export stamps that dependency onto
    *every* package built with it. Publish such a package and your consumers
