@@ -30,7 +30,9 @@ jobs:
           locked: false
           environments: demo
       - name: Build the app chain (incl. both wrappers) and run the demo
-        run: pixi run demo
+        # -e is REQUIRED here: `demo` exists in every demo-* env, so a
+        # bare `pixi run demo` is ambiguous (the §6 resolution lesson).
+        run: pixi run -e demo demo
       - name: Library-consumer env (prod = the v1 tier)
         run: pixi install -e prod
 

@@ -143,9 +143,23 @@ description = "Format all C++ sources in-place (parallel)"
 cmd = "nu scripts/format.nu --check"
 description = "Fail if any file is unformatted (CI)"
 
+# Caching showcase: with inputs/outputs declared, pixi SKIPS the task
+# when nothing changed since the last run (file-hash based) — re-run
+# `pixi run docs` twice to see the cache hit.
 [feature.style-tasks.tasks.docs]
 cmd = "doxygen Doxyfile"
-description = "Generate API docs into docs/api/"
+inputs = ["Doxyfile", "packages/mathkit/include/**", "packages/enginelib/include/**"]
+outputs = ["docs/api/**"]
+description = "Generate API docs into docs/api/ (cached on inputs/outputs)"
+
+# Cross-platform task bodies via MiniJinja and the `pixi` object — the
+# {% if pixi.is_win %} conditional replaces bash/bat pairs for
+# ONE-LINERS (anything longer is a nushell script, per doctrine).
+[feature.style-tasks.tasks.open-docs]
+cmd = "{% if pixi.is_win %}start{% else %}xdg-open{% endif %} docs/api/html/index.html"
+args = []
+depends-on = ["docs"]
+description = "Generate (if stale) and open the API docs in a browser"
 
 [environments.default]
 features = ["tooling", "style-tasks"]
@@ -196,9 +210,20 @@ enginelib-mingw = { workspace = true }
 enginelib-asan = { workspace = true }
 spdlog = { workspace = true }
 
+# ACTIVATION showcase: env vars set on every activation of an env
+# composing this feature (pixi run / pixi shell). The right layer for
+# SEMANTIC knobs that configure the flavor itself — sanitizer runtime
+# options belong to the sanitizer flavor, not to individual tasks.
+[feature.asan.activation.env]
+ASAN_OPTIONS = "halt_on_error=1:detect_stack_use_after_return=1"
+UBSAN_OPTIONS = "print_stacktrace=1:halt_on_error=1"
+
 [feature.tsan.dependencies]
 enginelib-tsan = { workspace = true }
 spdlog = { workspace = true }
+
+[feature.tsan.activation.env]
+TSAN_OPTIONS = "halt_on_error=1:second_deadlock_stack=1"
 
 [feature.coverage.dependencies]
 enginelib-coverage = { workspace = true }
@@ -243,10 +268,13 @@ no-default-feature = true
 
 # ---- Consumer environments -------------------------------------------------
 # Demo TASK, defined once; demo envs compose it and inline their app
-# variant as the delta.
+# variant as the delta. Task-ARGUMENT showcase: optional args carry
+# defaults and template into cmd via MiniJinja ({{ steps }});
+# `pixi run demo 20` overrides. (Arg names cannot contain dashes.)
 [feature.demo-tasks.tasks.demo]
-cmd = "demo-app"
-description = "Run the demo application"
+cmd = "demo-app {{ steps }}"
+args = [{ arg = "steps", default = "5" }]
+description = "Run the demo application (steps = engine iterations)"
 
 # Demo envs compose the task feature and inline their app variant as
 # the delta (the app is single-use env content, not a shared surface).
@@ -424,8 +452,17 @@ platforms = ["linux-64"]
 features = ["header-only", "coverage", "test-tasks"]
 no-default-feature = true
 dependencies = { enginelib-tests-coverage = { workspace = true } }
+# Task-level `env` showcase: a manual `test` in this env would litter
+# the cwd with default.profraw — the task-scoped variable redirects the
+# profile without touching the env's activation (task env > activation
+# env, for exactly this task).
 [environments.test-coverage.tasks.test]
 cmd = "enginelib-tests"
+env = { LLVM_PROFILE_FILE = "coverage/manual-run.profraw" }
+# Task RESOLUTION: `coverage` lives in exactly ONE env, so a bare
+# `pixi run coverage` resolves here without -e. Contrast `test`, which
+# exists in every test env and MUST be disambiguated with -e (or run
+# via the env-pinned test-all fan-out).
 [environments.test-coverage.tasks.coverage]
 cmd = "nu scripts/coverage.nu"
 description = "Run instrumented tests; lcov report + structured per-file coverage table"
@@ -492,11 +529,14 @@ description = "Build enginelib's in-tree dev tree"
 cmd = "nu scripts/dev-test.nu packages/enginelib"
 description = "Dev loop: cmake-install enginelib into the dev env, then build+run tests against it"
 
+# Args-with-CHOICES showcase: constrained values get validated by pixi
+# ("choose from: check, fix") and drive a jinja conditional in cmd.
 [feature.dev-enginelib.tasks.lint]
-cmd = "run-clang-tidy -quiet -p build/dev"
+cmd = "run-clang-tidy {% if mode == 'fix' %}-fix {% endif %}-quiet -p build/dev"
+args = [{ arg = "mode", default = "check", choices = ["check", "fix"] }]
 cwd = "packages/enginelib"
 depends-on = ["configure"]
-description = "clang-tidy static analysis over enginelib's dev build"
+description = "clang-tidy static analysis over enginelib's dev build (mode = check|fix)"
 
 [environments.dev-enginelib]
 features = ["dev-enginelib", "tooling"]
