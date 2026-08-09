@@ -95,7 +95,7 @@ jobs:
 
   variants:
     # Variant surface, BOTH platforms: every cross-platform consumer env
-    # mirrors onto Windows (prod, static, reldbg, spdlog16, demos);
+    # mirrors onto Windows (prod, static, reldbg, demos);
     # microarch tier envs are linux-only (the axis doesn't exist on win)
     # and INSTALL-only — pixi doesn't match archspec yet (#3281):
     # installs succeed on any runner; per C-10, tests only ever run up to
@@ -110,9 +110,9 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            envs: -e microarch-v0 -e microarch-v2 -e microarch-v3 -e microarch-v4 -e prod -e static -e reldbg -e spdlog16 -e demo-static
+            envs: -e microarch-v0 -e microarch-v2 -e microarch-v3 -e microarch-v4 -e prod -e static -e reldbg -e demo-static
           - os: windows-latest
-            envs: -e prod -e static -e reldbg -e spdlog16 -e demo-static
+            envs: -e prod -e static -e reldbg -e demo-static
     steps:
       - uses: actions/checkout@v4
       - uses: prefix-dev/setup-pixi@v0.10.0

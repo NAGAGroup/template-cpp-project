@@ -4,7 +4,10 @@
 # matrix is declared "*" (the variant-substitution placeholder, per
 # pixi's own variants docs). This check distinguishes the two instead
 # of a naive grep.
-let allowed_placeholder_keys = ["spdlog" "x86_64-microarch-level"]
+# spdlog leaves this list with its axis (D-23): with no variant to
+# substitute, a bare "*" for it would be an unpinned dep, not a
+# placeholder — exactly what this check exists to catch.
+let allowed_placeholder_keys = ["x86_64-microarch-level"]
 
 let manifests = (glob **/pixi.toml | where {|p| $p !~ 'scratch|\.pixi' })
 mut bad = []

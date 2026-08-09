@@ -23,7 +23,7 @@ compiler-rt = ">=22.1,<22.2"
 
 [package.host-dependencies]
 mathkit = { workspace = true }
-spdlog = "*"
+spdlog = { workspace = true }
 stb = { workspace = true }
 
 [package.run-dependencies]

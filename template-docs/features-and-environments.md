@@ -25,10 +25,8 @@ flavor + orthogonal task/selector features.
 |---|---|
 | `header-only` | mathkit — composed into every consumer/test env |
 | `prod` | enginelib + spdlog (the default toolchain per platform) |
-| `static` / `reldbg` / `clang` | the matching variant + spdlog |
+| `static` / `reldbg` | the matching variant + spdlog |
 | `asan` / `tsan` / `coverage` | linux-only variants + spdlog (+ sanitizer activation env vars; coverage also carries llvm-tools) |
-| `gnu` | target-table showcase: linux → enginelib, win → enginelib-mingw |
-| `spdlog14` | enginelib + the 1.14 spdlog pin (a FLAVOR, see below) |
 
 ## Selectors and the intersection law
 
@@ -36,8 +34,10 @@ Selector features (`microarch-v2/-v3/-v4`) compose onto the shared
 surface because they pin a package the base flavor does NOT declare
 (the underscore runtime gate). **Pixi INTERSECTS dependency specs
 across composed features** (verified 0.76.1): disjoint pins on a
-declared dep are unsolvable, which is why `spdlog14` is a complete
-flavor feature rather than a selector stacked on `prod`.
+declared dep are unsolvable, so an axis whose cells pin the SAME dep
+needs a complete flavor feature rather than a selector stacked on
+`prod`. (Main carries such an axis over spdlog; this branch does not —
+see the build-variants doc for why, and DELTA.md D-23.)
 
 ## Solve strategy is a feature concern
 
@@ -48,9 +48,11 @@ semantic rules shape what you see — misread them and the env looks
 broken when it is exactly right: (1) lowest-**direct** never lowers
 TRANSITIVE deps (catch2 arrives via the tests packages' host-deps and
 stays highest); (2) the chosen source variant's run-dep can FLOOR a
-direct dep (the 1.15-built enginelib carries `spdlog >=1.15.3`, so
-test-lowest's spdlog is 1.15.3 — the lowest *satisfying* version, and
-coincidentally also the highest in range: a degenerate observable).
+direct dep — a chosen source build bakes its own host solve's
+run-export floors into its run-deps, so `lowest` picks the lowest
+*satisfying* version rather than the lowest the spec admits. Beware the
+degenerate observable: if the floored value is also the highest in
+range, the result discriminates nothing.
 Min-version testing composes with run-export floors; it does not
 bypass them. An unconstrained direct dep resolves genuinely lowest.
 
@@ -77,7 +79,7 @@ shadows composed feature content, which is the precedence lesson.
 - **default** — tooling + style tasks (cheap; carries `check-microarch`).
 - **Consumers**: `prod` (recommended; = the v1 tier), `microarch-v0`
   (teaching entry, not recommended), `microarch-v2/-v3/-v4` (gate-bound
-  tiers), `static`, `reldbg`, `spdlog14`,
+  tiers), `static`, `reldbg`,
   `header-only` (doubles as the pixi-pack demo).
 - **Tests**: `test`, `test-asan`, `test-tsan`,
   `test-coverage` (linux-only), `test-lowest`. The test matrix is

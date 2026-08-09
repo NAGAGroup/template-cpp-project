@@ -80,11 +80,8 @@ catch2 = ">=3.5,<4"
 spdlog = ">=1.15,<1.16"
 
 # ---- Build-variant matrix --------------------------------------------------
-# Two live axes, both SAME NAME / different build strings:
-# - spdlog: envs select by PINNING the dep; selection works through
-#   run-dep conflicts (a 1.16-built enginelib carries spdlog's >=1.16
-#   run-export, conflicting with a 1.15 pin). The happy path: tight
-#   run-export ceilings make pins select uniquely.
+# ONE live axis on this branch (main has two — DELTA.md D-23 explains
+# why the dependency-VERSION axis is not inherited):
 # - x86_64-microarch-level: the conda-forge flag-setter as a
 #   variant-substituted HOST dep (linux-only — enginelib target-scopes
 #   the dep, so the key never bites on win-64). Its activation appends
@@ -94,11 +91,10 @@ spdlog = ">=1.15,<1.16"
 #   ourselves. Floors are deliberately open (a v3 CPU runs a v1 build),
 #   so tier envs additionally pin the UNDERSCORE runtime package.
 # One `pixi publish` builds the full matrix on the default platforms.
-# Variant VALUES are bare and exact ("1.15" — prefix-matches the series,
-# the conda-forge pinning-feedstock idiom); dependency SPECS elsewhere
-# carry real bounds. Never ranges or wildcards as variant values.
+# Variant VALUES are bare and exact ("3" — the conda-forge
+# pinning-feedstock idiom); dependency SPECS elsewhere carry real
+# bounds. Never ranges or wildcards as variant values.
 [workspace.build-variants]
-spdlog = ["1.15", "1.16"]
 x86_64-microarch-level = ["1", "2", "3", "4"]
 
 # Compiler + stdlib + build-tool pins live in ./variants.yaml (see the
@@ -224,54 +220,6 @@ spdlog = { workspace = true }
 llvm-tools = ">=20"
 nushell = ">=0.114,<0.115"
 
-# spdlog build-variant FLAVOR (the 1.16 branch of the matrix). This is
-# deliberately a complete flavor surface, NOT a selector stacked on
-# `prod`: pixi INTERSECTS dependency specs across composed features, so
-# prod's `>=1.15,<1.16` + a `>=1.16,<1.17` selector is unsolvable
-# (verified 0.76.1). Selectors compose only when they pin packages the
-# base flavor does NOT declare (the microarch tiers); disjoint pins on
-# a declared dep are a different FLAVOR.
-#
-# WHY 1.16 AND NOT 1.14 (this branch only — DELTA.md D-20). Main runs
-# this axis as 1.14/1.15; on the single `naga-labs` channel the 1.14
-# cell cannot solve. The reason is specific, and an earlier version of
-# this comment got it wrong in a way worth naming: it is NOT that our
-# published `fmt` claims the name and hides every other version. It
-# does not. Ask for `fmt <11` directly and you get 10.2.1 from the
-# layer base.
-#
-# The actual rule: on a LAYERED channel, priority fall-through applies
-# to a DIRECT dependency spec but not to a purely TRANSITIVE one. Our
-# `fmt` wrapper is published at 11.2.0, so the top-priority channel
-# offers only that version for the name. A direct `fmt <11` therefore
-# falls through and resolves; but when spdlog 1.14 requires
-# `fmt >=11.0.1,<11.1` transitively, the same candidates come back
-# "excluded because due to strict channel priority".
-#
-# Verified with one-package workspaces on this channel: `fmt<11` alone
-# SOLVES (10.2.1); `spdlog >=1.14,<1.15` alone FAILS; both together
-# SOLVE (fmt 11.0.2, spdlog 1.14.1); and the control — spdlog 1.14 plus
-# a direct `fmt >=11.2` that cannot help — FAILS, so the direct spec
-# must ADMIT the needed version, not merely exist.
-#
-# Why that does not rescue the 1.14 cell here: the requirement appears
-# in a source package's NESTED HOST SOLVE, which does not inherit the
-# environment's specs. Promoting `fmt` in the env does nothing;
-# promoting it in enginelib's host-deps fixes that solve and then the
-# run-export floor pushes the same failure down into every consuming
-# env. The promotion has to be repeated at every solve in the closure,
-# and it means a package declaring a pin on something it does not use
-# to steer what its declared dependency drags in.
-#
-# 1.16 needs none of that: BOTH published spdlog 1.16 builds want
-# `fmt >=11.2`, which the top-priority channel satisfies with our own
-# wrapper. So the axis stands on "pick versions whose transitive
-# requirements the top channel can satisfy" — which is the real lesson,
-# and a smaller one than the scary non-fact it replaces.
-[feature.spdlog16.dependencies]
-enginelib = { workspace = true }
-spdlog = ">=1.16,<1.17"
-
 # Solve-strategy is a FEATURE concern (C-09): composing this feature
 # makes an env solve its DIRECT deps lowest — the min-version
 # compatibility surface. Verified 0.76.1 (incl. in source-package
@@ -279,10 +227,11 @@ spdlog = ">=1.16,<1.17"
 # results with the SEMANTICS in mind: (a) lowest-DIRECT never lowers
 # TRANSITIVE deps (catch2 arrives via the tests packages' host-deps →
 # stays highest); (b) a binary dep can be FLOORED by a chosen source
-# variant's run-dep (enginelib's 1.15-built variant carries
-# spdlog >=1.15.3 — so test-lowest's spdlog lands exactly there, the
-# lowest SATISFYING version). Min-version testing composes with
-# run-export floors; it does not bypass them.
+# variant's run-dep — a chosen source build bakes its host solve's
+# run-export floors into its own run-deps, so `lowest` selects the
+# lowest SATISFYING version rather than the lowest the manifest spec
+# admits. Min-version testing composes with run-export floors; it does
+# not bypass them.
 [feature.solve-lowest]
 solve-strategy = "lowest-direct"
 
@@ -394,12 +343,6 @@ platforms = ["linux-64-v4"]
 # feature alone IS the env.
 [environments.header-only]
 features = ["header-only"]
-no-default-feature = true
-
-# spdlog build-variant flavor env (the 1.16 branch of the matrix — see
-# the feature comment for why this is a flavor, not a prod+selector).
-[environments.spdlog16]
-features = ["header-only", "spdlog16"]
 no-default-feature = true
 
 # ---- Test environments -----------------------------------------------------

@@ -16,7 +16,7 @@ extra-args = ["--preset=relwithdebinfo"]
 
 [package.host-dependencies]
 mathkit = { workspace = true }
-spdlog = "*"
+spdlog = { workspace = true }
 stb = { workspace = true }
 
 [package.run-dependencies]

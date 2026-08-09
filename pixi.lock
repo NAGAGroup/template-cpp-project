@@ -295,8 +295,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
-      - conda_source: demo-app[edcd195e] @ packages/demo-app
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: demo-app[646a17aa] @ packages/demo-app
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -307,8 +307,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
-      - conda_source: demo-app[4f434bde] @ packages/demo-app
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: demo-app[063f32c2] @ packages/demo-app
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -319,8 +319,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
-      - conda_source: demo-app[dbd72040] @ packages/demo-app
-      - conda_source: enginelib[22294dc3] @ packages/enginelib
+      - conda_source: demo-app[63c74509] @ packages/demo-app
+      - conda_source: enginelib[9c2994b6] @ packages/enginelib
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -331,8 +331,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
-      - conda_source: demo-app[ec803a2f] @ packages/demo-app
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: demo-app[83249d57] @ packages/demo-app
+      - conda_source: enginelib[224f78e6] @ packages/enginelib
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -342,8 +342,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: demo-app[f507023f] @ packages/demo-app
-      - conda_source: enginelib[55511bf9] @ packages/enginelib
+      - conda_source: demo-app[977b6352] @ packages/demo-app
+      - conda_source: enginelib[0ca2c6bb] @ packages/enginelib
       - conda_source: fmt[78a3e4a5] @ external/fmt
       - conda_source: mathkit[94e3566a] @ packages/mathkit
       - conda_source: stb[3851d148] @ external/stb
@@ -357,8 +357,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
-      - conda_source: demo-app-static[d365ecb3] @ packages/demo-app/variants/static
-      - conda_source: enginelib-static[f3e4ac1c] @ packages/enginelib/variants/static
+      - conda_source: demo-app-static[decd224d] @ packages/demo-app/variants/static
+      - conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -368,8 +368,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
-      - conda_source: demo-app-static[d365ecb3] @ packages/demo-app/variants/static
-      - conda_source: enginelib-static[f3e4ac1c] @ packages/enginelib/variants/static
+      - conda_source: demo-app-static[decd224d] @ packages/demo-app/variants/static
+      - conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -379,8 +379,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
-      - conda_source: demo-app-static[d365ecb3] @ packages/demo-app/variants/static
-      - conda_source: enginelib-static[f3e4ac1c] @ packages/enginelib/variants/static
+      - conda_source: demo-app-static[decd224d] @ packages/demo-app/variants/static
+      - conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -390,8 +390,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
-      - conda_source: demo-app-static[d365ecb3] @ packages/demo-app/variants/static
-      - conda_source: enginelib-static[f3e4ac1c] @ packages/enginelib/variants/static
+      - conda_source: demo-app-static[decd224d] @ packages/demo-app/variants/static
+      - conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -401,8 +401,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: demo-app-static[7ef8c2a7] @ packages/demo-app/variants/static
-      - conda_source: enginelib-static[07a4968e] @ packages/enginelib/variants/static
+      - conda_source: demo-app-static[272306d2] @ packages/demo-app/variants/static
+      - conda_source: enginelib-static[e30bf099] @ packages/enginelib/variants/static
       - conda_source: fmt[78a3e4a5] @ external/fmt
       - conda_source: mathkit[94e3566a] @ packages/mathkit
       - conda_source: stb[3851d148] @ external/stb
@@ -468,7 +468,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/pcre2-10.47-haa7fec5_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/perl-5.32.1-7_hd590300_perl5.conda
       - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
       - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
@@ -479,7 +479,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
       - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
       - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-      - conda_source: enginelib[5b1b32c1] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -541,7 +541,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/pcre2-10.47-haa7fec5_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/perl-5.32.1-7_hd590300_perl5.conda
       - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
       - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
@@ -552,7 +552,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
       - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
       - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-      - conda_source: enginelib[5b1b32c1] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -614,7 +614,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/pcre2-10.47-haa7fec5_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/perl-5.32.1-7_hd590300_perl5.conda
       - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
       - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
@@ -625,7 +625,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
       - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
       - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-      - conda_source: enginelib[b6106052] @ packages/enginelib
+      - conda_source: enginelib[9c2994b6] @ packages/enginelib
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -687,7 +687,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/pcre2-10.47-haa7fec5_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/perl-5.32.1-7_hd590300_perl5.conda
       - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
       - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
@@ -698,7 +698,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
       - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
       - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-      - conda_source: enginelib[6eb41277] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: fmt[4b2463c3] @ external/fmt
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -730,14 +730,14 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/ninja-1.13.2-h477610d_0.conda
       - conda: https://prefix.dev/conda-forge/win-64/nushell-0.114.1-he61bdd1_0.conda
       - conda: https://prefix.dev/conda-forge/win-64/openssl-3.6.3-hf411b9b_1.conda
-      - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.16.0-hb1706eb_0.conda
+      - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.15.3-h430ee68_1.conda
       - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vs2026_win-64-19.51.36247-hefade66_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
-      - conda_source: enginelib[51ed5ea8] @ packages/enginelib
+      - conda_source: enginelib[0ca2c6bb] @ packages/enginelib
       - conda_source: fmt[78a3e4a5] @ external/fmt
       - conda_source: mathkit[94e3566a] @ packages/mathkit
       - conda_source: stb[3851d148] @ external/stb
@@ -1433,7 +1433,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
   microarch-v2:
@@ -1448,7 +1448,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[22294dc3] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
   microarch-v3:
@@ -1463,7 +1463,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[22294dc3] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
   microarch-v4:
@@ -1478,7 +1478,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib[224f78e6] @ packages/enginelib
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
   prod:
@@ -1493,7 +1493,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p1:
@@ -1504,7 +1504,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p2:
@@ -1515,7 +1515,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p3:
@@ -1526,7 +1526,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       win-64:
@@ -1536,7 +1536,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: enginelib[55511bf9] @ packages/enginelib
+      - conda_source: enginelib[0ca2c6bb] @ packages/enginelib
       - conda_source: mathkit[94e3566a] @ packages/mathkit
       - conda_source: stb[3851d148] @ external/stb
   reldbg:
@@ -1550,7 +1550,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-relwithdebinfo[c57bfa04] @ packages/enginelib/variants/relwithdebinfo
+      - conda_source: enginelib-relwithdebinfo[bc9e77fe] @ packages/enginelib/variants/relwithdebinfo
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p1:
@@ -1560,7 +1560,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-relwithdebinfo[c57bfa04] @ packages/enginelib/variants/relwithdebinfo
+      - conda_source: enginelib-relwithdebinfo[bc9e77fe] @ packages/enginelib/variants/relwithdebinfo
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p2:
@@ -1570,7 +1570,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-relwithdebinfo[c57bfa04] @ packages/enginelib/variants/relwithdebinfo
+      - conda_source: enginelib-relwithdebinfo[bc9e77fe] @ packages/enginelib/variants/relwithdebinfo
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p3:
@@ -1580,7 +1580,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-relwithdebinfo[c57bfa04] @ packages/enginelib/variants/relwithdebinfo
+      - conda_source: enginelib-relwithdebinfo[bc9e77fe] @ packages/enginelib/variants/relwithdebinfo
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       win-64:
@@ -1590,65 +1590,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: enginelib-relwithdebinfo[8544a520] @ packages/enginelib/variants/relwithdebinfo
-      - conda_source: mathkit[94e3566a] @ packages/mathkit
-      - conda_source: stb[3851d148] @ external/stb
-  spdlog16:
-    channels:
-    - url: https://prefix.dev/jackm97/naga-labs/
-    packages:
-      linux-64:
-      - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
-      - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[5b1b32c1] @ packages/enginelib
-      - conda_source: mathkit[7e0da000] @ packages/mathkit
-      - conda_source: stb[72f65757] @ external/stb
-      p1:
-      - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
-      - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[b6106052] @ packages/enginelib
-      - conda_source: mathkit[7e0da000] @ packages/mathkit
-      - conda_source: stb[72f65757] @ external/stb
-      p2:
-      - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
-      - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[6eb41277] @ packages/enginelib
-      - conda_source: mathkit[7e0da000] @ packages/mathkit
-      - conda_source: stb[72f65757] @ external/stb
-      p3:
-      - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-      - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
-      - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib[5b1b32c1] @ packages/enginelib
-      - conda_source: mathkit[7e0da000] @ packages/mathkit
-      - conda_source: stb[72f65757] @ external/stb
-      win-64:
-      - conda: https://prefix.dev/conda-forge/win-64/fmt-12.0.0-h29169d4_0.conda
-      - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.16.0-h7d890cf_1.conda
-      - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
-      - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
-      - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
-      - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: enginelib[51ed5ea8] @ packages/enginelib
+      - conda_source: enginelib-relwithdebinfo[233696d5] @ packages/enginelib/variants/relwithdebinfo
       - conda_source: mathkit[94e3566a] @ packages/mathkit
       - conda_source: stb[3851d148] @ external/stb
   static:
@@ -1662,7 +1604,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-static[f3e4ac1c] @ packages/enginelib/variants/static
+      - conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p1:
@@ -1672,7 +1614,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-static[f3e4ac1c] @ packages/enginelib/variants/static
+      - conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p2:
@@ -1682,7 +1624,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-static[f3e4ac1c] @ packages/enginelib/variants/static
+      - conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p3:
@@ -1692,7 +1634,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-static[f3e4ac1c] @ packages/enginelib/variants/static
+      - conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       win-64:
@@ -1702,7 +1644,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: enginelib-static[07a4968e] @ packages/enginelib/variants/static
+      - conda_source: enginelib-static[e30bf099] @ packages/enginelib/variants/static
       - conda_source: mathkit[94e3566a] @ packages/mathkit
       - conda_source: stb[3851d148] @ external/stb
   test:
@@ -1718,8 +1660,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-tests[f25f2c53] @ packages/enginelib/tests
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib-tests[19e8dece] @ packages/enginelib/tests
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit-tests[c3f76787] @ packages/mathkit/tests
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -1732,8 +1674,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-tests[19c77769] @ packages/enginelib/tests
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib-tests[c0b9c0fa] @ packages/enginelib/tests
+      - conda_source: enginelib[1cc3e3af] @ packages/enginelib
       - conda_source: mathkit-tests[c3f76787] @ packages/mathkit/tests
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -1746,8 +1688,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-tests[60c672fd] @ packages/enginelib/tests
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib-tests[9ae2ef0b] @ packages/enginelib/tests
+      - conda_source: enginelib[1cc3e3af] @ packages/enginelib
       - conda_source: mathkit-tests[c3f76787] @ packages/mathkit/tests
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -1760,8 +1702,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-tests[c56ddd9e] @ packages/enginelib/tests
-      - conda_source: enginelib[71c755e9] @ packages/enginelib
+      - conda_source: enginelib-tests[51e7b168] @ packages/enginelib/tests
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit-tests[c3f76787] @ packages/mathkit/tests
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -1773,8 +1715,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: enginelib-tests[e7f83e30] @ packages/enginelib/tests
-      - conda_source: enginelib[55511bf9] @ packages/enginelib
+      - conda_source: enginelib-tests[e89d87a1] @ packages/enginelib/tests
+      - conda_source: enginelib[0ca2c6bb] @ packages/enginelib
       - conda_source: mathkit-tests[c192c0d3] @ packages/mathkit/tests
       - conda_source: mathkit[94e3566a] @ packages/mathkit
       - conda_source: stb[3851d148] @ external/stb
@@ -1790,8 +1732,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-asan[28628282] @ packages/enginelib/variants/asan
-      - conda_source: enginelib-tests-asan[4ff68f09] @ packages/enginelib/tests/variants/asan
+      - conda_source: enginelib-asan[a6dd23c9] @ packages/enginelib/variants/asan
+      - conda_source: enginelib-tests-asan[355056a7] @ packages/enginelib/tests/variants/asan
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
   test-coverage:
@@ -1819,8 +1761,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-coverage[7ddfc4ef] @ packages/enginelib/variants/coverage
-      - conda_source: enginelib-tests-coverage[8962418e] @ packages/enginelib/tests/variants/coverage
+      - conda_source: enginelib-coverage[cee4d6c6] @ packages/enginelib/variants/coverage
+      - conda_source: enginelib-tests-coverage[4deca46f] @ packages/enginelib/tests/variants/coverage
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
   test-lowest:
@@ -1838,8 +1780,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-tests[f25f2c53] @ packages/enginelib/tests
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib-tests[19e8dece] @ packages/enginelib/tests
+      - conda_source: enginelib[e3ebb239] @ packages/enginelib
       - conda_source: mathkit-tests[c3f76787] @ packages/mathkit/tests
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -1852,8 +1794,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-tests[e5d22d6f] @ packages/enginelib/tests
-      - conda_source: enginelib[22294dc3] @ packages/enginelib
+      - conda_source: enginelib-tests[c0b9c0fa] @ packages/enginelib/tests
+      - conda_source: enginelib[1cc3e3af] @ packages/enginelib
       - conda_source: mathkit-tests[c3f76787] @ packages/mathkit/tests
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -1866,8 +1808,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-tests[07222f6f] @ packages/enginelib/tests
-      - conda_source: enginelib[22294dc3] @ packages/enginelib
+      - conda_source: enginelib-tests[9ae2ef0b] @ packages/enginelib/tests
+      - conda_source: enginelib[1cc3e3af] @ packages/enginelib
       - conda_source: mathkit-tests[c3f76787] @ packages/mathkit/tests
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -1880,8 +1822,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-tests[f66829b7] @ packages/enginelib/tests
-      - conda_source: enginelib[4bda59f5] @ packages/enginelib
+      - conda_source: enginelib-tests[51e7b168] @ packages/enginelib/tests
+      - conda_source: enginelib[224f78e6] @ packages/enginelib
       - conda_source: mathkit-tests[c3f76787] @ packages/mathkit/tests
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -1893,8 +1835,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: enginelib-tests[e7f83e30] @ packages/enginelib/tests
-      - conda_source: enginelib[55511bf9] @ packages/enginelib
+      - conda_source: enginelib-tests[e89d87a1] @ packages/enginelib/tests
+      - conda_source: enginelib[0ca2c6bb] @ packages/enginelib
       - conda_source: mathkit-tests[c192c0d3] @ packages/mathkit/tests
       - conda_source: mathkit[94e3566a] @ packages/mathkit
       - conda_source: stb[3851d148] @ external/stb
@@ -1910,8 +1852,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-tests-tsan[bddde8f6] @ packages/enginelib/tests/variants/tsan
-      - conda_source: enginelib-tsan[85ddb837] @ packages/enginelib/variants/tsan
+      - conda_source: enginelib-tests-tsan[c60118a9] @ packages/enginelib/tests/variants/tsan
+      - conda_source: enginelib-tsan[60a603f6] @ packages/enginelib/variants/tsan
       - conda_source: mathkit[7e0da000] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
 packages:
@@ -2890,21 +2832,6 @@ packages:
     - spdlog >=1.15.3,<1.16.0a0
   size: 195618
   timestamp: 1751348678073
-- conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  sha256: b186180e4ad6d00aa58b6890a31d45bee5b96202d636fe35a97bc5a621f65220
-  md5: 57711002d722e1067e33c0bce84c2207
-  depends:
-  - __glibc >=2.17,<3.0.a0
-  - fmt >=11.2.0,<11.3.0a0
-  - libgcc >=14
-  - libstdcxx >=14
-  license: MIT
-  license_family: MIT
-  run_exports:
-    weak:
-    - spdlog >=1.16.0,<1.17.0a0
-  size: 197730
-  timestamp: 1760191982588
 - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
   sha256: 68f0206ca6e98fea941e5717cec780ed2873ffabc0e1ed34428c061e2c6268c7
   md5: 4a13eeac0b5c8e5b8ab496e6c4ddd829
@@ -3297,20 +3224,6 @@ packages:
     - fmt >=11.2.0,<11.3.0a0
   size: 185995
   timestamp: 1751277236879
-- conda: https://prefix.dev/conda-forge/win-64/fmt-12.0.0-h29169d4_0.conda
-  sha256: e9996a61fc171dd16c6a2f71723091c9aa596a3360ced227ae5292b4c43d958c
-  md5: 538a2d266f27a80a351f15873c3e0de7
-  depends:
-  - ucrt >=10.0.20348.0
-  - vc >=14.3,<15
-  - vc14_runtime >=14.44.35208
-  license: MIT
-  license_family: MIT
-  run_exports:
-    weak:
-    - fmt >=12.0.0,<12.1.0a0
-  size: 187703
-  timestamp: 1760369874666
 - conda: https://prefix.dev/conda-forge/win-64/git-2.55.0-h57928b3_1.conda
   sha256: 2546ad3f04d1a3b120656d3fa496f8fa9a1d586adf4ab1c6d47bd1b31eda8158
   md5: 42538faedfafda26c304520257b49151
@@ -3618,36 +3531,6 @@ packages:
     - spdlog >=1.15.3,<1.16.0a0
   size: 173572
   timestamp: 1751348807537
-- conda: https://prefix.dev/conda-forge/win-64/spdlog-1.16.0-h7d890cf_1.conda
-  sha256: a0b1ada384c331465331009028e1c43b753dc05986b5451cde05253bc094bdea
-  md5: 963478f6ae6b5d247afbd0f86b08586c
-  depends:
-  - fmt >=12.0.0,<12.1.0a0
-  - ucrt >=10.0.20348.0
-  - vc >=14.3,<15
-  - vc14_runtime >=14.44.35208
-  license: MIT
-  license_family: MIT
-  run_exports:
-    weak:
-    - spdlog >=1.16.0,<1.17.0a0
-  size: 175474
-  timestamp: 1760385224245
-- conda: https://prefix.dev/conda-forge/win-64/spdlog-1.16.0-hb1706eb_0.conda
-  sha256: 76b093cd335b011376bf591341026f4569cf5943986e9546a8146e95557d9492
-  md5: f0fedd71001bf8ac6552865d5fb315b5
-  depends:
-  - fmt >=11.2.0,<11.3.0a0
-  - ucrt >=10.0.20348.0
-  - vc >=14.3,<15
-  - vc14_runtime >=14.44.35208
-  license: MIT
-  license_family: MIT
-  run_exports:
-    weak:
-    - spdlog >=1.16.0,<1.17.0a0
-  size: 174853
-  timestamp: 1760192198913
 - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
   sha256: 3005729dce6f3d3f5ec91dfc49fc75a0095f9cd23bab49efb899657297ac91a5
   md5: 71b24316859acd00bdb8b38f5e2ce328
@@ -3742,7 +3625,7 @@ packages:
     - fmt >=11.2,<11.3
   size: 202057
   timestamp: 1786252137091
-- conda_source: demo-app-static[7ef8c2a7] @ packages/demo-app/variants/static
+- conda_source: demo-app-static[272306d2] @ packages/demo-app/variants/static
   variants:
     cmake: '4.4'
     cxx_compiler: vs2026
@@ -3751,8 +3634,8 @@ packages:
   - vc >=14.5,<15
   - vc14_runtime >=14.51.36247
   - ucrt >=10.0.20348.0
-  - fmt >=11.2,<11.3
   - enginelib-static >=0.1.0,<0.2
+  - fmt >=11.2,<11.3
   source:
     path: ../..
   source_depends:
@@ -3783,16 +3666,16 @@ packages:
   - conda: https://prefix.dev/conda-forge/win-64/vs2026_win-64-19.51.36247-hefade66_41.conda
   - conda: https://prefix.dev/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
   host_packages:
-  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.16.0-hb1706eb_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.15.3-h430ee68_1.conda
   - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
   - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
   - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
   - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda_source: enginelib-static[23413b0a] @ packages/enginelib/variants/static
+  - conda_source: enginelib-static[e30bf099] @ packages/enginelib/variants/static
   - conda_source: fmt[78a3e4a5] @ external/fmt
   - conda_source: mathkit[94e3566a] @ packages/mathkit
   - conda_source: stb[3851d148] @ external/stb
-- conda_source: demo-app-static[d365ecb3] @ packages/demo-app/variants/static
+- conda_source: demo-app-static[decd224d] @ packages/demo-app/variants/static
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -3804,8 +3687,8 @@ packages:
   - libstdcxx >=16
   - libgcc >=16
   - __glibc >=2.28,<3.0.a0
-  - fmt >=11.2,<11.3
   - enginelib-static >=0.1.0,<0.2
+  - fmt >=11.2,<11.3
   source:
     path: ../..
   source_depends:
@@ -3858,12 +3741,12 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda_source: enginelib-static[a08235cc] @ packages/enginelib/variants/static
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
+  - conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
   - conda_source: fmt[4b2463c3] @ external/fmt
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: demo-app[4f434bde] @ packages/demo-app
+- conda_source: demo-app[063f32c2] @ packages/demo-app
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -3927,13 +3810,13 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
   - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
-  - conda_source: enginelib[5b1b32c1] @ packages/enginelib
+  - conda_source: enginelib[e3ebb239] @ packages/enginelib
   - conda_source: fmt[4b2463c3] @ external/fmt
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: demo-app[dbd72040] @ packages/demo-app
+- conda_source: demo-app[63c74509] @ packages/demo-app
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -3997,13 +3880,13 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
   - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
-  - conda_source: enginelib[6eb41277] @ packages/enginelib
+  - conda_source: enginelib[e3ebb239] @ packages/enginelib
   - conda_source: fmt[4b2463c3] @ external/fmt
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: demo-app[ec803a2f] @ packages/demo-app
+- conda_source: demo-app[646a17aa] @ packages/demo-app
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -4067,83 +3950,83 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
-  - conda_source: enginelib[b6106052] @ packages/enginelib
-  - conda_source: fmt[4b2463c3] @ external/fmt
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: demo-app[edcd195e] @ packages/demo-app
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    target_platform: linux-64
-  depends:
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - fmt >=11.2,<11.3
-  - enginelib >=0.1.0,<0.2
-  source_depends:
-    enginelib:
-      path: ../enginelib
-    fmt:
-      path: ../../external/fmt
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
   - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
-  - conda_source: enginelib[5b1b32c1] @ packages/enginelib
+  - conda_source: enginelib[e3ebb239] @ packages/enginelib
   - conda_source: fmt[4b2463c3] @ external/fmt
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: demo-app[f507023f] @ packages/demo-app
+- conda_source: demo-app[83249d57] @ packages/demo-app
+  variants:
+    c_stdlib: sysroot
+    c_stdlib_version: '2.28'
+    cmake: '4.4'
+    cxx_compiler: gxx
+    cxx_compiler_version: '16'
+    target_platform: linux-64
+  depends:
+  - libstdcxx >=16
+  - libgcc >=16
+  - __glibc >=2.28,<3.0.a0
+  - fmt >=11.2,<11.3
+  - enginelib >=0.1.0,<0.2
+  source_depends:
+    enginelib:
+      path: ../enginelib
+    fmt:
+      path: ../../external/fmt
+  build_packages:
+  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
+  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
+  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
+  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
+  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
+  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
+  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
+  host_packages:
+  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
+  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
+  - conda_source: enginelib[9c2994b6] @ packages/enginelib
+  - conda_source: fmt[4b2463c3] @ external/fmt
+  - conda_source: mathkit[7e0da000] @ packages/mathkit
+  - conda_source: stb[72f65757] @ external/stb
+- conda_source: demo-app[977b6352] @ packages/demo-app
   variants:
     cmake: '4.4'
     cxx_compiler: vs2026
@@ -4152,8 +4035,8 @@ packages:
   - vc >=14.5,<15
   - vc14_runtime >=14.51.36247
   - ucrt >=10.0.20348.0
-  - fmt >=11.2,<11.3
   - enginelib >=0.1.0,<0.2
+  - fmt >=11.2,<11.3
   source_depends:
     enginelib:
       path: ../enginelib
@@ -4182,23 +4065,22 @@ packages:
   - conda: https://prefix.dev/conda-forge/win-64/vs2026_win-64-19.51.36247-hefade66_41.conda
   - conda: https://prefix.dev/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
   host_packages:
-  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.16.0-hb1706eb_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.15.3-h430ee68_1.conda
   - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
   - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
   - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
   - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda_source: enginelib[51ed5ea8] @ packages/enginelib
+  - conda_source: enginelib[0ca2c6bb] @ packages/enginelib
   - conda_source: fmt[78a3e4a5] @ external/fmt
   - conda_source: mathkit[94e3566a] @ packages/mathkit
   - conda_source: stb[3851d148] @ external/stb
-- conda_source: enginelib-asan[28628282] @ packages/enginelib/variants/asan
+- conda_source: enginelib-asan[a6dd23c9] @ packages/enginelib/variants/asan
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
     cmake: '4.4'
     cxx_compiler: gxx
     cxx_compiler_version: '16'
-    spdlog: '1.15'
     target_platform: linux-64
   depends:
   - mathkit
@@ -4269,88 +4151,9 @@ packages:
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-asan[58da6646] @ packages/enginelib/variants/asan
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    spdlog: '1.16'
-    target_platform: linux-64
-  depends:
-  - mathkit
-  - mathkit >=0.1.0,<0.2
-  - stb
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - spdlog >=1.16.0,<1.17.0a0
-  run_exports:
-    weak:
-    - enginelib-asan >=0.1.0,<0.2
-  source:
-    path: ../..
-  source_depends:
-    enginelib-asan:
-      path: .
-    mathkit:
-      path: ../../../mathkit
-    stb:
-      path: ../../../../external/stb
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-coverage[7ddfc4ef] @ packages/enginelib/variants/coverage
+- conda_source: enginelib-coverage[cee4d6c6] @ packages/enginelib/variants/coverage
   variants:
     cmake: '4.4'
-    spdlog: '1.15'
     target_platform: linux-64
   depends:
   - mathkit
@@ -4432,96 +4235,10 @@ packages:
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-coverage[7ebfa835] @ packages/enginelib/variants/coverage
-  variants:
-    cmake: '4.4'
-    spdlog: '1.16'
-    target_platform: linux-64
-  depends:
-  - mathkit
-  - mathkit >=0.1.0,<0.2
-  - stb
-  - libstdcxx >=15
-  - libgcc >=15
-  - spdlog >=1.16.0,<1.17.0a0
-  run_exports:
-    weak:
-    - enginelib-coverage >=0.1.0,<0.2
-  source:
-    path: ../..
-  source_depends:
-    enginelib-coverage:
-      path: .
-    mathkit:
-      path: ../../../mathkit
-    stb:
-      path: ../../../../external/stb
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/clang-22-22.1.8-default_h982d582_5.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/clang-scan-deps-22.1.8-default_h08c5240_5.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/clang_impl_linux-64-22.1.8-default_h52fce35_5.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/clang_linux-64-22.1-hecd59b2_28.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/clangxx_impl_linux-64-22.1.8-default_ha509bdc_5.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/clangxx_linux-64-22.1-h2bf5a4b_28.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/compiler-rt-22.1.8-ha770c72_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/compiler-rt22-22.1.8-hb700be7_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libclang-cpp22.1-22.1.8-default_h08c5240_5.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libclang13-22.1.8-default_h982d582_5.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcompiler-rt-22.1.8-hb700be7_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libiconv-1.18-h3b78370_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libllvm22-22.1.8-hf7376ad_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libxml2-16-2.15.3-hca6bf5a_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libxml2-2.15.3-h49c6c72_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/compiler-rt22_linux-64-22.1.8-hffcefe0_1.conda
-  - conda: https://prefix.dev/conda-forge/noarch/compiler-rt_linux-64-22.1.8-ha770c72_1.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-15.2.0-hcc6f6b0_120.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-15.2.0-hd446a21_120.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-relwithdebinfo[8544a520] @ packages/enginelib/variants/relwithdebinfo
+- conda_source: enginelib-relwithdebinfo[233696d5] @ packages/enginelib/variants/relwithdebinfo
   variants:
     cmake: '4.4'
     cxx_compiler: vs2026
-    spdlog: '1.15'
     target_platform: win-64
   depends:
   - mathkit
@@ -4574,14 +4291,13 @@ packages:
   - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
   - conda_source: mathkit[94e3566a] @ packages/mathkit
   - conda_source: stb[3851d148] @ external/stb
-- conda_source: enginelib-relwithdebinfo[c57bfa04] @ packages/enginelib/variants/relwithdebinfo
+- conda_source: enginelib-relwithdebinfo[bc9e77fe] @ packages/enginelib/variants/relwithdebinfo
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
     cmake: '4.4'
     cxx_compiler: gxx
     cxx_compiler_version: '16'
-    spdlog: '1.15'
     target_platform: linux-64
   depends:
   - mathkit
@@ -4652,206 +4368,13 @@ packages:
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-static[07a4968e] @ packages/enginelib/variants/static
-  variants:
-    cmake: '4.4'
-    cxx_compiler: vs2026
-    spdlog: '1.15'
-    target_platform: win-64
-  depends:
-  - mathkit
-  - mathkit >=0.1.0,<0.2
-  - stb
-  - vc >=14.5,<15
-  - vc14_runtime >=14.51.36247
-  - ucrt >=10.0.20348.0
-  - spdlog >=1.15.3,<1.16.0a0
-  run_exports:
-    weak:
-    - enginelib-static >=0.1.0,<0.2
-  source:
-    path: ../..
-  source_depends:
-    enginelib-static:
-      path: .
-    mathkit:
-      path: ../../../mathkit
-    stb:
-      path: ../../../../external/stb
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-h4c7d964_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/vswhere-3.1.7-h40126e0_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/bzip2-1.0.8-h0ad9c76_10.conda
-  - conda: https://prefix.dev/conda-forge/win-64/cmake-4.4.2-hdcbee5b_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/icu-78.3-h5112557_2.conda
-  - conda: https://prefix.dev/conda-forge/win-64/krb5-1.22.2-h719d79b_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libcurl-8.21.0-hdb0ef4a_4.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libexpat-2.8.1-hac47afa_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/liblzma-5.8.3-hfd05255_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libpsl-0.23.0-h9b16d47_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libssh2-1.11.1-h9aa295b_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libuv-1.52.1-h6a83c73_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libzlib-1.3.2-hfd05255_3.conda
-  - conda: https://prefix.dev/conda-forge/win-64/ninja-1.13.2-h477610d_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/openssl-3.6.3-hf411b9b_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vs2026_win-64-19.51.36247-hefade66_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/win-64/fmt-11.2.0-h1d4551f_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.15.3-h430ee68_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda_source: mathkit[94e3566a] @ packages/mathkit
-  - conda_source: stb[3851d148] @ external/stb
-- conda_source: enginelib-static[23413b0a] @ packages/enginelib/variants/static
-  variants:
-    cmake: '4.4'
-    cxx_compiler: vs2026
-    spdlog: '1.16'
-    target_platform: win-64
-  depends:
-  - mathkit
-  - mathkit >=0.1.0,<0.2
-  - stb
-  - vc >=14.5,<15
-  - vc14_runtime >=14.51.36247
-  - ucrt >=10.0.20348.0
-  - spdlog >=1.16.0,<1.17.0a0
-  run_exports:
-    weak:
-    - enginelib-static >=0.1.0,<0.2
-  source:
-    path: ../..
-  source_depends:
-    enginelib-static:
-      path: .
-    mathkit:
-      path: ../../../mathkit
-    stb:
-      path: ../../../../external/stb
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-h4c7d964_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/vswhere-3.1.7-h40126e0_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/bzip2-1.0.8-h0ad9c76_10.conda
-  - conda: https://prefix.dev/conda-forge/win-64/cmake-4.4.2-hdcbee5b_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/icu-78.3-h5112557_2.conda
-  - conda: https://prefix.dev/conda-forge/win-64/krb5-1.22.2-h719d79b_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libcurl-8.21.0-hdb0ef4a_4.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libexpat-2.8.1-hac47afa_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/liblzma-5.8.3-hfd05255_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libpsl-0.23.0-h9b16d47_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libssh2-1.11.1-h9aa295b_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libuv-1.52.1-h6a83c73_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libzlib-1.3.2-hfd05255_3.conda
-  - conda: https://prefix.dev/conda-forge/win-64/ninja-1.13.2-h477610d_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/openssl-3.6.3-hf411b9b_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vs2026_win-64-19.51.36247-hefade66_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/win-64/fmt-12.0.0-h29169d4_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.16.0-h7d890cf_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda_source: mathkit[94e3566a] @ packages/mathkit
-  - conda_source: stb[3851d148] @ external/stb
-- conda_source: enginelib-static[a08235cc] @ packages/enginelib/variants/static
+- conda_source: enginelib-static[716ceca6] @ packages/enginelib/variants/static
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
     cmake: '4.4'
     cxx_compiler: gxx
     cxx_compiler_version: '16'
-    spdlog: '1.16'
-    target_platform: linux-64
-  depends:
-  - mathkit
-  - mathkit >=0.1.0,<0.2
-  - stb
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - spdlog >=1.16.0,<1.17.0a0
-  run_exports:
-    weak:
-    - enginelib-static >=0.1.0,<0.2
-  source:
-    path: ../..
-  source_depends:
-    enginelib-static:
-      path: .
-    mathkit:
-      path: ../../../mathkit
-    stb:
-      path: ../../../../external/stb
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-static[f3e4ac1c] @ packages/enginelib/variants/static
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    spdlog: '1.15'
     target_platform: linux-64
   depends:
   - mathkit
@@ -4922,7 +4445,63 @@ packages:
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests-asan[4ff68f09] @ packages/enginelib/tests/variants/asan
+- conda_source: enginelib-static[e30bf099] @ packages/enginelib/variants/static
+  variants:
+    cmake: '4.4'
+    cxx_compiler: vs2026
+    target_platform: win-64
+  depends:
+  - mathkit
+  - mathkit >=0.1.0,<0.2
+  - stb
+  - vc >=14.5,<15
+  - vc14_runtime >=14.51.36247
+  - ucrt >=10.0.20348.0
+  - spdlog >=1.15.3,<1.16.0a0
+  run_exports:
+    weak:
+    - enginelib-static >=0.1.0,<0.2
+  source:
+    path: ../..
+  source_depends:
+    enginelib-static:
+      path: .
+    mathkit:
+      path: ../../../mathkit
+    stb:
+      path: ../../../../external/stb
+  build_packages:
+  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-h4c7d964_0.conda
+  - conda: https://prefix.dev/conda-forge/noarch/vswhere-3.1.7-h40126e0_1.conda
+  - conda: https://prefix.dev/conda-forge/win-64/bzip2-1.0.8-h0ad9c76_10.conda
+  - conda: https://prefix.dev/conda-forge/win-64/cmake-4.4.2-hdcbee5b_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/icu-78.3-h5112557_2.conda
+  - conda: https://prefix.dev/conda-forge/win-64/krb5-1.22.2-h719d79b_1.conda
+  - conda: https://prefix.dev/conda-forge/win-64/libcurl-8.21.0-hdb0ef4a_4.conda
+  - conda: https://prefix.dev/conda-forge/win-64/libexpat-2.8.1-hac47afa_1.conda
+  - conda: https://prefix.dev/conda-forge/win-64/liblzma-5.8.3-hfd05255_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/libpsl-0.23.0-h9b16d47_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/libssh2-1.11.1-h9aa295b_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/libuv-1.52.1-h6a83c73_1.conda
+  - conda: https://prefix.dev/conda-forge/win-64/libzlib-1.3.2-hfd05255_3.conda
+  - conda: https://prefix.dev/conda-forge/win-64/ninja-1.13.2-h477610d_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/openssl-3.6.3-hf411b9b_1.conda
+  - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
+  - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
+  - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
+  - conda: https://prefix.dev/conda-forge/win-64/vs2026_win-64-19.51.36247-hefade66_41.conda
+  - conda: https://prefix.dev/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
+  host_packages:
+  - conda: https://prefix.dev/conda-forge/win-64/fmt-11.2.0-h1d4551f_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.15.3-h430ee68_1.conda
+  - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
+  - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
+  - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
+  - conda_source: mathkit[94e3566a] @ packages/mathkit
+  - conda_source: stb[3851d148] @ external/stb
+- conda_source: enginelib-tests-asan[355056a7] @ packages/enginelib/tests/variants/asan
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -4987,12 +4566,12 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib-asan[58da6646] @ packages/enginelib/variants/asan
+  - conda_source: enginelib-asan[a6dd23c9] @ packages/enginelib/variants/asan
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests-coverage[8962418e] @ packages/enginelib/tests/variants/coverage
+- conda_source: enginelib-tests-coverage[4deca46f] @ packages/enginelib/tests/variants/coverage
   variants:
     cmake: '4.4'
     target_platform: linux-64
@@ -5064,12 +4643,12 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib-coverage[7ebfa835] @ packages/enginelib/variants/coverage
+  - conda_source: enginelib-coverage[cee4d6c6] @ packages/enginelib/variants/coverage
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests-tsan[bddde8f6] @ packages/enginelib/tests/variants/tsan
+- conda_source: enginelib-tests-tsan[c60118a9] @ packages/enginelib/tests/variants/tsan
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -5134,12 +4713,12 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib-tsan[66aff931] @ packages/enginelib/variants/tsan
+  - conda_source: enginelib-tsan[60a603f6] @ packages/enginelib/variants/tsan
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests[07222f6f] @ packages/enginelib/tests
+- conda_source: enginelib-tests[19e8dece] @ packages/enginelib/tests
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -5202,13 +4781,13 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
+  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib[5b1b32c1] @ packages/enginelib
+  - conda_source: enginelib[e3ebb239] @ packages/enginelib
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests[19c77769] @ packages/enginelib/tests
+- conda_source: enginelib-tests[51e7b168] @ packages/enginelib/tests
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -5271,151 +4850,13 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib[5b1b32c1] @ packages/enginelib
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests[60c672fd] @ packages/enginelib/tests
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    target_platform: linux-64
-  depends:
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - enginelib >=0.1.0,<0.2
-  - catch2 >=3.15.3,<4.0a0
-  source_depends:
-    enginelib:
-      path: ..
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/catch2-3.15.3-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib[6eb41277] @ packages/enginelib
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests[c56ddd9e] @ packages/enginelib/tests
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    target_platform: linux-64
-  depends:
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - enginelib >=0.1.0,<0.2
-  - catch2 >=3.15.3,<4.0a0
-  source_depends:
-    enginelib:
-      path: ..
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/catch2-3.15.3-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
   - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib[5b1b32c1] @ packages/enginelib
+  - conda_source: enginelib[224f78e6] @ packages/enginelib
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests[e5d22d6f] @ packages/enginelib/tests
+- conda_source: enginelib-tests[9ae2ef0b] @ packages/enginelib/tests
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -5478,13 +4919,82 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
+  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-3-4_level3.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib[b6106052] @ packages/enginelib
+  - conda_source: enginelib[9c2994b6] @ packages/enginelib
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests[e7f83e30] @ packages/enginelib/tests
+- conda_source: enginelib-tests[c0b9c0fa] @ packages/enginelib/tests
+  variants:
+    c_stdlib: sysroot
+    c_stdlib_version: '2.28'
+    cmake: '4.4'
+    cxx_compiler: gxx
+    cxx_compiler_version: '16'
+    target_platform: linux-64
+  depends:
+  - libstdcxx >=16
+  - libgcc >=16
+  - __glibc >=2.28,<3.0.a0
+  - enginelib >=0.1.0,<0.2
+  - catch2 >=3.15.3,<4.0a0
+  source_depends:
+    enginelib:
+      path: ..
+  build_packages:
+  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
+  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
+  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
+  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
+  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
+  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
+  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
+  host_packages:
+  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/catch2-3.15.3-h171cf75_0.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
+  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-2-4_level2.conda
+  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
+  - conda_source: enginelib[e3ebb239] @ packages/enginelib
+  - conda_source: mathkit[7e0da000] @ packages/mathkit
+  - conda_source: stb[72f65757] @ external/stb
+- conda_source: enginelib-tests[e89d87a1] @ packages/enginelib/tests
   variants:
     cmake: '4.4'
     cxx_compiler: vs2026
@@ -5522,239 +5032,22 @@ packages:
   - conda: https://prefix.dev/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
   host_packages:
   - conda: https://prefix.dev/conda-forge/win-64/catch2-3.15.3-h477610d_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/fmt-12.0.0-h29169d4_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.16.0-h7d890cf_1.conda
+  - conda: https://prefix.dev/conda-forge/win-64/fmt-11.2.0-h1d4551f_0.conda
+  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.15.3-h430ee68_1.conda
   - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
   - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
   - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
   - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda_source: enginelib[51ed5ea8] @ packages/enginelib
+  - conda_source: enginelib[0ca2c6bb] @ packages/enginelib
   - conda_source: mathkit[94e3566a] @ packages/mathkit
   - conda_source: stb[3851d148] @ external/stb
-- conda_source: enginelib-tests[f25f2c53] @ packages/enginelib/tests
+- conda_source: enginelib-tsan[60a603f6] @ packages/enginelib/variants/tsan
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
     cmake: '4.4'
     cxx_compiler: gxx
     cxx_compiler_version: '16'
-    target_platform: linux-64
-  depends:
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - enginelib >=0.1.0,<0.2
-  - catch2 >=3.15.3,<4.0a0
-  source_depends:
-    enginelib:
-      path: ..
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/catch2-3.15.3-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-1-4_level1.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib[5b1b32c1] @ packages/enginelib
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests[f66829b7] @ packages/enginelib/tests
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    target_platform: linux-64
-  depends:
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - enginelib >=0.1.0,<0.2
-  - catch2 >=3.15.3,<4.0a0
-  source_depends:
-    enginelib:
-      path: ..
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/catch2-3.15.3-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/_x86_64-microarch-level-4-4_level4.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: enginelib[6eb41277] @ packages/enginelib
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tsan[66aff931] @ packages/enginelib/variants/tsan
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    spdlog: '1.16'
-    target_platform: linux-64
-  depends:
-  - mathkit
-  - mathkit >=0.1.0,<0.2
-  - stb
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - spdlog >=1.16.0,<1.17.0a0
-  run_exports:
-    weak:
-    - enginelib-tsan >=0.1.0,<0.2
-  source:
-    path: ../..
-  source_depends:
-    enginelib-tsan:
-      path: .
-    mathkit:
-      path: ../../../mathkit
-    stb:
-      path: ../../../../external/stb
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tsan[85ddb837] @ packages/enginelib/variants/tsan
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    spdlog: '1.15'
     target_platform: linux-64
   depends:
   - mathkit
@@ -5825,221 +5118,10 @@ packages:
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib[22294dc3] @ packages/enginelib
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    spdlog: '1.15'
-    target_platform: linux-64
-    x86_64_microarch_level: '2'
-  depends:
-  - stb
-  - _x86_64-microarch-level >=2
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - mathkit >=0.1.0,<0.2
-  - spdlog >=1.15.3,<1.16.0a0
-  run_exports:
-    weak:
-    - enginelib >=0.1.0,<0.2
-  source_depends:
-    enginelib:
-      path: .
-    mathkit:
-      path: ../mathkit
-    stb:
-      path: ../../external/stb
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
-  - conda: https://prefix.dev/conda-forge/noarch/x86_64-microarch-level-2-4_level2.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib[4bda59f5] @ packages/enginelib
-  variants:
-    c_stdlib: sysroot
-    c_stdlib_version: '2.28'
-    cmake: '4.4'
-    cxx_compiler: gxx
-    cxx_compiler_version: '16'
-    spdlog: '1.15'
-    target_platform: linux-64
-    x86_64_microarch_level: '1'
-  depends:
-  - stb
-  - _x86_64-microarch-level >=1
-  - libstdcxx >=16
-  - libgcc >=16
-  - __glibc >=2.28,<3.0.a0
-  - mathkit >=0.1.0,<0.2
-  - spdlog >=1.15.3,<1.16.0a0
-  run_exports:
-    weak:
-    - enginelib >=0.1.0,<0.2
-  source_depends:
-    enginelib:
-      path: .
-    mathkit:
-      path: ../mathkit
-    stb:
-      path: ../../external/stb
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_impl_linux-64-16.1.0-h5fcb69b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gcc_linux-64-16.1.0-h5fd2508_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_impl_linux-64-16.1.0-he33a5f8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/gxx_linux-64-16.1.0-h5525346_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/icu-78.3-h54a6638_2.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/keyutils-1.6.3-hb9d3cd8_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/krb5-1.22.2-hbde042b_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_102.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libcurl-8.21.0-heca4667_4.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libedit-3.1.20250104-pl5321h7949ede_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libev-4.33-h280c20c_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libexpat-2.8.1-hecca717_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/liblzma-5.8.3-hb03c661_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libnghttp2-1.68.1-h877daf1_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libpsl-0.23.0-hf670292_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libsanitizer-16.1.0-hf2715c6_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libssh2-1.11.1-hcf80075_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libuv-1.52.1-h280c20c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/ninja-1.13.2-h171cf75_0.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/openssl-3.6.3-h35e630c_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libgcc-devel_linux-64-16.1.0-h59071f9_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/libstdcxx-devel_linux-64-16.1.0-h41cdd0d_101.conda
-  - conda: https://prefix.dev/conda-forge/noarch/sysroot_linux-64-2.28-h4ee821c_9.conda
-  - conda: https://prefix.dev/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
-  - conda: https://prefix.dev/conda-forge/noarch/x86_64-microarch-level-1-4_level1.conda
-  - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-  - conda_source: mathkit[7e0da000] @ packages/mathkit
-  - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib[51ed5ea8] @ packages/enginelib
+- conda_source: enginelib[0ca2c6bb] @ packages/enginelib
   variants:
     cmake: '4.4'
     cxx_compiler: vs2026
-    spdlog: '1.16'
-    target_platform: win-64
-  depends:
-  - stb
-  - vc >=14.5,<15
-  - vc14_runtime >=14.51.36247
-  - ucrt >=10.0.20348.0
-  - mathkit >=0.1.0,<0.2
-  - spdlog >=1.16.0,<1.17.0a0
-  run_exports:
-    weak:
-    - enginelib >=0.1.0,<0.2
-  source_depends:
-    enginelib:
-      path: .
-    mathkit:
-      path: ../mathkit
-    stb:
-      path: ../../external/stb
-  build_packages:
-  - conda: https://prefix.dev/conda-forge/noarch/ca-certificates-2026.7.22-h4c7d964_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/vswhere-3.1.7-h40126e0_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/bzip2-1.0.8-h0ad9c76_10.conda
-  - conda: https://prefix.dev/conda-forge/win-64/cmake-4.4.2-hdcbee5b_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/icu-78.3-h5112557_2.conda
-  - conda: https://prefix.dev/conda-forge/win-64/krb5-1.22.2-h719d79b_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libcurl-8.21.0-hdb0ef4a_4.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libexpat-2.8.1-hac47afa_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/liblzma-5.8.3-hfd05255_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libpsl-0.23.0-h9b16d47_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libssh2-1.11.1-h9aa295b_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libuv-1.52.1-h6a83c73_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/libzlib-1.3.2-hfd05255_3.conda
-  - conda: https://prefix.dev/conda-forge/win-64/ninja-1.13.2-h477610d_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/openssl-3.6.3-hf411b9b_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vs2026_win-64-19.51.36247-hefade66_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
-  host_packages:
-  - conda: https://prefix.dev/conda-forge/win-64/fmt-12.0.0-h29169d4_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/spdlog-1.16.0-h7d890cf_1.conda
-  - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-ha367084_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
-  - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda_source: mathkit[94e3566a] @ packages/mathkit
-  - conda_source: stb[3851d148] @ external/stb
-- conda_source: enginelib[55511bf9] @ packages/enginelib
-  variants:
-    cmake: '4.4'
-    cxx_compiler: vs2026
-    spdlog: '1.15'
     target_platform: win-64
   depends:
   - stb
@@ -6089,24 +5171,23 @@ packages:
   - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
   - conda_source: mathkit[94e3566a] @ packages/mathkit
   - conda_source: stb[3851d148] @ external/stb
-- conda_source: enginelib[5b1b32c1] @ packages/enginelib
+- conda_source: enginelib[1cc3e3af] @ packages/enginelib
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
     cmake: '4.4'
     cxx_compiler: gxx
     cxx_compiler_version: '16'
-    spdlog: '1.16'
     target_platform: linux-64
-    x86_64_microarch_level: '1'
+    x86_64_microarch_level: '2'
   depends:
   - stb
-  - _x86_64-microarch-level >=1
+  - _x86_64-microarch-level >=2
   - libstdcxx >=16
   - libgcc >=16
   - __glibc >=2.28,<3.0.a0
   - mathkit >=0.1.0,<0.2
-  - spdlog >=1.16.0,<1.17.0a0
+  - spdlog >=1.15.3,<1.16.0a0
   run_exports:
     weak:
     - enginelib >=0.1.0,<0.2
@@ -6162,29 +5243,28 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/x86_64-microarch-level-1-4_level1.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
+  - conda: https://prefix.dev/conda-forge/noarch/x86_64-microarch-level-2-4_level2.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib[6eb41277] @ packages/enginelib
+- conda_source: enginelib[224f78e6] @ packages/enginelib
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
     cmake: '4.4'
     cxx_compiler: gxx
     cxx_compiler_version: '16'
-    spdlog: '1.16'
     target_platform: linux-64
-    x86_64_microarch_level: '3'
+    x86_64_microarch_level: '4'
   depends:
   - stb
-  - _x86_64-microarch-level >=3
+  - _x86_64-microarch-level >=4
   - libstdcxx >=16
   - libgcc >=16
   - __glibc >=2.28,<3.0.a0
   - mathkit >=0.1.0,<0.2
-  - spdlog >=1.16.0,<1.17.0a0
+  - spdlog >=1.15.3,<1.16.0a0
   run_exports:
     weak:
     - enginelib >=0.1.0,<0.2
@@ -6240,19 +5320,18 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/x86_64-microarch-level-3-4_level3.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
+  - conda: https://prefix.dev/conda-forge/noarch/x86_64-microarch-level-4-4_level4.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib[71c755e9] @ packages/enginelib
+- conda_source: enginelib[9c2994b6] @ packages/enginelib
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
     cmake: '4.4'
     cxx_compiler: gxx
     cxx_compiler_version: '16'
-    spdlog: '1.15'
     target_platform: linux-64
     x86_64_microarch_level: '3'
   depends:
@@ -6323,24 +5402,23 @@ packages:
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib[b6106052] @ packages/enginelib
+- conda_source: enginelib[e3ebb239] @ packages/enginelib
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
     cmake: '4.4'
     cxx_compiler: gxx
     cxx_compiler_version: '16'
-    spdlog: '1.16'
     target_platform: linux-64
-    x86_64_microarch_level: '2'
+    x86_64_microarch_level: '1'
   depends:
   - stb
-  - _x86_64-microarch-level >=2
+  - _x86_64-microarch-level >=1
   - libstdcxx >=16
   - libgcc >=16
   - __glibc >=2.28,<3.0.a0
   - mathkit >=0.1.0,<0.2
-  - spdlog >=1.16.0,<1.17.0a0
+  - spdlog >=1.15.3,<1.16.0a0
   run_exports:
     weak:
     - enginelib >=0.1.0,<0.2
@@ -6396,8 +5474,8 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda
-  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  - conda: https://prefix.dev/conda-forge/noarch/x86_64-microarch-level-2-4_level2.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
+  - conda: https://prefix.dev/conda-forge/noarch/x86_64-microarch-level-1-4_level1.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[7e0da000] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb

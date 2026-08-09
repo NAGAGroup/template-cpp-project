@@ -19,9 +19,10 @@ extra-args = ["--preset=default"]
 # Sibling source dep (public: appears in our headers) — spec inherited
 # from the root [workspace.dependencies] pool and re-anchored.
 mathkit = { workspace = true }
-# Boring happy path: a plain conda-forge BINARY dep. The "*" spec
-# participates in the [workspace.build-variants] matrix.
-spdlog = "*"
+# Boring happy path: a plain conda-forge BINARY dep. On main this is
+# `"*"` because spdlog carries a build-variant axis; here it is an
+# ordinary pinned spec, since that axis is not inherited (D-23).
+spdlog = { workspace = true }
 # Escape-hatch wrapper dep (rattler-build; see external/stb).
 stb = { workspace = true }
 

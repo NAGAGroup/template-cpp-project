@@ -12,55 +12,68 @@ configuration (sanitizers, linkage, compiler → preset-variants,
 `enginelib-clang`), or unsafe version ordering. Never encode an axis in
 package names when metadata can carry it.
 
-Two live axes in this repo, one per selection style:
+ONE live axis in this repo. Main carries a second — a DEPENDENCY-VERSION
+axis over spdlog — which this branch deliberately does not inherit; the
+reason is a genuine constraint on when such an axis is safe, so it is
+recorded here rather than merely dropped.
 
-## Axis 1: spdlog — the happy path (tight ceilings)
+## Why there is no dependency-version axis here
 
-```toml
-[workspace.build-variants]
-spdlog = ["1.15", "1.16"]        # variant VALUES: bare and exact
+A dependency-version axis builds the same package name against two
+versions of a dependency and lets run-dep conflicts select between
+them. It is the happy path when it works. It is only safe, however,
+**where the axis does not cross an ABI boundary in the nested host
+solve** — and that is not something you can see from the manifest.
 
-[feature.spdlog16.dependencies]  # the 1.16 FLAVOR feature
-enginelib = { workspace = true }
-spdlog = ">=1.16,<1.17"          # dependency SPECS: real bounds
+What went wrong here, concretely. Each variant cell resolves its own
+dependencies in a NESTED HOST SOLVE that does not inherit the consuming
+environment. On win-64 the two published spdlog builds for one of the
+cells straddled an fmt ABI: the cell resolved a spdlog built against
+fmt 12, so the library in that cell was compiled against `fmt::v12`,
+while the consuming environment supplied fmt 11.2. The result was
+`LNK1120: unresolved external symbol` at link time — not a solve
+failure, a LINK failure, discovered in CI on the one platform where the
+builds differed. Linux was immune because both spdlog builds there
+agreed on fmt.
 
-[environments.spdlog16]
-features = ["header-only", "spdlog16"]
-```
+Two lessons worth more than the axis was:
 
-Variant VALUES are bare and exact (`"1.15"` prefix-matches the series —
-the conda-forge pinning-feedstock idiom); dependency SPECS carry real
-bounds. Never ranges or wildcards as variant values.
+1. **A dependency-version axis is only safe where the axis does not
+   cross an ABI boundary in the nested host solve.** Check what each
+   cell actually resolves, per platform, before adding one.
+2. **An environment listing shows the RUNTIME closure; the nested host
+   solve is where a build-time disagreement lives.** Reading the env
+   view will make a build-time ABI problem look impossible.
+
+The obvious fix — pinning the dependency's dependency to keep the cells
+on one ABI — was rejected on package-boundary grounds: it means a
+package declaring a pin on something it does not use, purely to steer
+what its declared dependency drags in. A project reasons about the deps
+it declares; what those drag in is the upstream maintainer's business.
 
 (Spec-form rule, repo-wide: prefer `pixi add` over hand-writing specs;
 hand-written specs use `">=x"`, `">=a.b,<a.c"`, or `"==a.b.c"` — never
 `"X.*"`, never bare `"*"`… with ONE deliberate carve-out: **a dep that
-participates in the build-variant matrix is declared `"*"`** — that is
-the documented variant-substitution placeholder (pixi's variants page:
+participates in the build-variant matrix is declared `"*"`** — the
+documented variant-substitution placeholder (pixi's variants page:
 `python = "*"`, "Used to be 3.12.*"; the axis fills it). Do not "fix"
 these — a blanket no-wildcard rule breaks variant expansion.
-`ci/check-spec-forms.nu` enforces exactly this distinction. Build
+`ci/check-spec-forms.nu` enforces exactly this distinction, and its
+allow-list shrank with the axis: with no variant to substitute, a bare
+`"*"` would be an unpinned dep rather than a placeholder. Build
 BACKENDS are exact-pinned (`==version`): they version independently of
 pixi and are the real behavior surface for source packages — a backend
 bump is a deliberate PR, like the pixi floor.)
-
-An environment picks a variant build **through run-dependency
-conflicts**: the 1.15-built enginelib carries spdlog's `<1.16`
-run-export, which conflicts with a `>=1.16` pin, forcing the solver onto
-the other variant. Tight run-export ceilings ⇒ pins select uniquely.
-If no run-dep distinguishes the variants, the solver happily reuses one
-build for every env — which is exactly the microarch situation below.
 
 **Selector-composition law (verified 0.76.1):** pixi INTERSECTS
 dependency specs across the features composed into an env. A selector
 feature therefore composes onto a base flavor only when it pins
 packages the base does NOT declare (the microarch tiers pin the
-underscore gate — `prod` never mentions it). Disjoint pins on a
-declared dep (spdlog `>=1.16,<1.17` vs prod's `>=1.15,<1.16`) are
-UNSOLVABLE when composed — that axis needs its own complete flavor
-feature (`spdlog16` above), not a stacked selector.
+underscore gate — `prod` never mentions it). Disjoint pins on a dep
+both features declare are UNSOLVABLE when composed — such an axis needs
+its own complete flavor feature, never a stacked selector.
 
-## Axis 2: microarch — open floors, capability gates
+## The axis that remains: microarch — open floors, capability gates
 
 `x86_64-microarch-level` (conda-forge) is a variant-substituted **host**
 dep on enginelib (linux-only, target-scoped — the packages are unix-only
