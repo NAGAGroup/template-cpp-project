@@ -149,6 +149,14 @@ description = "Fail if any file is unformatted (CI)"
 # Caching showcase: with inputs/outputs declared, pixi SKIPS the task
 # when nothing changed since the last run (file-hash based) — re-run
 # `pixi run docs` twice to see the cache hit.
+# Style is not only formatting: material that OUTLIVES the template docs
+# (manifests, CMakeLists, CI, ci/ scripts) must not point at them with a
+# relative path — a generated project deletes that directory and the
+# comments go dangling. Absolute upstream URL, or inline the point.
+[feature.style-tasks.tasks.check-doc-refs]
+cmd = "nu ci/check-doc-refs.nu"
+description = "Fail on relative template-docs references in material that survives the template"
+
 [feature.style-tasks.tasks.docs]
 cmd = "doxygen Doxyfile"
 inputs = ["Doxyfile", "packages/mathkit/include/**", "packages/enginelib/include/**"]
@@ -376,9 +384,12 @@ features = ["microarch-v4", "header-only", "prod"]
 no-default-feature = true
 platforms = ["linux-64-v4"]
 
-# Minimal env for the pixi-pack demo — smallest packable surface (see
-# template-docs/consuming.md; packing envs with cross-package source chains works
-# too, this one just keeps the demo tiny). The feature alone IS the env.
+# Minimal env for the pixi-pack demo — smallest packable surface. pixi-pack
+# ships an environment as a self-contained archive (`--create-executable`
+# yields environment.sh/.ps1) for machines with no network and no pixi.
+# Packs handle envs with cross-package source chains, source run-deps
+# included; this env is just the smallest demo, not a workaround. The
+# feature alone IS the env.
 [environments.header-only]
 features = ["header-only"]
 no-default-feature = true

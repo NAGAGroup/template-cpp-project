@@ -11,7 +11,7 @@
 #
 # Note both lanes carry `ucrt`: the gcc_win-64 family targets the SAME
 # CRT as MSVC — which is exactly why pure-C deps may cross regimes
-# while C++ deps must not (see template-docs/variants.md).
+# while C++ deps must not (see https://github.com/NAGAGroup/template-cpp-project/blob/main/template-docs/variants.md).
 let lock = (open --raw pixi.lock | from yaml)
 let srcs = ($lock | get packages | where {|p| ($p | get -o conda_source | default "") != "" })
 

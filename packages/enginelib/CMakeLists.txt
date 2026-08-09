@@ -87,10 +87,13 @@ target_include_directories(
 target_compile_features(enginelib PUBLIC cxx_std_23)
 # Regime note: on the mingw lane, find_package(spdlog) resolves the
 # spdlog-mingw SOURCE wrapper's own GNU-regime config — the manifests
-# swap the DEPENDENCY, never this file. (The channel's MSVC config
-# bakes MSVC-only flags into its exported interface, so no consumption
-# mode of that artifact works cross-regime; see
-# template-docs/variants.md.)
+# swap the DEPENDENCY, never this file. (The channel's MSVC-built
+# spdlog config bakes MSVC-only flags — `/Zc:__cplusplus`,
+# `/Zc:preprocessor` — into INTERFACE_COMPILE_OPTIONS, so no
+# consumption mode of that artifact works under a GNU-regime compiler:
+# even header-only use fails at flag parsing. Patching those options
+# away here would be CMake surgery to accommodate a wrong-regime
+# dependency — exactly what source wrappers exist to eliminate.)
 target_link_libraries(
   enginelib
   PUBLIC mathkit::mathkit

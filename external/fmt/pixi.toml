@@ -1,7 +1,7 @@
 # WRAPPER PACKAGE: fmt, built from upstream source with pixi-build-cmake.
 #
 # The escape-hatch decision tree for external dependencies
-# (template-docs/external-deps.md):
+# (https://github.com/NAGAGroup/template-cpp-project/blob/main/template-docs/external-deps.md):
 #   1. conda-forge has a binary  -> use it            (spdlog in enginelib)
 #   2. upstream has sane CMake   -> THIS wrapper      (pixi-build-cmake)
 #   3. upstream CMake is broken  -> rattler-build     (../stb)
@@ -18,7 +18,8 @@
 # Channel priority is a PREFERENCE, not strict exclusion (a spec above
 # our version falls through to upstream and resolves), and any
 # consumer can override the channel for one dependency in their own
-# manifest — nobody is trapped. See template-docs/publishing.md
+# manifest — nobody is trapped. See
+# https://github.com/NAGAGroup/template-cpp-project/blob/main/template-docs/publishing.md
 # footgun 1 for the full semantics.
 #
 # NOTE: upstream projects have no CMakePresets, so wrappers are the one

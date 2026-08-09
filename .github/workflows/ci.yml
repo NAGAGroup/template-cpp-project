@@ -155,7 +155,8 @@ jobs:
 
   publish:
     # Real publishing with OIDC trusted publishing: the channel trusts this
-    # repo + workflow, so no API key is stored anywhere. See template-docs/publishing.md
+    # repo + workflow, so no API key is stored anywhere. See
+    # https://github.com/NAGAGroup/template-cpp-project/blob/main/template-docs/publishing.md
     # for the channel-side setup and the local/API-key alternative.
     # Only libraries are published — the demo app is not in the publish set.
     name: publish (linux)
@@ -178,7 +179,7 @@ jobs:
       # user-scoped channel (prefix.dev/<user>/<channel>) uploads to the wrong
       # channel and gets a 403. `pixi upload prefix` takes the channel name
       # verbatim — same backend, same OIDC exchange, same attestation.
-      # See template-docs/publishing.md (footgun #6).
+      # See https://github.com/NAGAGroup/template-cpp-project/blob/main/template-docs/publishing.md (footgun #6).
       - name: Build the library packages (dependency-ordered publish set)
         run: pixi publish --to ./dist
       # --generate-attestation adds sigstore build provenance (prefix.dev):
@@ -202,6 +203,8 @@ jobs:
       # zero source packages; formatting never forces a build).
       - name: clang-format check
         run: pixi run format-check
+      - name: Doc-reference check (no relative template-docs refs outside the docs)
+        run: pixi run check-doc-refs
       - name: Doxygen
         run: pixi run docs
       - name: clang-tidy (enginelib)

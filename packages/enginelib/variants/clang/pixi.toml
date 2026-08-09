@@ -1,5 +1,6 @@
 # enginelib-clang: NAMED compiler package variant (package-only manifest;
-# version kept in sync with the default package — see template-docs/versioning.md).
+# version kept in sync with the default
+# package — see https://github.com/NAGAGroup/template-cpp-project/blob/main/template-docs/versioning.md).
 # ONE name, BOTH platforms, platform-realized. The name is grounded two
 # ways: compiler choice is a knowingly-chosen configuration (C-03, like
 # asan/static) AND cross-compiler object mixing is not guaranteed

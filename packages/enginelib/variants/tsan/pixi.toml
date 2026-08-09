@@ -1,5 +1,6 @@
 # enginelib-tsan: preset-variant subpackage (package-only manifest; version
-# kept in sync with the default package — see template-docs/versioning.md).
+# kept in sync with the default
+# package — see https://github.com/NAGAGroup/template-cpp-project/blob/main/template-docs/versioning.md).
 [package]
 name = "enginelib-tsan"
 version = "0.1.0"
