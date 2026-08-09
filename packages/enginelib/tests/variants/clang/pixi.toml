@@ -1,0 +1,25 @@
+# enginelib-tests-clang: tests built WITH clang against enginelib-clang —
+# the whole flavor surface is clang, not just the library (mixing
+# compilers within a flavor env would be incoherent). Same
+# bring-your-own-compiler mechanics as the lib variant (variants/clang):
+# disable backend compiler provisioning, declare the toolchain directly.
+[package]
+name = "enginelib-tests-clang"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "==0.4.5" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=default"]
+compilers = []
+
+[package.build-dependencies]
+clangxx_linux-64 = ">=22.1,<22.2"
+
+[package.host-dependencies]
+enginelib-clang = { workspace = true }
+catch2 = { workspace = true }

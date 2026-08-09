@@ -30,10 +30,12 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
 3. **Environment doctrine.** ONE workspace manifest at the repo root —
    member projects are PACKAGE-ONLY manifests (a monorepo only holds
    projects sharing a variant matrix; anything else is its own repo).
-   Implicit default env = the library-consumer env, portable by
-   contract (= the v1 microarch tier; never declare
-   `[environments.default]`); demo-app lives in the `app` env (an app
-   is not a library-consumer surface). Platforms: bare entries for
+   The default env is CHEAP: tooling + task features, ZERO source
+   packages (declaring `[environments.default]` is valid exactly when
+   it genuinely composes features; the antipattern is a redundant
+   declaration). Library consumption lives in `prod` (= the v1 tier,
+   portable by contract); demo-app lives in the `demo` env (an app is
+   not a library-consumer surface). Platforms: bare entries for
    everything a normal user touches (bare linux-64 FIRST); rich inline
    entries are CAPABILITY GATES only (microarch tiers, cuda-class) —
    never selection routers, never content-identity hacks. Single-use env
@@ -98,9 +100,17 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
   levels have no minor versions: pin `==N`. Build backends are
   exact-pinned (`==version`, R11); bumping one is a deliberate PR.
 - Manifest composition rule: share features across envs that share
-  deps (tier envs = shared `consumer` feature + selector-only tier
-  features); a feature needing different solve semantics carries its
-  own `solve-strategy`, listed first in its env.
+  deps (tier envs = shared `header-only`+`prod` surface +
+  selector-only tier features); a feature needing different solve
+  semantics carries its own `solve-strategy` (verified 0.76.1, scoped:
+  governs BINARY-only envs regardless of list position, but silently
+  IGNORED in envs containing source packages — test-lowest is
+  therefore inert today; re-verify on pixi upgrades, upstream
+  intent-search pending). Selectors compose only when they pin
+  packages the base
+  flavor does NOT declare — pixi INTERSECTS specs across features, so
+  disjoint pins on a declared dep are a separate FLAVOR feature
+  (spdlog14), never a stacked selector.
 - Capability-demonstration doctrine (Jack): environments aren't just
   what CI needs — they show capability. The template is a tutorial
   surface, a compilation of possibilities, NOT a hard requirement set;
@@ -129,7 +139,7 @@ Run before claiming anything works (all from the repo root):
 coverage`; `pixi run -e dev-enginelib dev-test` and `lint`;
 `pixi run -e dev-mathkit dev-test`; `pixi run format-check` (default
 env); `pixi run check-microarch`; `pixi install -e prod -e clang -e
-microarch-v0 -e microarch-v2 -e microarch-v3 -e relwithdebinfo -e
+microarch-v0 -e microarch-v2 -e microarch-v3 -e static -e reldbg -e
 spdlog14`; `pixi exec --spec nushell nu ci/check-publish-set.nu`;
 `pixi exec --spec nushell nu ci/check-lock-tiers.nu`. Windows: the
 same minus sanitizers/coverage/microarch/clang envs.

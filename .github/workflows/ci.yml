@@ -28,7 +28,7 @@ jobs:
         with:
           cache: true
           locked: false
-          environments: app
+          environments: demo
       - name: Build the app chain (incl. both wrappers) and run the demo
         run: pixi run demo
       - name: Library-consumer env (prod = the v1 tier)
@@ -42,9 +42,9 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            envs: test test-static test-asan test-tsan
+            envs: test test-clang test-asan test-tsan
           - os: windows-latest
-            envs: test test-static
+            envs: test
     steps:
       - uses: actions/checkout@v4
       - uses: prefix-dev/setup-pixi@v0.10.0
@@ -115,7 +115,7 @@ jobs:
       - name: Lock staleness probe (informational — see comment)
         run: pixi --version && (pixi lock --check || true)
       - name: Install variant envs
-        run: pixi install -e microarch-v0 -e microarch-v2 -e microarch-v3 -e microarch-v4 -e clang -e relwithdebinfo -e spdlog14
+        run: pixi install -e microarch-v0 -e microarch-v2 -e microarch-v3 -e microarch-v4 -e clang -e static -e reldbg -e spdlog14
       - name: Advisory microarch check (what this runner supports)
         run: pixi run check-microarch
       - name: Publish name-set assertion (C-01/C-02 compliance surface)
