@@ -18,16 +18,15 @@ Other destinations work the same way: `https://anaconda.org/<owner>`,
 | Published | Not published |
 |---|---|
 | `mathkit`, `enginelib` (the libraries) | `demo-app` — a channel is for libraries other projects consume, not demo binaries |
-| `external/stb` (wrapper: a source dep of published enginelib) | `external/fmt` — the NO-COLLISION rule (see footgun 1: fmt exists on conda-forge; publishing it shadows upstream) |
-| | the `tests` packages — they exist to verify the install surface |
+| `external/fmt`, `external/stb` (the wrappers) | the `tests` packages — they exist to verify the install surface |
 | | the preset variants (`*-static`, `*-clang`, `*-mingw`, …) — dev-only, consumed as source |
 
-Wrapper membership follows from **self-containment**: every source
-dependency of a published package must opt in too (pixi fails the
-publish rather than leaving a channel referencing packages that were
-never uploaded). stb is in because published enginelib depends on it;
-fmt is out because only the unpublished demo-app consumes it — which
-is exactly what lets the no-collision rule apply to it.
+The wrappers *must* be in the set: **a publish must be self-contained**, so
+every source dependency of a published package has to opt in too. Pixi fails
+the publish rather than leaving a channel referencing packages that were
+never uploaded. Wrappers are first-class publishable artifacts — including
+`fmt`, whose name collides with conda-forge's on purpose; see footgun 1
+for why that is a semantics lesson, not a hazard.
 
 Note the dry-run output lists `enginelib` **eight times** — the full
 build-variant matrix (4 microarch levels × 2 spdlog lineages) under ONE
@@ -75,20 +74,31 @@ Publishing puts your names into a namespace you share with everyone else on
 that channel. None of these are hypothetical disasters — they're just things
 to decide **deliberately** rather than discover later.
 
-1. **Your package can shadow (or be shadowed by) an upstream one — and a
-   channel-priority flip turns "can" into "does", retroactively.**
-   Channels are often layered — a private channel on top of conda-forge.
-   A layered channel merges into ONE namespace: with overlay-first
-   priority, any name you publish that also exists upstream wins for
-   EVERY consumer of the channel, even at a LOWER version. This repo
-   lived it: a teaching wrapper published `fmt` 11.2.0, harmless under
-   conda-forge-first ordering — then the channel flipped to
-   overlay-first and every consumer silently downgraded from upstream's
-   12.2.0. The safe rule is absolute, not version-hygiene: **never
-   publish a name the upstream channel ships** (this repo's
-   `ci/check-publish-set.nu` asserts it per name). ABI is not the
-   issue — activation packages make duplicates ABI-interchangeable —
-   the issue is version resolution across a merged namespace.
+1. **Your package can shadow (or be shadowed by) an upstream one — learn
+   the actual semantics before deciding whether that is a problem.**
+   Channels are often layered — a private channel on top of conda-forge —
+   and both directions of surprise are governed by two empirically
+   verified rules (this repo's `fmt` wrapper, 11.2.0, on a channel that
+   prefers custom packages over conda-forge):
+   - *Channel priority is a PREFERENCE, not strict exclusion.* A bare
+     `fmt` spec resolves the overlay's 11.2.0; a spec the overlay can't
+     satisfy (`fmt >=12`) falls through to upstream and resolves 12.2.0.
+     It does not fail.
+   - *A preferred lower version CASCADES to dependents.* Preferring our
+     fmt 11.2.0 selected spdlog 1.16.0 over 1.17.0, because newer
+     spdlog builds pin newer fmt.
+   Is the shadow a bug? Usually not: a consumer who takes your real
+   package and transitively receives your wrapper is getting the
+   COHERENT closure — your library was built against your fmt, so
+   receiving your fmt is correct semantics, not contamination. And
+   nobody is trapped: pixi lets a consumer **override the channel for a
+   single dependency in their own manifest**
+   (`fmt = { version = "*", channel = "conda-forge" }`) — that
+   per-dependency escape hatch is the reason a name collision is a
+   choice to understand, not a hazard to mechanise against. ABI is not
+   the issue either — activation packages make duplicates
+   ABI-interchangeable. Know which outcome you're choosing; that is the
+   whole rule.
 2. **Strong run-exports travel with what you build.** A compiler activation
    package that declares a strong run-export stamps that dependency onto
    *every* package built with it. Publish such a package and your consumers
