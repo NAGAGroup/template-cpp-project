@@ -70,9 +70,25 @@ Status: `PLANNED` (agreed, not yet landed) → `LANDED` (with commit) →
 | D-16 | PLANNED | New CI `canary` job (binary deps only, no lock, daily) | The branch consumes a live channel; a fresh-solve monitor is how channel breakage surfaces before a user finds it. Release leg red, nightly leg warn-only. | Keep. |
 | D-17 | PLANNED | New assert scripts: `-march` ordering, fp-contract over `compile_commands.json`, run-export chaining, typo'd-stem guard, bare-activation-dep assert | Each encodes a hazard that is silent by construction: a typo'd compiler stem falls back to the system compiler and still builds; acpp's activation assigns `-march=nocona` and microarch's activation must sort after it; run-export chaining for source-package run deps changed in pixi (#6587) and must never be assumed. | Keep. |
 | D-18 | PLANNED | The deletable template docs — `toolchains`, `variants`, `publishing`, `external-deps`, `design-record` — rewritten for the branch | The docs teach the tree they ship with. | Merge carefully — prefer `main`'s wording for anything not on this list. |
+| D-22 | **LANDED** | Windows falls through to the base `test-all` task; main's `[target.win-64.tasks.test-all]` is gone | AM-1 deleted the win-only gnu env that table existed for. An empty target table would be worse than none. Called out in the manifest because "the table disappeared" and "the tests stopped running" look identical from a green CI leg. | Take main's table only if a win-specific test env exists again. |
 | D-21 | **LANDED** | CI runs on pushes to `acpp`, not only `main` | A long-lived divergent branch that CI ignores rots silently: the lock drifts, asserts written for the branch never run, and the first signal is a merge going wrong months later. The publish job runs here too, but its upload step is gated to `main` — build-and-assert on the branch, nothing on the channel (D-14). | Keep both branches in the trigger list. |
 | D-20 | **LANDED** | The spdlog build-variant axis moves from `1.14`/`1.15` to `1.15`/`1.16`; feature and env rename `spdlog14` → `spdlog16` | **Forced by D-01, and it is the first real cost of the single-channel constitution.** Our own `fmt` wrapper is published to `naga-labs` at 11.2.0; under strict channel priority a name found in the highest-priority channel is resolved ONLY from that channel, so *no* other fmt version is reachable. spdlog 1.14 requires `fmt <11` and became unsolvable. The documented per-dependency `channel` escape hatch does **not** rescue this: pixi rejects an override naming a channel absent from the workspace `channels` list, and adding one is exactly what the invariant forbids (both the bare name and the layer-base URL were tried, both rejected). The axis teaches "a build-variant over a dependency version"; which two versions is arbitrary, so the pin moved rather than the doctrine. | Keep. Do NOT restore 1.14 — it does not solve here. |
 | D-19 | PLANNED | `nightly` environment as a named opt-in, both platforms | Same compiler family, different lane; R7 closed as VALIDATED (9/9 release↔nightly twins on both platforms). Two known non-blocking gaps: the win nightly lane has one published date so far, and `acpp-lldb` is absent from both win lanes (upstream `LLVM_ENABLE_PROJECTS` gap, symmetric across lanes). | Keep. |
+
+## Merging `main` into this branch
+
+The DoD direction is `main` into `acpp`. Probed at `c36ef7b` against
+`main@b9f305d`: **two conflicts** (`template-docs/toolchains.md`,
+`variants.yaml`), both squarely covered by D-02 and D-18, and — the
+part that matters — **none of the AM-1 deletions came back**. No clang
+or mingw file, no `check-regime-markers.nu`, no `linux-clang.cmake`.
+That holds while `main` does not modify a path this branch deleted; the
+day it does, git will ask, and the answer is the D-05/D-06/D-07 rows.
+
+Note that a pull request from `acpp` to `main` tests the OPPOSITE merge
+— merging this branch into main would delete main's clang and mingw
+lanes. A result there, green or red, says nothing about the merge we
+actually intend to perform. Re-run the probe instead.
 
 ## Simplifications (AM-2 record)
 

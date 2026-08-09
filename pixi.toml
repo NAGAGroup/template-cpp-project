@@ -547,6 +547,14 @@ depends-on = [
   { task = "test", environment = "test" },
 ]
 description = "Run all cross-platform test envs"
+# NOTE — this base table is ALSO the win-64 surface. Main carries a
+# [target.win-64.tasks.test-all] with the win-only gnu env; AM-1 deleted
+# that env, and rather than leave an empty target table the branch lets
+# win fall through to this one. So `pixi run test-all` on Windows runs
+# the `test` env and nothing else, which is the whole win test surface
+# here. That is a real run, not a skipped one — stated explicitly
+# because "the table disappeared" and "the tests stopped running" look
+# identical from a green CI leg.
 
 [target.linux-64.tasks.test-all]
 depends-on = [
