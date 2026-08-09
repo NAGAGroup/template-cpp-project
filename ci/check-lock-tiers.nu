@@ -21,7 +21,7 @@ def enginelib-level [env_name: string] {
   $pkg | get variants | get -o x86_64_microarch_level | default "none"
 }
 
-let expect = { v0: "1", v2: "2", v3: "3", v4: "4" }
+let expect = { microarch-v0: "1", prod: "1", microarch-v2: "2", microarch-v3: "3", microarch-v4: "4" }
 mut bad = []
 for e in ($expect | transpose env level) {
   let got = (enginelib-level $e.env)

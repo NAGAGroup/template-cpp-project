@@ -101,31 +101,82 @@ x86_64-microarch-level = ["1", "2", "3", "4"]
 # see, not a matrix it can encode.
 
 # ---- Default environment: the LIBRARY consumer env (= the v1 tier) ---------
-# Portable by contract: the level-1 pin excludes the optimized enginelib
-# builds deterministically, on every machine, with zero platform
-# machinery. Higher tiers are the OPT-IN envs below. demo-app lives in
-# its own `app` env (an app is not a library-consumer surface).
-[dependencies]
-mathkit = { workspace = true }
-enginelib = { workspace = true }
-spdlog = { workspace = true }
-
-[target.linux-64.dependencies]
-_x86_64-microarch-level = "==1"
+# The DEFAULT env is CHEAP: tooling + task features, ZERO source
+# packages — formatting or docs generation must never force a source
+# build. Declaring [environments.default] is valid exactly when it
+# genuinely composes features (the antipattern is only a redundant
+# declaration). Library consumption lives in the `prod` env below.
 
 # Advisory microarch check (see the platforms warning above): prints the
 # machine's CPU family and its highest supported x86-64 level. pixi does
-# not validate archspec yet — run this BEFORE using a tier env.
+# not validate archspec yet — run this BEFORE using a tier env. Rides
+# the default env (the one env every machine can always install).
 [target.linux-64.tasks.check-microarch]
 cmd = "pixi exec --spec archspec python -c \"import archspec.cpu as m; h=m.host(); print(f'cpu: {h.name}'); print(f'max supported x86-64 level: {h.generic.name}')\""
 description = "Print this machine's highest supported microarch level (advisory — pixi does not enforce archspec yet)"
 
+# ---- Features: the unit of composition -------------------------------------
+# An ENV is only a composition; its inline content is exactly its DELTA
+# from shared features. DEP-features and TASK-features are separate.
+
+# Tooling: lint/format/LSP/docs tools, defined ONCE — shared by the
+# default env AND every dev env. Zero system tooling, ever.
+[feature.tooling.dependencies]
+clang-format = ">=22.1,<22.2"
+clang-tools = ">=22.1,<22.2"
+clang = ">=22.1,<22.2"
+doxygen = ">=1.17,<1.18"
+git = ">=2.55,<2.56"
+nushell = ">=0.114,<0.115"
+
+# Style/docs TASKS, defined once, landing wherever they compose.
+[feature.style-tasks.tasks.format]
+cmd = "nu scripts/format.nu"
+description = "Format all C++ sources in-place (parallel)"
+
+[feature.style-tasks.tasks.format-check]
+cmd = "nu scripts/format.nu --check"
+description = "Fail if any file is unformatted (CI)"
+
+[feature.style-tasks.tasks.docs]
+cmd = "doxygen Doxyfile"
+description = "Generate API docs into docs/api/"
+
+[environments.default]
+features = ["tooling", "style-tasks"]
+
+# Source-consumption surfaces, flavor-scoped and COMPLETE (mixing
+# flavors — a default-variant mathkit with a static enginelib — is
+# incoherent; each feature carries a coherent surface at its flavor).
+[feature.header-only.dependencies]
+mathkit = { workspace = true }
+
+[feature.prod.dependencies]
+enginelib = { workspace = true }
+spdlog = { workspace = true }
+
+# The v1 tier pin: portable by contract — deterministically excludes
+# the optimized enginelib builds with zero platform machinery.
+# Linux-only (the microarch axis does not exist on win).
+[feature.microarch-v1.target.linux-64.dependencies]
+_x86_64-microarch-level = "==1"
+
+# The RECOMMENDED library-consumer env (= the v1 tier).
+[environments.prod]
+features = ["header-only", "prod", "microarch-v1"]
+no-default-feature = true
+
 # ---- Consumer environments -------------------------------------------------
+# Demo TASK, defined once; demo envs compose it and inline their app
+# variant as the delta.
+[feature.demo-tasks.tasks.demo]
+cmd = "demo-app"
+description = "Run the demo application"
+
 [environments.app]
+features = ["demo-tasks"]
 no-default-feature = true
 dependencies = { demo-app = { workspace = true }, spdlog = { workspace = true } }
-# Defined on the env, so `pixi run demo` resolves here automatically.
-tasks = { demo = { cmd = "demo-app", description = "Run the demo application" } }
 
 [environments.static]
 no-default-feature = true
@@ -138,25 +189,19 @@ dependencies = { enginelib-static = { workspace = true }, mathkit = { workspace 
 no-default-feature = true
 dependencies = { enginelib-relwithdebinfo = { workspace = true }, mathkit = { workspace = true }, spdlog = { workspace = true } }
 
-# Microarch TIER envs (linux-only lineage; default env = the v1 tier).
+# Microarch TIER envs (linux-only lineage; `prod` = the v1 tier).
 # Manifest composition (C-07 with teeth): the tier envs differ ONLY by
-# their selector pin, so everything common factors into ONE shared
-# feature and each tier feature carries ONLY its selector. An env that
+# their selector pin — everything common is the header-only + prod
+# surface, and each tier feature carries ONLY its selector. An env that
 # carries a selector but not the selected package silently selects
 # nothing — share features across envs that share deps.
-[feature.consumer.dependencies]
-enginelib = { workspace = true }
-mathkit = { workspace = true }
-spdlog = { workspace = true }
-
-# Tier selectors: the UNDERSCORE runtime package, pinned ==N (microarch
+# Tier selectors pin the UNDERSCORE runtime package ==N (microarch
 # levels have no minor versions — never write N.*). EVERY tier gets an
-# env: environments show capability, not just CI need — composition is
-# what keeps a full tier set this cheap.
-[feature.v2.dependencies]
+# env: environments show capability, not just CI need.
+[feature.microarch-v2.dependencies]
 _x86_64-microarch-level = "==2"
 
-[feature.v3.dependencies]
+[feature.microarch-v3.dependencies]
 _x86_64-microarch-level = "==3"
 
 # KNOWN OPEN (upstream-shaped): in-WORKSPACE source consumption of the
@@ -165,15 +210,16 @@ _x86_64-microarch-level = "==3"
 # below it; floors are open by design). BINARY consumers of the
 # published packages select correctly with this exact recipe (verified
 # both ways). Tracked; do not "fix" with build-string pins.
-[feature.v4.dependencies]
+[feature.microarch-v4.dependencies]
 _x86_64-microarch-level = "==4"
 
-# v0: nuclear-conservative fallback — NO microarch machinery at all. On
-# pixi today it resolves the level-1 build anyway (the optimized builds'
-# runtime floors are unsolvable on a bare platform). NOT recommended:
-# any x86-64 CPU from the last ~15 years is v1+; use the default env.
-[environments.v0]
-features = ["consumer"]
+# microarch-v0: nuclear-conservative fallback — NO microarch machinery
+# at all. On pixi today it resolves the level-1 build anyway (the
+# optimized builds' runtime floors are unsolvable on a bare platform).
+# NOT recommended: any x86-64 CPU from the last ~15 years is v1+; use
+# the `prod` env.
+[environments.microarch-v0]
+features = ["header-only", "prod"]
 no-default-feature = true
 platforms = ["linux-64"]
 
@@ -182,27 +228,27 @@ platforms = ["linux-64"]
 # mandatory — the bare entry could not solve these). ⚠ Not enforced at
 # install/run until pixi matches archspec (#3281/#5285): run
 # `pixi run check-microarch` first, or a lower CPU gets SIGILL.
-[environments.v2]
-features = ["v2", "consumer"]
+[environments.microarch-v2]
+features = ["microarch-v2", "header-only", "prod"]
 no-default-feature = true
 platforms = ["linux-64-v2"]
 
-[environments.v3]
-features = ["v3", "consumer"]
+[environments.microarch-v3]
+features = ["microarch-v3", "header-only", "prod"]
 no-default-feature = true
 platforms = ["linux-64-v3"]
 
-[environments.v4]
-features = ["v4", "consumer"]
+[environments.microarch-v4]
+features = ["microarch-v4", "header-only", "prod"]
 no-default-feature = true
 platforms = ["linux-64-v4"]
 
 # Minimal env for the pixi-pack demo — smallest packable surface (see
 # docs/consuming.md; packing envs with cross-package source chains works
-# too, this one just keeps the demo tiny).
+# too, this one just keeps the demo tiny). The feature alone IS the env.
 [environments.header-only]
+features = ["header-only"]
 no-default-feature = true
-dependencies = { mathkit = { workspace = true } }
 
 # Compiler package-variant env: consumes the NAMED clang variant
 # (variants/clang). Compiler choice is a consumer-toolchain contract →
@@ -219,19 +265,19 @@ dependencies = { enginelib = { workspace = true }, mathkit = { workspace = true 
 
 # ---- Test environments -----------------------------------------------------
 # Tests are CONSUMER PROJECTS; each env consumes the tests package built
-# against the matching lib variant. The shared `testing` feature carries
+# against the matching lib variant. The shared `test-tasks` feature carries
 # the runner task; env-specific content is inline.
-[feature.testing.tasks.test]
+[feature.test-tasks.tasks.test]
 cmd = "mathkit-tests && enginelib-tests"
 description = "Run the installed test binaries of this env"
 
 [environments.test]
-features = ["testing"]
+features = ["test-tasks"]
 no-default-feature = true
 dependencies = { mathkit-tests = { workspace = true }, enginelib-tests = { workspace = true }, spdlog = { workspace = true } }
 
 [environments.test-static]
-features = ["testing"]
+features = ["test-tasks"]
 no-default-feature = true
 dependencies = { mathkit-tests = { workspace = true }, enginelib-tests-static = { workspace = true }, spdlog = { workspace = true } }
 [environments.test-static.tasks.test]
@@ -239,7 +285,7 @@ cmd = "mathkit-tests && enginelib-tests"
 
 [environments.test-asan]
 platforms = ["linux-64"]
-features = ["testing"]
+features = ["test-tasks"]
 no-default-feature = true
 dependencies = { enginelib-tests-asan = { workspace = true }, spdlog = { workspace = true } }
 [environments.test-asan.tasks.test]
@@ -247,7 +293,7 @@ cmd = "enginelib-tests"
 
 [environments.test-tsan]
 platforms = ["linux-64"]
-features = ["testing"]
+features = ["test-tasks"]
 no-default-feature = true
 dependencies = { enginelib-tests-tsan = { workspace = true }, spdlog = { workspace = true } }
 [environments.test-tsan.tasks.test]
@@ -255,7 +301,7 @@ cmd = "enginelib-tests"
 
 [environments.test-coverage]
 platforms = ["linux-64"]
-features = ["testing"]
+features = ["test-tasks"]
 no-default-feature = true
 dependencies = { enginelib-tests-coverage = { workspace = true }, spdlog = { workspace = true }, llvm-tools = ">=20", nushell = ">=0.114,<0.115" }
 [environments.test-coverage.tasks.test]
@@ -267,7 +313,7 @@ description = "Run instrumented tests; lcov report + structured per-file coverag
 # Min-version compatibility check: same deps, solved to the LOWEST
 # direct versions (library best practice).
 [environments.test-lowest]
-features = ["testing"]
+features = ["test-tasks"]
 no-default-feature = true
 solve-strategy = "lowest-direct"
 dependencies = { mathkit-tests = { workspace = true }, enginelib-tests = { workspace = true }, spdlog = { workspace = true } }
@@ -279,14 +325,13 @@ cmd = "mathkit-tests && enginelib-tests"
 # dev-only tools. Per-package because a combined env would BUILD sibling
 # packages. Day-to-day work is plain CMake presets inside the env; tasks
 # carry the package cwd.
+# Dev features: the package AND its tests package as DEV packages —
+# their closures deliver catch2 and everything the tests build needs
+# (no direct catch2 spec anywhere). Tools come from `tooling` via env
+# composition, defined once instead of per-dev-feature.
 [feature.dev-mathkit.dev]
 mathkit = { path = "packages/mathkit" }
-
-[feature.dev-mathkit.dependencies]
-nushell = ">=0.114,<0.115"
-catch2 = { workspace = true }
-clang-tools = ">=22.1,<22.2"
-clang = ">=22.1,<22.2"
+mathkit-tests = { path = "packages/mathkit/tests" }
 
 [feature.dev-mathkit.tasks.configure]
 cmd = "nu scripts/configure-dev.nu packages/mathkit"
@@ -302,20 +347,17 @@ cwd = "packages/mathkit"
 description = "clang-tidy over mathkit's tests tree (header-only: headers lint through consumers)"
 
 [environments.dev-mathkit]
-features = ["dev-mathkit"]
+features = ["dev-mathkit", "tooling"]
 no-default-feature = true
 
 [feature.dev-enginelib.dev]
 enginelib = { path = "packages/enginelib" }
+enginelib-tests = { path = "packages/enginelib/tests" }
 
 [feature.dev-enginelib.dependencies]
-nushell = ">=0.114,<0.115"
-catch2 = { workspace = true }
 # Pin the variant-expanded dep to the default lineage: an unpinned
 # variant dep in a dev closure makes --locked verification unstable.
 spdlog = { workspace = true }
-clang-tools = ">=22.1,<22.2"
-clang = ">=22.1,<22.2"
 
 [feature.dev-enginelib.tasks.configure]
 cmd = "nu scripts/configure-dev.nu packages/enginelib"
@@ -338,40 +380,23 @@ depends-on = ["configure"]
 description = "clang-tidy static analysis over enginelib's dev build"
 
 [environments.dev-enginelib]
-features = ["dev-enginelib"]
+features = ["dev-enginelib", "tooling"]
 no-default-feature = true
 
 [feature.dev-demo-app.dev]
 demo-app = { path = "packages/demo-app" }
-
-[feature.dev-demo-app.dependencies]
-nushell = ">=0.114,<0.115"
-clang-tools = ">=22.1,<22.2"
-clang = ">=22.1,<22.2"
 
 [feature.dev-demo-app.tasks.configure]
 cmd = "nu scripts/configure-dev.nu packages/demo-app"
 description = "Configure demo-app's in-tree dev build"
 
 [environments.dev-demo-app]
-features = ["dev-demo-app"]
+features = ["dev-demo-app", "tooling"]
 no-default-feature = true
 
-# ---- Style / docs environment ----------------------------------------------
-# Zero-system-tooling: formatters, docs generators — and even git for file
-# discovery — come from the env, never the system.
-[environments.style]
-no-default-feature = true
-dependencies = { clang-format = ">=22.1,<22.2", doxygen = ">=1.17,<1.18", git = ">=2.55,<2.56", nushell = ">=0.114,<0.115" }
-[environments.style.tasks.format]
-cmd = "nu scripts/format.nu"
-description = "Format all C++ sources in-place (parallel)"
-[environments.style.tasks.format-check]
-cmd = "nu scripts/format.nu --check"
-description = "Fail if any file is unformatted (CI)"
-[environments.style.tasks.docs]
-cmd = "doxygen Doxyfile"
-description = "Generate API docs into docs/api/"
+# (The old `style` env is deleted: it was a dependency set wearing an
+# environment costume — its deps are the `tooling` feature, its tasks
+# the `style-tasks` feature, and both ride the default env.)
 
 # ---- Workspace-level tasks --------------------------------------------------
 [tasks.publish-local]

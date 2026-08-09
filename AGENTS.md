@@ -127,12 +127,12 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
 Run before claiming anything works (all from the repo root):
 `pixi run demo && pixi run test-all`; `pixi run -e test-coverage
 coverage`; `pixi run -e dev-enginelib dev-test` and `lint`;
-`pixi run -e dev-mathkit dev-test`; `pixi run -e style format-check`;
-`pixi run check-microarch`; `pixi install -e clang -e v0 -e v2 -e v3
--e relwithdebinfo -e spdlog14`; `pixi exec --spec nushell nu
-ci/check-publish-set.nu`; `pixi exec --spec nushell nu
-ci/check-lock-tiers.nu`. Windows: the same minus
-sanitizers/coverage/microarch/clang envs.
+`pixi run -e dev-mathkit dev-test`; `pixi run format-check` (default
+env); `pixi run check-microarch`; `pixi install -e prod -e clang -e
+microarch-v0 -e microarch-v2 -e microarch-v3 -e relwithdebinfo -e
+spdlog14`; `pixi exec --spec nushell nu ci/check-publish-set.nu`;
+`pixi exec --spec nushell nu ci/check-lock-tiers.nu`. Windows: the
+same minus sanitizers/coverage/microarch/clang envs.
 
 ## Divergence checklist (for agents auditing OTHER NAGA repos)
 
