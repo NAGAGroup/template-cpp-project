@@ -78,8 +78,8 @@ Status: `PLANNED` (agreed, not yet landed) → `LANDED` (with commit) →
 ## Merging `main` into this branch
 
 The DoD direction is `main` into `acpp`. Probed at `c36ef7b` against
-`main@b9f305d`: **two conflicts** (`template-docs/toolchains.md`,
-`variants.yaml`), both squarely covered by D-02 and D-18, and — the
+`main@b9f305d`: **two conflicts** — the `toolchains` doc and
+`variants.yaml` — both squarely covered by D-02 and D-18, and — the
 part that matters — **none of the AM-1 deletions came back**. No clang
 or mingw file, no `check-regime-markers.nu`, no `linux-clang.cmake`.
 That holds while `main` does not modify a path this branch deleted; the
