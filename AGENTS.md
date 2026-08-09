@@ -142,8 +142,11 @@ env); `pixi run check-microarch`; `pixi install -e prod -e clang -e gnu -e
 microarch-v0 -e microarch-v2 -e microarch-v3 -e static -e reldbg -e
 spdlog14 -e demo-static -e demo-clang`;
 `pixi exec --spec nushell nu ci/check-publish-set.nu`;
-`pixi exec --spec nushell nu ci/check-lock-tiers.nu`. Windows: the
-same minus sanitizers/coverage/microarch/clang envs.
+`pixi exec --spec nushell nu ci/check-lock-tiers.nu`;
+`pixi exec --spec nushell nu ci/check-ci-shape.nu`. Windows: the same
+minus sanitizers/coverage/microarch envs, plus the win-only gnu lane
+(`test-gnu-windows`, `demo-gnu-windows`) — clang envs run on BOTH
+platforms (clang-cl realization on win).
 
 ## Divergence checklist (for agents auditing OTHER NAGA repos)
 

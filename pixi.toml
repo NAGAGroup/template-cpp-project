@@ -563,7 +563,11 @@ cmd = "pixi publish --to {{ channel }}"
 args = [{ arg = "channel", default = "./local-channel" }]
 description = "Build + publish every opted-in package (full variant matrix) into an indexed local channel"
 
-# Fan out across the test envs; each dependency is pinned to ITS env.
+# Fan out across the test envs; each dependency is pinned to ITS env
+# (the env-pinned depends-on showcase). Per-platform target tables
+# carry each platform's real test surface (C-10: tests are
+# runner-bounded — the win list adds the win-only gnu env, the linux
+# list adds the sanitizers).
 [tasks.test-all]
 depends-on = [
   { task = "test", environment = "test" },
@@ -578,3 +582,11 @@ depends-on = [
   { task = "test", environment = "test-tsan" },
 ]
 description = "Run all test envs (incl. clang + sanitizers)"
+
+[target.win-64.tasks.test-all]
+depends-on = [
+  { task = "test", environment = "test" },
+  { task = "test", environment = "test-clang" },
+  { task = "test", environment = "test-gnu-windows" },
+]
+description = "Run all test envs (incl. clang-cl + mingw)"

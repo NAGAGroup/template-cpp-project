@@ -46,7 +46,9 @@ jobs:
           - os: ubuntu-latest
             envs: test test-clang test-asan test-tsan
           - os: windows-latest
-            envs: test
+            # Windows mirrors every cross-platform test env and adds the
+            # win-only gnu (mingw) env; sanitizers stay linux-only (C-10).
+            envs: test test-clang test-gnu-windows
     steps:
       - uses: actions/checkout@v4
       - uses: prefix-dev/setup-pixi@v0.10.0
@@ -88,14 +90,25 @@ jobs:
           path: coverage.info
 
   variants:
-    # Variant surface: microarch tier envs (v0 fallback + v3/v4 opt-in
-    # gates — INSTALL-only: pixi doesn't match archspec yet (#3281), so
-    # installs succeed on any runner; per C-10, tests only ever run up
-    # to the runner's own capability and a skipped tier test is the
-    # constraint working — never fake archspec to un-skip one), the
-    # clang NAMED package variant, and the spdlog build-variant matrix.
-    name: variants (linux)
-    runs-on: ubuntu-latest
+    # Variant surface, BOTH platforms: every cross-platform consumer env
+    # mirrors onto Windows (prod, static, reldbg, clang, gnu, spdlog14,
+    # demos); microarch tier envs are linux-only (the axis doesn't exist
+    # on win) and INSTALL-only — pixi doesn't match archspec yet (#3281):
+    # installs succeed on any runner; per C-10, tests only ever run up to
+    # the runner's own capability and a skipped tier test is the
+    # constraint working — never fake archspec to un-skip one. The win
+    # leg is what compiles the clang-cl and mingw cells of the compiler
+    # matrix.
+    name: variants (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            envs: -e microarch-v0 -e microarch-v2 -e microarch-v3 -e microarch-v4 -e prod -e clang -e static -e reldbg -e spdlog14 -e gnu -e demo-static -e demo-clang
+          - os: windows-latest
+            envs: -e prod -e clang -e static -e reldbg -e spdlog14 -e gnu -e demo-static -e demo-clang -e demo-gnu-windows
     steps:
       - uses: actions/checkout@v4
       - uses: prefix-dev/setup-pixi@v0.10.0
@@ -105,8 +118,8 @@ jobs:
           cache: false
           locked: false
           run-install: false
-      # Staleness guard intent (FULL-SPEC §8): the committed lock must
-      # not be silently re-solved on the runner (a re-solve re-rolls the
+      # Staleness guard intent (§8): the committed lock must not be
+      # silently re-solved on the runner (a re-solve re-rolls the
       # nondeterministic tier selections). `pixi lock --check` is the
       # spec's prescribed guard but is UNRELIABLE here: on 0.76.1 it
       # exits 1 unconditionally in this workspace (fresh lock,
@@ -117,15 +130,25 @@ jobs:
       - name: Lock staleness probe (informational — see comment)
         run: pixi --version && (pixi lock --check || true)
       - name: Install variant envs
-        run: pixi install -e microarch-v0 -e microarch-v2 -e microarch-v3 -e microarch-v4 -e clang -e static -e reldbg -e spdlog14 -e gnu -e demo-static -e demo-clang
+        run: pixi install ${{ matrix.envs }}
+      - name: Run the mingw demo (win-only env)
+        if: runner.os == 'Windows'
+        run: pixi run -e demo-gnu-windows demo
       - name: Advisory microarch check (what this runner supports)
+        if: runner.os == 'Linux'
         run: pixi run check-microarch
       - name: Publish name-set assertion (C-01/C-02 compliance surface)
+        if: runner.os == 'Linux'
         run: pixi exec --spec nushell nu ci/check-publish-set.nu
       - name: Lock tier-selection assertion (nondeterministic source-variant guard)
+        if: runner.os == 'Linux'
         run: pixi exec --spec nushell nu ci/check-lock-tiers.nu
       - name: Spec-form assertion (wildcards only as variant placeholders)
+        if: runner.os == 'Linux'
         run: pixi exec --spec nushell nu ci/check-spec-forms.nu
+      - name: CI-shape assertion (locked defaults, banned flags)
+        if: runner.os == 'Linux'
+        run: pixi exec --spec nushell nu ci/check-ci-shape.nu
 
   publish:
     # Real publishing with OIDC trusted publishing: the channel trusts this
