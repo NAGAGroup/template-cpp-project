@@ -12,54 +12,33 @@
 # NOTE: a variant pin here enters every build's variant hash — bumping
 # a toolchain pin rebuilds the world. That is the intended semantics.
 
-# THE compiler — AdaptiveCpp, and nothing else (DELTA.md AM-1, D-04).
-#
-# ONE STEM, BOTH PLATFORMS. `pixi-build-cmake` implements
-# `compiler('cxx')` natively as `<stem>_<target_platform>`, and the
-# toolchain publishes the stem for both, so unlike main — which needed
-# a per-platform selector to swap gxx for vs2026 — this branch names it
-# once. A package NEVER names an activation package directly.
-#
-# ⚠ THE NIGHTLY STEM IS A TEMPORARY SUBSTITUTION, NOT THE DESIGN.
-# The ratified lane set makes the RELEASE lane the default and nightly
-# a named opt-in. Nothing can currently be BUILT against the release
-# lane: `acpp-clangxx_linux-64`'s strong run-export is
-# `acpp-runtime >=25.10.0,<25.11`, and that lower bound matches nothing
-# — published versions look like `25.10.0_llvm20.1.8`, and conda orders
-# a trailing string component BELOW the shorter version, so every
-# published build sorts under its own floor. A run-export is baked into
-# the artifact; no consumer manifest can override it, which is why this
-# is a substitution rather than a spec fix on our side.
-#
-# The nightly lane is unaffected because its run-export is EXACT:
-# `acpp-runtime-nightly ==2026.8.9_llvm21.1.8`. An exact spec cannot be
-# bitten by the ordering rule. Verified end to end — a one-TU package
-# builds, and its `hash_input.json` records
-# `cxx_compiler: acpp-clangxx-nightly`, so the toolchain really drove
-# the compile rather than silently falling back to a host compiler.
-#
-# REVERT THIS THE DAY ACPP REPUBLISHES: drop the `-nightly` infix from
-# both stems. See DELTA.md D-04.
+# Compiler pair — pinned versions kept in lockstep via zip_keys (the
+# conda-forge convention; pixi supports zip_keys only through this
+# file, not inline [workspace.build-variants]).
 c_compiler:
-  - acpp-clang-nightly
+  - if: linux
+    then: gcc
+  - if: win
+    then: vs2026
 cxx_compiler:
-  - acpp-clangxx-nightly
-#
-# NO `*_compiler_version` KEYS, DELIBERATELY — a trap, not an omission.
-# The activation packages carry no version-suffixed names, so a version
-# key renders a spec nothing satisfies, and it surfaces as an
-# unsatisfiable build env rather than as "you set the wrong key". main
-# pins gcc 16 here; do not port that shape across. `zip_keys` goes with
-# them — it existed only to keep the two compiler VERSIONS in lockstep.
-#
-# vs2026 is NOT a compiler here. On win the acpp driver is clang-cl
-# based and targets `x86_64-pc-windows-msvc`, but the activation
-# packages deliberately declare no `vs20XX` dependency — verified
-# against the artifacts: acpp-clangxx_win-64 -> acpp-clang_win-64 ->
-# acpp, and none of the three mentions it. The MSVC headers, libs and
-# SDK therefore come from the BUILD ENVIRONMENT (D-08). That is the
-# whole of AM-1 on Windows: MSVC is present as a platform SDK and is
-# never the thing that compiles our code.
+  - if: linux
+    then: gxx
+  - if: win
+    then: vs2026
+# vs2026 is the ONLY MSVC variant this template supports (GH runners
+# ship it; VC 18 era). The pixi-build-cmake backend DEFAULTS to vs2022
+# with a stale "more widely supported" rationale — this file is the
+# explicit override; never delete it back to the default.
+# Version pins preserve the tree's current toolchain (gcc 16 series —
+# leading-edge doctrine), not upstream's older baseline.
+c_compiler_version:
+  - if: linux
+    then: "16"
+cxx_compiler_version:
+  - if: linux
+    then: "16"
+zip_keys:
+  - [c_compiler_version, cxx_compiler_version]
 
 # Redistributability floor — and on THIS branch it is LOAD-BEARING, not
 # merely explicit: nothing derives a glibc floor here.
