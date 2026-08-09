@@ -23,6 +23,13 @@ find_package(fmt CONFIG REQUIRED)
 add_executable(demo-app src/main.cpp)
 target_compile_features(demo-app PRIVATE cxx_std_23)
 if(DEMO_APP_HEADER_ONLY_DEPS)
+  # Scrub MSVC-baked interface options from the foreign-regime config
+  # (see enginelib — regime closure reaches CMake metadata).
+  foreach(dep_tgt fmt::fmt fmt::fmt-header-only)
+    if(TARGET ${dep_tgt})
+      set_target_properties(${dep_tgt} PROPERTIES INTERFACE_COMPILE_OPTIONS "")
+    endif()
+  endforeach()
   target_link_libraries(demo-app PRIVATE enginelib::enginelib
                                          fmt::fmt-header-only)
 else()

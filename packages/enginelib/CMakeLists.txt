@@ -80,6 +80,16 @@ target_include_directories(
          $<INSTALL_INTERFACE:include>)
 target_compile_features(enginelib PUBLIC cxx_std_23)
 if(ENGINELIB_HEADER_ONLY_DEPS)
+  # Regime closure reaches CMake METADATA too: configs exported from an
+  # MSVC build bake MSVC-only flags into INTERFACE_COMPILE_OPTIONS
+  # (spdlog bakes /Zc:__cplusplus via a plain if(MSVC) at its own
+  # configure time — g++ parses that as an input file). Header-only
+  # consumption needs none of those options; scrub them.
+  foreach(dep_tgt spdlog::spdlog_header_only fmt::fmt fmt::fmt-header-only)
+    if(TARGET ${dep_tgt})
+      set_target_properties(${dep_tgt} PROPERTIES INTERFACE_COMPILE_OPTIONS "")
+    endif()
+  endforeach()
   target_link_libraries(
     enginelib
     PUBLIC mathkit::mathkit

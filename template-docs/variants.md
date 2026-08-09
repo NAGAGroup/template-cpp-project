@@ -72,8 +72,13 @@ machinery, and the preset is exactly where configure detail lives.)
   `*_HEADER_ONLY_DEPS`, switching to `spdlog::spdlog_header_only` /
   `fmt::fmt-header-only`); compiled deps with no header-only mode get
   an in-regime wrapper rebuild (`external/catch2-mingw`, consumed only
-  by the mingw tests). Header-only deps (mathkit, stb) are
-  regime-neutral and need nothing.
+  by the mingw tests — a TARBALL-source rattler recipe: pixi's all-refs
+  git fetch of upstream Catch2 hard-fails on Windows' case-insensitive
+  filesystem). Header-only deps (mathkit, stb) are regime-neutral and
+  need nothing. Closure even reaches CMAKE METADATA: configs exported
+  from an MSVC build can bake MSVC-only flags into interface options
+  (spdlog bakes `/Zc:__cplusplus`) — the header-only branch scrubs
+  `INTERFACE_COMPILE_OPTIONS` on the foreign-regime targets.
 - Header-only packages (mathkit, stb) get NO compiler variants: their
   generated CMake config is byte-identical across compilers (verified) —
   no artifact, no ABI, nothing to name.
