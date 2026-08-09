@@ -1,0 +1,36 @@
+# enginelib-clang: NAMED compiler package variant (package-only manifest;
+# version kept in sync with the default package — see docs/versioning.md).
+# Compiler choice is a CONSUMER-TOOLCHAIN contract the solver cannot see
+# (stdlib/ABI regime), so it earns a distinct NAME consumers knowingly
+# choose — the same test asan/static pass. This replaces the deleted
+# linux-64-clang custom-platform routing: platforms are capability gates,
+# never selection routers. Toolchain mechanics as in variants/coverage
+# (bring-your-own-compiler: disable backend provisioning, declare deps).
+[package]
+name = "enginelib-clang"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "*" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=default"]
+compilers = []
+
+[package.build-dependencies]
+clangxx_linux-64 = "*"
+
+[package.host-dependencies]
+mathkit = { workspace = true }
+spdlog = "*"
+stb = { workspace = true }
+
+[package.run-dependencies]
+mathkit = { workspace = true }
+stb = { workspace = true }
+
+[package.run-exports.weak]
+enginelib-clang = "0.1.*"

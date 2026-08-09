@@ -25,6 +25,18 @@ spdlog = "*"
 # Escape-hatch wrapper dep (rattler-build; see external/stb).
 stb = { workspace = true }
 
+# Microarch axis (linux-only, hence target-scoped: the conda-forge
+# flag-setter is unix-only noarch). The "*" is variant-substituted per
+# [workspace.build-variants] → one enginelib build per level, same name.
+# HOST placement is load-bearing: the flag-setter's STRONG run-export
+# stamps `_x86_64-microarch-level >=N` into run-deps only — from
+# build-deps it would also contaminate this package's own host solve and
+# bind BUILDING to the build machine (conda-forge's own build wall).
+# Its activation appends the level's -march last; we never hand-edit
+# CXXFLAGS and never declare the underscore runtime gate ourselves.
+[package.target.linux-64.host-dependencies]
+x86_64-microarch-level = "*"
+
 # THE RUN-DEPENDENCIES RULE, modern form: mathkit appears in our PUBLIC
 # headers, so consumers' compilers need it too — and it reaches them
 # automatically because mathkit WEAK-EXPORTS ITSELF (see mathkit's
