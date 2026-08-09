@@ -18,16 +18,13 @@ build:
       then:
         - cmake -GNinja -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DSPDLOG_BUILD_EXAMPLE=OFF -DSPDLOG_BUILD_TESTS=OFF && cmake --build build --target install
 
+# NOTE: no run_exports here — recipe-declared run_exports do NOT
+# surface through pixi's source-package metadata bridge (verified in
+# the lock: consumers saw no stamp). Consumers that need propagation
+# declare a manual run-dependency instead (enginelib-mingw does) —
+# the same pattern ../stb established.
 requirements:
   build:
     - gxx_win-64 >=14,<15
     - cmake
     - ninja
-  # Weak self-export, mirroring the channel spdlog's behavior: consumers
-  # of enginelib-mingw need spdlog's CMake config at THEIR build time
-  # (enginelibConfig does find_dependency(spdlog) — unconditional
-  # because the static variant genuinely needs it), and run-exports are
-  # how a host dep propagates there.
-  run_exports:
-    weak:
-      - spdlog-mingw >=1.15.3,<1.16

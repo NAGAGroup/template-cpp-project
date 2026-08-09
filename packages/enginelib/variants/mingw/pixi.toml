@@ -44,6 +44,13 @@ stb = { workspace = true }
 [package.run-dependencies]
 mathkit = { workspace = true }
 stb = { workspace = true }
+# Manual run-dep (the stb pattern): consumers need spdlog's CMake
+# config at THEIR build time (enginelibConfig does
+# find_dependency(spdlog) — unconditional because the static variant
+# genuinely links it). The channel spdlog propagates via run-exports;
+# rattler-recipe run_exports don't surface through pixi's source
+# bridge, so the wrapper propagates by declaration.
+spdlog-mingw = { workspace = true }
 
 [package.run-exports.weak]
 enginelib-mingw = ">=0.1.0,<0.2"
