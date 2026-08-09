@@ -2107,9 +2107,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc-14.5-ha367084_41.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-      - conda_source: catch2-mingw[87730f06] @ external/catch2-mingw
       - conda_source: enginelib-mingw[6db9fee5] @ packages/enginelib/variants/mingw
-      - conda_source: enginelib-tests-mingw[cead5d93] @ packages/enginelib/tests/variants/mingw
+      - conda_source: enginelib-tests-mingw[757e512f] @ packages/enginelib/tests/variants/mingw
       - conda_source: mathkit[d827603a] @ packages/mathkit
       - conda_source: stb[3851d148] @ external/stb
   test-lowest:
@@ -4320,26 +4319,14 @@ packages:
     - zstd >=1.5.7,<1.6.0a0
   size: 388453
   timestamp: 1764777142545
-- conda_source: catch2-mingw[87730f06] @ external/catch2-mingw
+- conda_source: catch2-mingw[bf3ffaab] @ external/catch2-mingw
   variants:
     cmake: '4.4'
-    m2w64_cxx_compiler: gxx
-    m2w64_cxx_compiler_version: '14'
     target_platform: win-64
   depends:
   - libstdcxx >=14
   - libgcc >=14
   - ucrt >=10.0.20348.0
-  run_exports:
-    weak:
-    - catch2-mingw >=3.15.3,<4
-  source:
-    git: https://github.com/catchorg/catch2
-    tag: v3.15.3
-    rev: 8b08d4d79514f45f7e4ce2a607ac9c94e920d1bb
-  source_depends:
-    catch2-mingw:
-      path: .
   build_packages:
   - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-h4c7d964_0.conda
   - conda: https://conda.anaconda.org/conda-forge/noarch/libgcc-devel_win-64-14.4.0-h4af83d7_101.conda
@@ -5985,7 +5972,7 @@ packages:
   - conda_source: enginelib-coverage[87499ba4] @ packages/enginelib/variants/coverage
   - conda_source: mathkit[9987d90e] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-tests-mingw[cead5d93] @ packages/enginelib/tests/variants/mingw
+- conda_source: enginelib-tests-mingw[757e512f] @ packages/enginelib/tests/variants/mingw
   variants:
     cmake: '4.4'
     m2w64_cxx_compiler: gxx
@@ -5995,13 +5982,10 @@ packages:
   - libstdcxx >=14
   - libgcc >=14
   - ucrt >=10.0.20348.0
-  - catch2-mingw >=3.15.3,<4
   - enginelib-mingw >=0.1.0,<0.2
   source:
     path: ../..
   source_depends:
-    catch2-mingw:
-      path: ../../../../../external/catch2-mingw
     enginelib-mingw:
       path: ../../../variants/mingw
   build_packages:
@@ -6058,7 +6042,7 @@ packages:
   - conda: https://conda.anaconda.org/conda-forge/win-64/vc-14.5-ha367084_41.conda
   - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda
   - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda
-  - conda_source: catch2-mingw[87730f06] @ external/catch2-mingw
+  - conda_source: catch2-mingw[bf3ffaab] @ external/catch2-mingw
   - conda_source: enginelib-mingw[6db9fee5] @ packages/enginelib/variants/mingw
   - conda_source: mathkit[d827603a] @ packages/mathkit
   - conda_source: stb[3851d148] @ external/stb

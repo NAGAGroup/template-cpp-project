@@ -1,31 +1,26 @@
-# WRAPPER PACKAGE: Catch2, rebuilt from upstream IN THE MINGW ABI REGIME.
+# WRAPPER PACKAGE: Catch2, rebuilt from upstream IN THE MINGW ABI REGIME
+# via the pixi-build-rattler-build ESCAPE HATCH.
 #
 # Why this exists (the regime-closure lesson): conda-forge's catch2 is
-# MSVC-built on win-64 — a compiled STATIC/import library whose symbols
-# are MSVC-mangled. A mingw (GNU/libstdc++) test binary cannot link it,
-# and unlike spdlog/fmt, Catch2 v3 has no header-only mode to escape
-# into. So the mingw test lane rebuilds Catch2 in-regime with the same
-# m2w64 compiler stem the *-mingw packages use. The `-mingw` suffix is
-# the same ABI-regime naming the enginelib-mingw variant carries — it
-# never shadows the channel's catch2, and only the mingw tests consume
-# it. (Header-only deps escape the regime problem; compiled deps must
-# be rebuilt — that is the whole rule.)
+# MSVC-built on win-64 — a compiled static library whose symbols are
+# MSVC-mangled. A mingw (GNU/libstdc++) test binary cannot link it, and
+# unlike spdlog/fmt, Catch2 v3 has no header-only mode to escape into.
+# So the mingw test lane rebuilds Catch2 in-regime. The `-mingw` suffix
+# is the same ABI-regime naming the enginelib-mingw variant carries —
+# it never shadows the channel's catch2, and only the mingw tests
+# consume it. (Header-only deps escape the regime problem; compiled
+# deps must be rebuilt — that is the whole rule.)
+#
+# Why rattler-build and not the cmake backend: pixi git sources fetch
+# ALL refs, and the Catch2 repository carries case-conflicting refs in
+# its history — the fetch hard-fails on Windows' case-insensitive
+# filesystem (exactly where this package must build). recipe.yaml
+# takes a release TARBALL (url + sha256), which the v3.15.3 tree
+# extracts cleanly everywhere. A second reason the escape hatch earns
+# its name.
 [package]
 name = "catch2-mingw"
 version = "3.15.3"
 
 [package.build]
-backend = { name = "pixi-build-cmake", version = "==0.4.5" }
-
-[package.build.source]
-git = "https://github.com/catchorg/Catch2"
-tag = "v3.15.3"
-
-# Upstream has no presets — wrappers are the one place raw -D flags in
-# extra-args are correct.
-[package.build.config]
-extra-args = ["-DCATCH_INSTALL_DOCS=OFF", "-DBUILD_TESTING=OFF"]
-compilers = ["m2w64_cxx"]
-
-[package.run-exports.weak]
-catch2-mingw = ">=3.15.3,<4"
+backend = { name = "pixi-build-rattler-build", version = "==0.4.5" }

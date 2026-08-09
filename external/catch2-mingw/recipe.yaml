@@ -1,0 +1,26 @@
+package:
+  name: catch2-mingw
+  version: "3.15.3"
+
+source:
+  # Release tarball, NOT git: the Catch2 repo has case-conflicting refs
+  # in its history, and pixi's all-refs git fetch hard-fails on
+  # Windows' case-insensitive filesystem. The tag tree itself is
+  # case-clean (verified), so the archive extracts fine everywhere.
+  - url: https://github.com/catchorg/Catch2/archive/refs/tags/v3.15.3.tar.gz
+    sha256: b0299ae552918220a7a6e21e7de5b714777f4e8c883fb70c4bb23fe01df8c6e3
+
+build:
+  # win-only package (the mingw regime only exists there); static lib.
+  script:
+    - if: win
+      then:
+        - cmake -GNinja -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DCATCH_INSTALL_DOCS=OFF -DBUILD_TESTING=OFF && cmake --build build --target install
+
+requirements:
+  build:
+    # The same GNU-on-Windows family the *-mingw packages use (its
+    # activation provides CC/CXX and pulls the m2w64 sysroot).
+    - gxx_win-64 >=14,<15
+    - cmake
+    - ninja
