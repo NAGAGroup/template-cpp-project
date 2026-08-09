@@ -354,8 +354,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/acpp-runtime-nightly-2026.08.09_llvm21.1.8-h1954c73_10.conda
-      - conda_source: demo-app-static[5a3c6946] @ packages/demo-app/variants/static
-      - conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+      - conda_source: demo-app-static[5cdb2350] @ packages/demo-app/variants/static
+      - conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
       - conda_source: fmt[25514301] @ external/fmt
       - conda_source: mathkit[4cac06ce] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -376,8 +376,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/acpp-runtime-nightly-2026.08.09_llvm21.1.8-h1954c73_10.conda
-      - conda_source: demo-app-static[5a3c6946] @ packages/demo-app/variants/static
-      - conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+      - conda_source: demo-app-static[5cdb2350] @ packages/demo-app/variants/static
+      - conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
       - conda_source: fmt[25514301] @ external/fmt
       - conda_source: mathkit[4cac06ce] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -398,8 +398,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/acpp-runtime-nightly-2026.08.09_llvm21.1.8-h1954c73_10.conda
-      - conda_source: demo-app-static[5a3c6946] @ packages/demo-app/variants/static
-      - conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+      - conda_source: demo-app-static[5cdb2350] @ packages/demo-app/variants/static
+      - conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
       - conda_source: fmt[25514301] @ external/fmt
       - conda_source: mathkit[4cac06ce] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -420,8 +420,8 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/acpp-runtime-nightly-2026.08.09_llvm21.1.8-h1954c73_10.conda
-      - conda_source: demo-app-static[5a3c6946] @ packages/demo-app/variants/static
-      - conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+      - conda_source: demo-app-static[5cdb2350] @ packages/demo-app/variants/static
+      - conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
       - conda_source: fmt[25514301] @ external/fmt
       - conda_source: mathkit[4cac06ce] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
@@ -1783,7 +1783,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/acpp-runtime-nightly-2026.08.09_llvm21.1.8-h1954c73_10.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+      - conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
       - conda_source: mathkit[4cac06ce] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p1:
@@ -1804,7 +1804,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/acpp-runtime-nightly-2026.08.09_llvm21.1.8-h1954c73_10.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+      - conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
       - conda_source: mathkit[4cac06ce] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p2:
@@ -1825,7 +1825,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/acpp-runtime-nightly-2026.08.09_llvm21.1.8-h1954c73_10.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+      - conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
       - conda_source: mathkit[4cac06ce] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       p3:
@@ -1846,7 +1846,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/acpp-runtime-nightly-2026.08.09_llvm21.1.8-h1954c73_10.conda
       - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
-      - conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+      - conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
       - conda_source: mathkit[4cac06ce] @ packages/mathkit
       - conda_source: stb[72f65757] @ external/stb
       win-64:
@@ -4349,7 +4349,7 @@ packages:
   - conda_source: fmt[e633f42f] @ external/fmt
   - conda_source: mathkit[8817feff] @ packages/mathkit
   - conda_source: stb[3851d148] @ external/stb
-- conda_source: demo-app-static[5a3c6946] @ packages/demo-app/variants/static
+- conda_source: demo-app-static[5cdb2350] @ packages/demo-app/variants/static
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -4437,7 +4437,7 @@ packages:
   - conda: https://prefix.dev/conda-forge/linux-64/spdlog-1.15.3-h6dc744f_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/acpp-runtime-nightly-2026.08.09_llvm21.1.8-h1954c73_10.conda
-  - conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+  - conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
   - conda_source: fmt[25514301] @ external/fmt
   - conda_source: mathkit[4cac06ce] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
@@ -5156,7 +5156,7 @@ packages:
   - conda: https://prefix.dev/jackm97/naga-labs/linux-64/fmt-11.2.0-h43b1170_0.conda
   - conda_source: mathkit[4cac06ce] @ packages/mathkit
   - conda_source: stb[72f65757] @ external/stb
-- conda_source: enginelib-static[7160a77f] @ packages/enginelib/variants/static
+- conda_source: enginelib-static[a21b1453] @ packages/enginelib/variants/static
   variants:
     c_stdlib: sysroot
     c_stdlib_version: '2.28'
@@ -5185,6 +5185,8 @@ packages:
       path: ../../../../external/stb
   build_packages:
   - conda: https://prefix.dev/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_102.conda
+  - conda: https://prefix.dev/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_102.conda
   - conda: https://prefix.dev/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
   - conda: https://prefix.dev/conda-forge/linux-64/c-ares-1.34.8-h280c20c_1.conda
   - conda: https://prefix.dev/conda-forge/linux-64/cmake-4.4.2-hc85cc9f_0.conda

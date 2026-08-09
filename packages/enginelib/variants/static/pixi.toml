@@ -37,3 +37,25 @@ enginelib-static = ">=0.1.0,<0.2"
 # is not the thing that compiles our code (AM-1).
 [package.target.win-64.build-dependencies]
 vs2026_win-64 = ">=19.51,<20"
+
+# THE ARCHIVER — linux, and only the static flavor needs it.
+#
+# AdaptiveCpp's activation exports the conda-forge toolchain names
+# (`AR=x86_64-conda-linux-gnu-ar`, and ranlib alongside it) but the
+# toolchain does not SHIP those binaries. Shared libraries are
+# unaffected because they are produced through the compiler driver;
+# a static archive calls `ar` directly and dies with exit 127,
+# `x86_64-conda-linux-gnu-ar: not found`. Verified: an installed acpp
+# env contains no archiver at all.
+#
+# `binutils_linux-64` provides the prefixed names and coexists with the
+# toolchain (checked — acpp constrains clang/clangxx/llvm, not
+# binutils). An archiver is a legitimate BUILD TOOL to declare, so this
+# is not a package reaching into its dependency's business; it is this
+# package saying which tools its build needs.
+#
+# Reported to ACPP as the third toolchain gap. If the activation stops
+# exporting names it does not provide, or the toolchain starts shipping
+# them, delete this. See DELTA.md D-28.
+[package.target.linux-64.build-dependencies]
+binutils_linux-64 = ">=2.44,<3"
