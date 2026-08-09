@@ -41,20 +41,25 @@ DELIBERATELY omits `cxx_compiler_version`: the acpp toolchain's
 activation packages ship no version-suffixed names, so a version key
 would render an unsatisfiable spec. This is a documented divergence,
 not an inconsistency — do not "fix" either side to match the other.
-(pixi note: `zip_keys` itself is not supported in `pixi.toml` — only in
-`recipe.yaml` via the rattler-build backend — so lockstep pairs are
-expressed as single-valued axes per flavor instead.)
+(pixi note: `zip_keys` is not available in inline `[workspace.
+build-variants]` tables, but IS supported via `[workspace]
+build-variants-files` pointing at a `conda_build_config.yaml` — pixi
+parses a subset of conda-build's variant syntax there, zipping
+verified: 2 builds not 4 from a two-key zip. The toolchain/stdlib
+pinning block is planned to move into exactly such a file, upstream
+shape, when the compiler variants land.)
 
 ## Stdlib floor
 
-The workspace pins `c_stdlib_version = ["2.17"]` (linux) in
-`[workspace.target.linux-64.build-variants]` — conda-forge's
-redistributability baseline. Without it, pixi derives the floor from
-its platform default (glibc 2.28) and published packages silently
-demand a newer glibc than the ecosystem's own floor: the
-"built according to the build machine" failure mode. Verified: the pin
-resolves `sysroot 2.17.*` at build and stamps `__glibc >=2.17` into
-run-deps.
+The workspace pins `c_stdlib_version = ["2.28"]` (linux) in
+`[workspace.target.linux-64.build-variants]`. The VALUE is a project
+decision — glibc 2.28, deliberately above conda-forge's 2.17 baseline
+(SYCL tooling required the bump) — but the PIN itself is the point:
+without it the floor is whatever pixi's platform default happens to be,
+drift instead of decision. Verified end-to-end: the pin resolves the
+matching `sysroot` at build and stamps the `__glibc` floor into every
+published package's run requirements (tested with 2.17: run-deps
+carried `__glibc >=2.17`).
 
 **⚠ Channel-dependence (verified, do not copy this pattern blindly):**
 `c_stdlib_version` is a DERIVATION PARAMETER, not a dep-name variant

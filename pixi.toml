@@ -80,12 +80,14 @@ spdlog = ">=1.15,<1.16"
 spdlog = ["1.14", "1.15"]
 x86_64-microarch-level = ["1", "2", "3", "4"]
 
-# Redistributability floor (conda-forge baseline): pin the stdlib
-# EXPLICITLY — pixi's derived default (glibc 2.28) silently makes
-# published packages demand a newer glibc than conda-forge's own 2.17
-# floor ("built according to the build machine" failure mode).
+# Redistributability floor — EXPLICIT, as a decision rather than drift:
+# without this pin the floor is whatever pixi's platform default happens
+# to be ("built according to the build machine"). Ours is glibc 2.28
+# DELIBERATELY (Jack: SYCL tooling required the bump above conda-forge's
+# 2.17 baseline); the pin lands verbatim in every published package's
+# run requirements as `__glibc >=2.28`.
 [workspace.target.linux-64.build-variants]
-c_stdlib_version = ["2.17"]
+c_stdlib_version = ["2.28"]
 
 # Live demo of overriding the backend's default compiler variants: this
 # restates the Windows default (vs2022) explicitly; swap the value to
