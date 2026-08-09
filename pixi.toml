@@ -32,9 +32,15 @@ platforms = [
 preview = ["pixi-build"]
 # Fail fast on pixi versions older than the features this workspace uses.
 requires-pixi = ">=0.76.1"
-# Toolchain/stdlib pinning lives in ONE reviewable file (upstream
-# pinning-feedstock shape; also the only route to zip_keys in pixi).
-build-variants-files = ["./variants.yaml"]
+# NOTE (blocked upstream, evidence in scratch/lockstab.sh): the
+# pinning-FILE shape (`build-variants-files = ["./variants.yaml"]`,
+# upstream cbc form, zip_keys) is the intended home for the toolchain
+# pins below — but with a variants file referenced, `pixi lock --check`
+# reports the lock stale FOREVER (even when a re-lock is byte-identical),
+# so every locked:false CI install re-solves and re-rolls the
+# nondeterministic tier selections. Until that staleness digest is fixed
+# upstream, the pins live in inline tables (identical semantics: every
+# pin is single-valued, so zip_keys has nothing to zip yet).
 
 # ---- Dependency pool -------------------------------------------------------
 # Single source of truth for every sibling path and shared spec. Package
@@ -83,13 +89,36 @@ spdlog = ">=1.15,<1.16"
 spdlog = ["1.14", "1.15"]
 x86_64-microarch-level = ["1", "2", "3", "4"]
 
-# Compiler + stdlib + build-tool pins live in ./variants.yaml (see the
-# build-variants-files reference above): gcc/gxx 16 on linux, vs2026 on
-# win (the ONLY supported MSVC — the backend's vs2022 default is stale),
-# glibc 2.28 floor with rationale, cmake 4.4, zip_keys lockstep. The
-# linux compiler AXIS remains a NAMED package variant (variants/clang) —
-# compiler choice is a consumer-toolchain contract the solver cannot
-# see, not a matrix it can encode.
+# Build-tool pins bind the backend's IMPLICITLY-injected tools by name
+# (verified: no explicit build-dep declaration needed). A toolchain pin
+# enters every build's variant hash — bumping it rebuilds the world,
+# deliberately. Values BARE and EXACT ("4.4" prefix-matches the series).
+cmake = ["4.4"]
+
+# Toolchain + stdlib pins, per platform. The linux compiler AXIS remains
+# a NAMED package variant (variants/clang) — compiler choice is a
+# consumer-toolchain contract the solver cannot see.
+# Versions preserve the tree's current toolchain (gcc 16 series,
+# leading-edge doctrine), pinned explicitly as decision-not-drift.
+[workspace.target.linux-64.build-variants]
+c_compiler = ["gcc"]
+cxx_compiler = ["gxx"]
+c_compiler_version = ["16"]
+cxx_compiler_version = ["16"]
+# Redistributability floor — glibc 2.28 DELIBERATELY (Jack: SYCL tooling
+# required the bump above conda-forge's 2.17 baseline; same wall hit
+# building OpenMDAO optimizers). Lands verbatim in every published
+# package's run requirements as `__glibc >=2.28`.
+c_stdlib = ["sysroot"]
+c_stdlib_version = ["2.28"]
+
+# vs2026 is the ONLY MSVC variant this template supports (GH runners
+# ship it). The pixi-build-cmake backend DEFAULTS to vs2022 with a stale
+# "more widely supported" rationale — this is the explicit override;
+# never delete it back to the default.
+[workspace.target.win-64.build-variants]
+c_compiler = ["vs2026"]
+cxx_compiler = ["vs2026"]
 
 # ---- Default environment: the LIBRARY consumer env (= the v1 tier) ---------
 # Portable by contract: the level-1 pin excludes the optimized enginelib
