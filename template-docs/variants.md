@@ -81,8 +81,21 @@ machinery, and the preset is exactly where configure detail lives.)
   still import the config. **In-regime pixi SOURCE packages are what
   actually solve it**: the mingw lane consumes `external/spdlog-mingw`
   / `fmt-mingw` / `catch2-mingw` wrapper rebuilds, whose own builds
-  export GNU-regime configs; the CMakeLists never changes per regime,
-  only the manifest dependency swaps. (c) *Fetch regime:* those
+  export GNU-regime configs.
+
+  **Read the diff for the lesson: the consuming CMakeLists change ZERO
+  lines.** `enginelib` says `find_package(spdlog CONFIG REQUIRED)` and
+  links `spdlog::spdlog` in every regime; `demo-app` links `fmt::fmt`
+  in every regime. Only the MANIFEST dependency swaps. That invariance
+  is the whole point of source packages, and it is why the tempting
+  one-line workaround is wrong: neutralizing the imported target's
+  `INTERFACE_COMPILE_OPTIONS` after `find_package` (or filtering flags
+  in a preset) goes green just as fast and teaches the opposite — CMake
+  surgery in YOUR project to accommodate a dependency shipped in the
+  wrong regime, which is precisely the old-world coping strategy
+  (find_package-check-first, FetchContent-second) that pixi source
+  packages exist to eliminate. A workaround that goes green is worse
+  than staying red another cycle. (c) *Fetch regime:* those
   wrappers use TARBALL sources (url + sha256, rattler recipes) —
   pixi's all-refs git fetch of upstream Catch2 hard-fails on Windows'
   case-insensitive filesystem (case-conflicting refs in repo history;
