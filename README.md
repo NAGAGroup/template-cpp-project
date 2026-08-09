@@ -14,7 +14,7 @@ Everything else in this repo follows from that sentence.
 |---|---|
 | `pixi.toml` | THE workspace — every environment, task, and the variant matrix (members are package-only manifests) |
 | `packages/mathkit` | header-only library (weak self-export teaching case) |
-| `packages/enginelib` | compiled library — the variant teacher: preset-variants (`static`, `asan`, `tsan`, `coverage`, `relwithdebinfo`, `clang`, `mingw`) across a five-cell compiler/platform matrix, pixi build-variants (spdlog version matrix + microarch levels under ONE name) |
+| `packages/enginelib` | compiled library — the variant teacher: preset-variants (`static`, `asan`, `tsan`, `coverage`, `relwithdebinfo`), pixi build-variants (spdlog version matrix + microarch levels under ONE name) |
 | `packages/demo-app` | application consuming the libraries (internal-only, package-only manifest) |
 | `external/fmt` | wrapper package building upstream fmt from a git tag (pixi-build-cmake) |
 | `external/stb` | wrapper via the **rattler-build escape hatch** — upstream has no build system; the recipe installs headers + a hand-written CMake config |
@@ -38,7 +38,6 @@ pixi run -e test-asan test          # sanitized variant, tests built to match
 pixi run coverage                   # llvm-cov report (resolves without -e: one env owns it)
 pixi run -e dev-enginelib dev-test  # the in-tree dev loop (no packages involved)
 pixi run check-microarch            # what your CPU supports (do this before v2/v3/v4)
-pixi install -e clang               # the clang-built NAMED package variant
 pixi run publish-local              # every package into an indexed local channel
 ```
 

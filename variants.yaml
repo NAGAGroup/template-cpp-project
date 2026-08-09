@@ -39,7 +39,6 @@ cxx_compiler_version:
     then: "16"
 zip_keys:
   - [c_compiler_version, cxx_compiler_version]
-  - [m2w64_c_compiler_version, m2w64_cxx_compiler_version]
 
 # Redistributability floor — and on THIS branch it is LOAD-BEARING, not
 # merely explicit: nothing derives a glibc floor here.
@@ -76,29 +75,11 @@ c_stdlib_version:
 cmake:
   - "4.4"
 
-# mingw (GNU-on-Windows) compiler lane — the conda-forge m2w64 stem.
-# A package opts in with `compilers = ["m2w64_cxx"]`: the backend
-# renders `${{ compiler('m2w64_cxx') }}`, which resolves these keys to
-# the NEW gcc_win-64/gxx_win-64 family (GCC 14; runtime DLL packages
-# share linux names: libgcc/libstdcxx/ucrt run-deps arrive via the
-# compiler's strong run-exports). Verified against backend source:
-# arbitrary stems pass through to the compiler() jinja — only the
-# variant keys below make them resolvable.
-m2w64_c_compiler:
-  - if: win
-    then: gcc
-m2w64_cxx_compiler:
-  - if: win
-    then: gxx
-m2w64_c_compiler_version:
-  - if: win
-    then: "14"
-m2w64_cxx_compiler_version:
-  - if: win
-    then: "14"
-
-# (The `m2w64_c_stdlib*` keys that live here on main are DELETED on this
-# branch — DELTA.md D-03. They were never consulted by the backend
-# (`stdlib_for_language()` maps every language to `c`), no recipe in
-# this tree renders `stdlib('m2w64_c')`, and D-06 removes the mingw lane
-# that was the only reason to keep them as documentation.)
+# (The whole `m2w64_*` block — the mingw/GNU-on-Windows compiler lane
+# and its stdlib keys — is DELETED on this branch, with its zip pair:
+# DELTA.md D-03 and D-06. mingw and SYCL are incoherent together (every
+# win acpp package requires vc14_runtime/ucrt, the toolchain is
+# clang-cl-built targeting x86_64-pc-windows-msvc, and there is no
+# mingw AdaptiveCpp build), so the lane cannot exist here at all. It
+# remains on main, where it is the strongest argument in the template
+# for pixi source wrappers. Do not restore it on a merge.)

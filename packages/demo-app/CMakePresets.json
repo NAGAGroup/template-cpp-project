@@ -15,31 +15,6 @@
       "inherits": "base"
     },
     {
-      "name": "clang",
-      "displayName": "Clang (regime guard — toolchain comes from the build env)",
-      "inherits": "base",
-      "cacheVariables": {
-        "DEMO_APP_EXPECT_COMPILER_ID": "Clang"
-      }
-    },
-    {
-      "name": "clang-win",
-      "displayName": "Clang on Windows (clang-cl — matches demo-app-clang win realization)",
-      "inherits": "clang",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "clang-cl",
-        "CMAKE_CXX_COMPILER": "clang-cl"
-      }
-    },
-    {
-      "name": "mingw",
-      "displayName": "GNU on Windows (regime guard)",
-      "inherits": "base",
-      "cacheVariables": {
-        "DEMO_APP_EXPECT_COMPILER_ID": "GNU"
-      }
-    },
-    {
       "name": "dev",
       "displayName": "Dev (in-tree)",
       "inherits": "base",

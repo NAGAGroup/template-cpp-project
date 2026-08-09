@@ -138,16 +138,19 @@ Run before claiming anything works (all from the repo root):
 `pixi run demo && pixi run test-all`; `pixi run -e test-coverage
 coverage`; `pixi run -e dev-enginelib dev-test` and `lint`;
 `pixi run -e dev-mathkit dev-test`; `pixi run format-check` (default
-env); `pixi run check-microarch`; `pixi install -e prod -e clang -e gnu -e
+env); `pixi run check-microarch`; `pixi install -e prod -e
 microarch-v0 -e microarch-v2 -e microarch-v3 -e static -e reldbg -e
-spdlog16 -e demo-static -e demo-clang`;
+spdlog16 -e demo-static`;
 `pixi exec --spec nushell nu ci/check-publish-set.nu`;
 `pixi exec --spec nushell nu ci/check-lock-tiers.nu`;
 `pixi exec --spec nushell nu ci/check-ci-shape.nu`;
-`pixi exec --spec nushell nu ci/check-regime-markers.nu`. Windows: the same
-minus sanitizers/coverage/microarch envs, plus the win-only gnu lane
-(`test-gnu-windows`, `demo-gnu-windows`) — clang envs run on BOTH
-platforms (clang-cl realization on win).
+`pixi exec --spec nushell nu ci/check-doc-refs.nu`;
+`pixi exec --spec nushell nu ci/check-stdlib-floor.nu ./dist` (needs a
+`pixi publish --to ./dist` first — it reads built artifacts). Windows:
+the same minus sanitizers/coverage/microarch envs. There are no
+per-compiler envs on this branch: AdaptiveCpp is the only toolchain
+(DELTA.md AM-1), and `ci/check-regime-markers.nu` went with the mingw
+lane it existed to guard.
 
 ## Divergence checklist (for agents auditing OTHER NAGA repos)
 

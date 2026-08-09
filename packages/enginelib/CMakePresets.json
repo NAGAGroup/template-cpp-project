@@ -23,31 +23,6 @@
       }
     },
     {
-      "name": "clang",
-      "displayName": "Clang (compiler variant; regime guard only — toolchain comes from the build env)",
-      "inherits": "base",
-      "cacheVariables": {
-        "ENGINELIB_EXPECT_COMPILER_ID": "Clang"
-      }
-    },
-    {
-      "name": "clang-win",
-      "displayName": "Clang on Windows (clang-cl, VC runtime — matches enginelib-clang win realization)",
-      "inherits": "clang",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "clang-cl",
-        "CMAKE_CXX_COMPILER": "clang-cl"
-      }
-    },
-    {
-      "name": "mingw",
-      "displayName": "GNU on Windows (regime guard — toolchain comes from the m2w64 compiler stem)",
-      "inherits": "base",
-      "cacheVariables": {
-        "ENGINELIB_EXPECT_COMPILER_ID": "GNU"
-      }
-    },
-    {
       "name": "relwithdebinfo",
       "displayName": "RelWithDebInfo (package variant)",
       "inherits": "base",

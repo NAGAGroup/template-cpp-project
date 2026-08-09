@@ -67,24 +67,15 @@ enginelib-relwithdebinfo = { path = "packages/enginelib/variants/relwithdebinfo"
 enginelib-asan = { path = "packages/enginelib/variants/asan" }
 enginelib-tsan = { path = "packages/enginelib/variants/tsan" }
 enginelib-coverage = { path = "packages/enginelib/variants/coverage" }
-enginelib-clang = { path = "packages/enginelib/variants/clang" }
-enginelib-mingw = { path = "packages/enginelib/variants/mingw" }
 enginelib-tests = { path = "packages/enginelib/tests" }
-enginelib-tests-clang = { path = "packages/enginelib/tests/variants/clang" }
-enginelib-tests-mingw = { path = "packages/enginelib/tests/variants/mingw" }
 enginelib-tests-asan = { path = "packages/enginelib/tests/variants/asan" }
 enginelib-tests-tsan = { path = "packages/enginelib/tests/variants/tsan" }
 enginelib-tests-coverage = { path = "packages/enginelib/tests/variants/coverage" }
 mathkit-tests = { path = "packages/mathkit/tests" }
 demo-app = { path = "packages/demo-app" }
 demo-app-static = { path = "packages/demo-app/variants/static" }
-demo-app-clang = { path = "packages/demo-app/variants/clang" }
-demo-app-mingw = { path = "packages/demo-app/variants/mingw" }
 fmt = { path = "external/fmt" }
 stb = { path = "external/stb" }
-catch2-mingw = { path = "external/catch2-mingw" }
-spdlog-mingw = { path = "external/spdlog-mingw" }
-fmt-mingw = { path = "external/fmt-mingw" }
 catch2 = ">=3.5,<4"
 spdlog = ">=1.15,<1.16"
 
@@ -111,12 +102,11 @@ spdlog = ["1.15", "1.16"]
 x86_64-microarch-level = ["1", "2", "3", "4"]
 
 # Compiler + stdlib + build-tool pins live in ./variants.yaml (see the
-# build-variants-files reference above): gcc/gxx 16 on linux, vs2026 on
-# win (the ONLY supported MSVC — the backend's vs2022 default is stale),
-# glibc 2.28 floor with rationale, cmake 4.4, zip_keys lockstep. The
-# linux compiler AXIS remains a NAMED package variant (variants/clang) —
-# compiler choice is a consumer-toolchain contract the solver cannot
-# see, not a matrix it can encode.
+# build-variants-files reference above). There is NO compiler AXIS on
+# this branch: AdaptiveCpp is the only toolchain, and it constrains
+# every non-acpp clang/llvm out of any environment it is in, so
+# alternative compiler cells are not a choice we declined — they are
+# unsolvable alongside acpp (DELTA.md AM-1, D-04/D-05/D-06).
 
 # ---- Default environment: the LIBRARY consumer env (= the v1 tier) ---------
 # The DEFAULT env is CHEAP: tooling + task features, ZERO source
@@ -205,27 +195,6 @@ spdlog = { workspace = true }
 [feature.reldbg.dependencies]
 enginelib-relwithdebinfo = { workspace = true }
 spdlog = { workspace = true }
-
-[feature.clang.dependencies]
-enginelib-clang = { workspace = true }
-spdlog = { workspace = true }
-
-# THE feature-target-table showcase: one feature, per-platform
-# realization. "gnu" means the GNU toolchain/libstdc++ regime — on
-# linux that IS the default enginelib (gcc prod); on win it is the
-# mingw NAMED variant. Shared deps sit in the base table; target
-# tables carry only the per-platform delta.
-# spdlog is LINUX-scoped here: on linux the gnu realization is the
-# channel-binary flavor (the pin keeps variant selection
-# deterministic); on win the mingw lane consumes the spdlog-mingw
-# source wrapper through enginelib-mingw's own closure — the channel
-# spdlog would be dead weight in the env.
-[feature.gnu.target.linux-64.dependencies]
-enginelib = { workspace = true }
-spdlog = { workspace = true }
-
-[feature.gnu.target.win-64.dependencies]
-enginelib-mingw = { workspace = true }
 
 # Sanitizer/coverage flavors (linux-only realization; the consuming envs
 # carry the platform restriction). Coverage also carries the report
@@ -324,8 +293,7 @@ description = "Run the demo application (steps = engine iterations)"
 
 # Demo envs compose the task feature and inline their app variant as
 # the delta (the app is single-use env content, not a shared surface).
-# One demo env per demonstrated flavor; demo-gnu-windows is win-only
-# for the same reason as test-gnu-windows.
+# One demo env per demonstrated flavor.
 [environments.demo]
 features = ["demo-tasks"]
 no-default-feature = true
@@ -335,19 +303,6 @@ dependencies = { demo-app = { workspace = true }, spdlog = { workspace = true } 
 features = ["demo-tasks"]
 no-default-feature = true
 dependencies = { demo-app-static = { workspace = true }, spdlog = { workspace = true } }
-
-[environments.demo-clang]
-features = ["demo-tasks"]
-no-default-feature = true
-dependencies = { demo-app-clang = { workspace = true }, spdlog = { workspace = true } }
-
-# No spdlog pin here: the mingw closure is fully in-regime source
-# wrappers — nothing in this env participates in the spdlog axis.
-[environments.demo-gnu-windows]
-platforms = ["win-64"]
-features = ["demo-tasks"]
-no-default-feature = true
-dependencies = { demo-app-mingw = { workspace = true } }
 
 # Environments show capability, not just CI need: every preset variant
 # has a consuming env — the template is a tutorial surface, and users
@@ -425,21 +380,6 @@ platforms = ["linux-64-v4"]
 features = ["header-only"]
 no-default-feature = true
 
-# Compiler package-variant env: consumes the NAMED clang variant
-# (variants/clang). Compiler choice is a knowingly-chosen configuration
-# consumers opt into, like asan/static (C-03). ONE name, both
-# platforms, platform-realized (linux: libstdc++ clang; win: clang-cl
-# on the VC runtime).
-[environments.clang]
-features = ["header-only", "clang"]
-no-default-feature = true
-
-# GNU-regime env: same env name everywhere, per-platform realization
-# via the gnu feature's target tables (gcc prod on linux, mingw on win).
-[environments.gnu]
-features = ["header-only", "gnu"]
-no-default-feature = true
-
 # spdlog build-variant flavor env (the 1.16 branch of the matrix — see
 # the feature comment for why this is a flavor, not a prod+selector).
 [environments.spdlog16]
@@ -456,31 +396,14 @@ description = "Run the installed test binaries of this env"
 
 # Each test env = the matching source FLAVOR + test-tasks; the tests
 # packages are the env's inline DELTA. The test matrix is deliberately
-# NOT the whole variant matrix: prod + clang + sanitizers (+ gnu on
-# win when the mingw lane lands) — variant consumers like `static`
-# keep their consuming env without a mirrored test env.
+# NOT the whole variant matrix: prod + sanitizers — variant consumers
+# like `static` keep their consuming env without a mirrored test env.
+# There is no per-compiler test env on this branch: with one toolchain
+# there is nothing to compare against (AM-1).
 [environments.test]
 features = ["header-only", "prod", "test-tasks"]
 no-default-feature = true
 dependencies = { mathkit-tests = { workspace = true }, enginelib-tests = { workspace = true } }
-
-[environments.test-clang]
-features = ["header-only", "clang", "test-tasks"]
-no-default-feature = true
-dependencies = { enginelib-tests-clang = { workspace = true } }
-[environments.test-clang.tasks.test]
-cmd = "enginelib-tests"
-
-# THE env-platform-limiting showcase: this env exists ONLY on win-64.
-# gnu-on-linux is gcc prod — already tested by `test`; a cross-platform
-# test-gnu would test gcc twice.
-[environments.test-gnu-windows]
-platforms = ["win-64"]
-features = ["header-only", "gnu", "test-tasks"]
-no-default-feature = true
-dependencies = { enginelib-tests-mingw = { workspace = true } }
-[environments.test-gnu-windows.tasks.test]
-cmd = "enginelib-tests"
 
 [environments.test-asan]
 platforms = ["linux-64"]
@@ -617,8 +540,8 @@ description = "Build + publish every opted-in package (full variant matrix) into
 # Fan out across the test envs; each dependency is pinned to ITS env
 # (the env-pinned depends-on showcase). Per-platform target tables
 # carry each platform's real test surface (C-10: tests are
-# runner-bounded — the win list adds the win-only gnu env, the linux
-# list adds the sanitizers).
+# runner-bounded — the linux list adds the sanitizers, which have no
+# win realization).
 [tasks.test-all]
 depends-on = [
   { task = "test", environment = "test" },
@@ -628,16 +551,7 @@ description = "Run all cross-platform test envs"
 [target.linux-64.tasks.test-all]
 depends-on = [
   { task = "test", environment = "test" },
-  { task = "test", environment = "test-clang" },
   { task = "test", environment = "test-asan" },
   { task = "test", environment = "test-tsan" },
 ]
-description = "Run all test envs (incl. clang + sanitizers)"
-
-[target.win-64.tasks.test-all]
-depends-on = [
-  { task = "test", environment = "test" },
-  { task = "test", environment = "test-clang" },
-  { task = "test", environment = "test-gnu-windows" },
-]
-description = "Run all test envs (incl. clang-cl + mingw)"
+description = "Run all test envs (incl. sanitizers)"

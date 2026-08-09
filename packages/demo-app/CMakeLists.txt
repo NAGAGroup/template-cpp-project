@@ -25,8 +25,9 @@ find_package(fmt CONFIG REQUIRED)
 
 add_executable(demo-app src/main.cpp)
 target_compile_features(demo-app PRIVATE cxx_std_23)
-# Regime note: the mingw lane swaps the fmt DEPENDENCY (fmt-mingw
-# source wrapper) in the manifest — this file never changes per regime.
+# Regime note: which `fmt` this resolves to is a MANIFEST decision (a
+# channel binary, or our source wrapper) — this file never changes for
+# it.
 target_link_libraries(demo-app PRIVATE enginelib::enginelib fmt::fmt)
 
 include(GNUInstallDirs)

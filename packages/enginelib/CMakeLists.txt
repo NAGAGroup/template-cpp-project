@@ -16,12 +16,14 @@ set(ENGINELIB_BUILD_TYPE "" CACHE STRING
 set(ENGINELIB_SANITIZER "" CACHE STRING
     "Sanitizers to enable (e.g. 'address,undefined' or 'thread')")
 option(ENGINELIB_COVERAGE "Enable llvm-cov source-based coverage" OFF)
-# REGIME GUARD: compiler variants set this so a build where the intended
-# toolchain silently lost (e.g. an env-exported -D outranking the
-# preset) FAILS AT CONFIGURE instead of shipping the wrong-compiler
-# binary under the variant's name. The hazard is real on win: the
-# clang-win cell's env also contains cl.exe, so a lost preset would
-# still build green — just MSVC underneath.
+# REGIME GUARD: a build where the intended toolchain silently lost
+# (an env-exported -D outranking the preset, or a mistyped compiler
+# stem falling back to whatever the system provides) FAILS AT CONFIGURE
+# instead of shipping a wrong-compiler binary under the right name.
+# Collapsing to a single toolchain does NOT retire this guard, it
+# sharpens it: an acpp build that quietly fell back to a plain host
+# compiler still compiles and links — it just produces no device code
+# at all, and you find out when a kernel never runs.
 set(ENGINELIB_EXPECT_COMPILER_ID "" CACHE STRING
     "Fail configure unless CMAKE_CXX_COMPILER_ID matches (compiler-variant regime guard)")
 if(ENGINELIB_EXPECT_COMPILER_ID AND NOT CMAKE_CXX_COMPILER_ID STREQUAL ENGINELIB_EXPECT_COMPILER_ID)
@@ -85,15 +87,11 @@ target_include_directories(
          $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
          $<INSTALL_INTERFACE:include>)
 target_compile_features(enginelib PUBLIC cxx_std_23)
-# Regime note: on the mingw lane, find_package(spdlog) resolves the
-# spdlog-mingw SOURCE wrapper's own GNU-regime config — the manifests
-# swap the DEPENDENCY, never this file. (The channel's MSVC-built
-# spdlog config bakes MSVC-only flags — `/Zc:__cplusplus`,
-# `/Zc:preprocessor` — into INTERFACE_COMPILE_OPTIONS, so no
-# consumption mode of that artifact works under a GNU-regime compiler:
-# even header-only use fails at flag parsing. Patching those options
-# away here would be CMake surgery to accommodate a wrong-regime
-# dependency — exactly what source wrappers exist to eliminate.)
+# Regime note: this file names dependencies, never toolchains — the
+# manifests swap what `spdlog` RESOLVES TO, and nothing here changes.
+# That invariance is the point of pixi source wrappers, and it is why
+# main can carry a whole GNU-on-Windows lane against the same
+# CMakeLists this branch uses with AdaptiveCpp.
 target_link_libraries(
   enginelib
   PUBLIC mathkit::mathkit
