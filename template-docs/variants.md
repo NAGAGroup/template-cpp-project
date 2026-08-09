@@ -63,52 +63,68 @@ machinery, and the preset is exactly where configure detail lives.)
   link-compatible with MSVC consumers. The lock metadata shows the two
   regimes directly: `enginelib-clang` (win) carries `vc14_runtime`;
   `enginelib-mingw` carries `libstdcxx`/`libgcc`.
-- **Regime closure (learned the hard way — the first mingw CI builds
-  failed, each failure a distinct lesson):** the regime requirement
-  extends to every NATIVE-CODE dependency, and it reaches further than
-  binaries. (a) *Link regime:* a mingw object cannot link the
-  channel's MSVC-built import libraries (`undefined reference to
-  __imp_…` with GNU mangling). (b) *Exported-interface regime — the
-  decisive one:* a foreign-regime package contaminates you through its
-  EXPORTED CMAKE CONFIG, not merely its binaries. The actual
-  conda-forge spdlog win-64 artifact ships
+- **The mingw lane is the strongest pixi argument in this template.**
+  Targeting mingw on Windows is traditionally a NO-GO: binary packages
+  for your dependencies don't exist in that regime, so you fall back
+  to the old world — `find_package` check first, FetchContent or
+  similar second — and end up doing CMake surgery in your own project
+  to accommodate dependencies you had to build yourself.
+  Understandably, almost nobody bothers. **With pixi source packages
+  it is a piece of cake: wrap the upstream once, consume it by name,
+  and make ZERO CMake changes to your core packages.** This tree is
+  the worked example: the mingw lane consumes `external/spdlog-mingw`
+  / `fmt-mingw` / `catch2-mingw` — in-regime rebuilds of the upstream
+  releases, each a ~25-line wrapper — while `enginelib`'s CMakeLists
+  says `find_package(spdlog CONFIG REQUIRED)` and links
+  `spdlog::spdlog` in every regime, never knowing or caring that
+  spdlog arrived as an in-regime source build. Only the MANIFEST
+  dependency swaps. That invariance is the whole point.
+
+  **The constraint that makes the capability necessary — regime
+  closure (learned the hard way; the first mingw CI builds failed,
+  each failure a distinct lesson):** the ABI regime requirement
+  extends to every NATIVE-CODE dependency, and it reaches further
+  than binaries.
+  (a) *Link regime:* a mingw object cannot link the channel's
+  MSVC-built import libraries (`undefined reference to __imp_…` with
+  GNU mangling).
+  (b) *Exported-interface regime — the decisive one:* a foreign-regime
+  package contaminates you through its EXPORTED CMAKE CONFIG, not
+  merely its binaries. The actual conda-forge spdlog win-64 artifact
+  ships
   `INTERFACE_COMPILE_OPTIONS "/Zc:__cplusplus;$<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:MSVC>>:/utf-8>"`
   — note the asymmetry: `/utf-8` properly genex-guarded,
   `/Zc:__cplusplus` UNCONDITIONAL, and it sits on the
   `spdlog_header_only` target too. g++ parses that flag as an input
-  file. This is an UPSTREAM bug, not conda-forge packaging sloppiness:
-  spdlog's own `CMakeLists.txt` (v1.15.3) sets it inside an `if(MSVC)`
-  block — a BUILD-time check that says nothing about the CONSUMER's
-  compiler — while the very next lines wrap `/utf-8` in a
-  `$<CXX_COMPILER_ID:MSVC>` genex; the fix pattern is sitting four
+  file. This is an UPSTREAM bug, not conda-forge packaging
+  sloppiness: spdlog's own `CMakeLists.txt` (v1.15.3) sets it inside
+  an `if(MSVC)` block — a BUILD-time check that says nothing about
+  the CONSUMER's compiler — while the very next lines wrap `/utf-8`
+  in a `$<CXX_COMPILER_ID:MSVC>` genex; the fix pattern sits four
   lines below the defect. **Generalizable smell: `if(MSVC)`-guarded
-  INTERFACE properties in any C++ package you consume** — a build-time
-  condition writing a consumer-time flag. So header-only consumption does NOT escape the regime — you
-  still import the config. **In-regime pixi SOURCE packages are what
-  actually solve it**: the mingw lane consumes `external/spdlog-mingw`
-  / `fmt-mingw` / `catch2-mingw` wrapper rebuilds, whose own builds
-  export GNU-regime configs.
+  INTERFACE properties in any C++ package you consume.** So even
+  header-only consumption does not escape the regime — you still
+  import the config. (Header-only *is* a legitimate lighter technique
+  when the dep's config is clean: if a dependency ships a header-only
+  mode, that is the cheapest way across a regime boundary. It just
+  wasn't available here.)
+  (c) *Fetch regime:* the wrappers use TARBALL sources (url + sha256,
+  rattler recipes) — pixi's all-refs git fetch of upstream Catch2
+  hard-fails on Windows' case-insensitive filesystem
+  (case-conflicting refs in repo history; the tag trees are
+  case-clean, verified).
 
-  **Read the diff for the lesson: the consuming CMakeLists change ZERO
-  lines.** `enginelib` says `find_package(spdlog CONFIG REQUIRED)` and
-  links `spdlog::spdlog` in every regime; `demo-app` links `fmt::fmt`
-  in every regime. Only the MANIFEST dependency swaps. That invariance
-  is the whole point of source packages, and it is why the tempting
-  one-line workaround is wrong: neutralizing the imported target's
-  `INTERFACE_COMPILE_OPTIONS` after `find_package` (or filtering flags
-  in a preset) goes green just as fast and teaches the opposite — CMake
-  surgery in YOUR project to accommodate a dependency shipped in the
-  wrong regime, which is precisely the old-world coping strategy
-  (find_package-check-first, FetchContent-second) that pixi source
-  packages exist to eliminate. A workaround that goes green is worse
-  than staying red another cycle. (c) *Fetch regime:* those
-  wrappers use TARBALL sources (url + sha256, rattler recipes) —
-  pixi's all-refs git fetch of upstream Catch2 hard-fails on Windows'
-  case-insensitive filesystem (case-conflicting refs in repo history;
-  the tag trees are case-clean, verified). Header-only deps you own
-  (mathkit, stb) are regime-neutral and need nothing. The spdlog
-  build-variant axis deliberately does not reach the mingw lane — the
-  axis belongs to the channel-binary happy path.
+  And the anti-lesson: the tempting one-line workaround — neutralizing
+  the imported target's `INTERFACE_COMPILE_OPTIONS` after
+  `find_package`, or filtering flags in a preset — goes green just as
+  fast and teaches the opposite: CMake surgery in YOUR project to
+  accommodate a dependency shipped in the wrong regime, which is
+  precisely the old-world coping strategy source packages eliminate.
+  A workaround that goes green is worse than staying red another
+  cycle. Header-only deps you own (mathkit, stb) are regime-neutral
+  and need nothing. The spdlog build-variant axis deliberately does
+  not reach the mingw lane — the axis belongs to the channel-binary
+  happy path.
 - Header-only packages (mathkit, stb) get NO compiler variants: their
   generated CMake config is byte-identical across compilers (verified) —
   no artifact, no ABI, nothing to name.

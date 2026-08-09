@@ -1,7 +1,15 @@
 # WRAPPER PACKAGE: Catch2, rebuilt from upstream IN THE MINGW ABI REGIME
 # via the pixi-build-rattler-build ESCAPE HATCH.
 #
-# Why this exists (the regime-closure lesson): conda-forge's catch2 is
+# This package does DOUBLE duty. First, it is the capability showcase:
+# targeting mingw on Windows is traditionally a no-go (no binary deps
+# exist in-regime; you'd end up in find_package-then-FetchContent
+# CMake surgery) — with pixi source packages it's this one ~25-line
+# wrapper, consumed by name, ZERO CMake changes to the packages that
+# use it. Second, it demonstrates the constraint that makes the
+# capability necessary:
+#
+# The regime-closure lesson: conda-forge's catch2 is
 # MSVC-built on win-64 — a compiled static library whose symbols are
 # MSVC-mangled. A mingw (GNU/libstdc++) test binary cannot link it, and
 # unlike spdlog/fmt, Catch2 v3 has no header-only mode to escape into.
