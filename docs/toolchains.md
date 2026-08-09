@@ -56,6 +56,21 @@ demand a newer glibc than the ecosystem's own floor: the
 resolves `sysroot 2.17.*` at build and stamps `__glibc >=2.17` into
 run-deps.
 
+**⚠ Channel-dependence (verified, do not copy this pattern blindly):**
+`c_stdlib_version` is a DERIVATION PARAMETER, not a dep-name variant
+key — pixi's stdlib derivation triggers on the literal `conda-forge`
+channel. On a single-channel workspace layering another channel (the
+NAGA constitution: one `naga-labs` channel), derivation is suppressed,
+the key is a complete no-op, and — worse — published packages lose
+their `__glibc` floor ENTIRELY (installable anywhere, load-time
+failure). The constitution-compatible equivalent: declare
+`sysroot_linux-64 = "*"` in each compiled package's build-deps
+(restores the run-export) and pin workspace-wide BY DEP NAME:
+`sysroot_linux-64 = ["2.17"]` as the variant axis. Adding conda-forge
+to the channel list is NOT an acceptable fix (violates the
+single-channel invariant). Windows skips stdlib derivation regardless
+of channel — explicit stdlib deps are needed there either way.
+
 ## Microarch note
 
 Never encode `-march` in flags, presets, or toolchain files: the
