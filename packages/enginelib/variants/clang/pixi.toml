@@ -19,8 +19,13 @@ backend = { name = "pixi-build-cmake", version = "==0.4.5" }
 [package.build.source]
 path = "../.."
 
+# --preset=clang carries the REGIME GUARD (expect CMAKE_CXX_COMPILER_ID
+# = Clang): if the intended toolchain ever silently loses the configure
+# (an env-exported -D outranking preset cacheVariables is the classic
+# path), the build fails loudly instead of shipping MSVC/gcc under the
+# clang name. The win target inherits the guard via clang-win.
 [package.build.config]
-extra-args = ["--preset=default"]
+extra-args = ["--preset=clang"]
 compilers = []
 
 # Windows realization: keep the vs2026 ACTIVATION (VC env, headers,

@@ -38,16 +38,33 @@
       "inherits": "base",
       "cacheVariables": {
         "ENGINELIB_TESTS_COVERAGE": "ON",
-        "ENGINELIB_TESTS_BUILD_TYPE": "RelWithDebInfo"
+        "ENGINELIB_TESTS_BUILD_TYPE": "RelWithDebInfo",
+        "ENGINELIB_TESTS_EXPECT_COMPILER_ID": "Clang"
+      }
+    },
+    {
+      "name": "clang",
+      "displayName": "Clang (regime guard — toolchain comes from the build env)",
+      "inherits": "base",
+      "cacheVariables": {
+        "ENGINELIB_TESTS_EXPECT_COMPILER_ID": "Clang"
       }
     },
     {
       "name": "clang-win",
       "displayName": "Clang on Windows (clang-cl — matches enginelib-tests-clang win realization)",
-      "inherits": "base",
+      "inherits": "clang",
       "cacheVariables": {
         "CMAKE_C_COMPILER": "clang-cl",
         "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
+      "name": "mingw",
+      "displayName": "GNU on Windows (regime guard)",
+      "inherits": "base",
+      "cacheVariables": {
+        "ENGINELIB_TESTS_EXPECT_COMPILER_ID": "GNU"
       }
     },
     {

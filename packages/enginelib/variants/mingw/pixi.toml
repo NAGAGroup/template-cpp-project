@@ -23,8 +23,10 @@ backend = { name = "pixi-build-cmake", version = "==0.4.5" }
 [package.build.source]
 path = "../.."
 
+# --preset=mingw carries the REGIME GUARD (expect CMAKE_CXX_COMPILER_ID
+# = GNU) — see variants/clang for the rationale.
 [package.build.config]
-extra-args = ["--preset=default"]
+extra-args = ["--preset=mingw"]
 compilers = ["m2w64_cxx"]
 
 # REGIME CLOSURE: every native-code dep is in-regime — spdlog comes

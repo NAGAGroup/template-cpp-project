@@ -6,6 +6,13 @@ project(
   LANGUAGES CXX)
 
 option(DEMO_APP_DEV_MODE "Enable developer warnings (dev presets)" OFF)
+# Regime guard, same as enginelib (see its CMakeLists.txt).
+set(DEMO_APP_EXPECT_COMPILER_ID "" CACHE STRING
+    "Fail configure unless CMAKE_CXX_COMPILER_ID matches (compiler-variant regime guard)")
+if(DEMO_APP_EXPECT_COMPILER_ID AND NOT CMAKE_CXX_COMPILER_ID STREQUAL DEMO_APP_EXPECT_COMPILER_ID)
+  message(FATAL_ERROR "demo-app: expected compiler '${DEMO_APP_EXPECT_COMPILER_ID}', "
+                      "got '${CMAKE_CXX_COMPILER_ID}' (regime guard)")
+endif()
 if(DEMO_APP_DEV_MODE)
   add_compile_options(
     "$<$<CXX_COMPILER_ID:MSVC>:/W4>"

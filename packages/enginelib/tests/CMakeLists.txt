@@ -11,6 +11,13 @@ set(ENGINELIB_TESTS_SANITIZER "" CACHE STRING
 option(ENGINELIB_TESTS_COVERAGE "Enable llvm-cov coverage instrumentation" OFF)
 set(ENGINELIB_TESTS_BUILD_TYPE "" CACHE STRING
     "Override the build type (empty = respect CMAKE_BUILD_TYPE)")
+# Regime guard, same as the lib (see enginelib/CMakeLists.txt).
+set(ENGINELIB_TESTS_EXPECT_COMPILER_ID "" CACHE STRING
+    "Fail configure unless CMAKE_CXX_COMPILER_ID matches (compiler-variant regime guard)")
+if(ENGINELIB_TESTS_EXPECT_COMPILER_ID AND NOT CMAKE_CXX_COMPILER_ID STREQUAL ENGINELIB_TESTS_EXPECT_COMPILER_ID)
+  message(FATAL_ERROR "enginelib-tests: expected compiler '${ENGINELIB_TESTS_EXPECT_COMPILER_ID}', "
+                      "got '${CMAKE_CXX_COMPILER_ID}' (regime guard)")
+endif()
 
 if(ENGINELIB_TESTS_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE ${ENGINELIB_TESTS_BUILD_TYPE})

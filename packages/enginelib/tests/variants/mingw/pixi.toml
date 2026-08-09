@@ -13,7 +13,7 @@ backend = { name = "pixi-build-cmake", version = "==0.4.5" }
 path = "../.."
 
 [package.build.config]
-extra-args = ["--preset=default"]
+extra-args = ["--preset=mingw"]
 compilers = ["m2w64_cxx"]
 
 # catch2-mingw, NOT the channel catch2: Catch2 is a COMPILED library

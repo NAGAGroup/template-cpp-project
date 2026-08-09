@@ -81,3 +81,23 @@ the IDs it touches. Mechanically-checkable constraints are CI-asserted
 - No multi-line tasks / manifest scripting — nushell scripts.
 - `[environments.default]` may be declared when it genuinely composes
   features; the antipattern is only a redundant declaration.
+- **Win compiler-cell definition of done (chair requirement, both
+  satisfied):** (1) CI's win mirror must actually COMPILE the clang-win
+  and mingw cells — satisfied: the win variants/test jobs build
+  enginelib-clang, enginelib-tests-clang, enginelib-mingw,
+  enginelib-tests-mingw and both demo variants (proven live: these
+  exact jobs caught the mingw regime-closure failures before going
+  green). (2) There must be a STANDING assertion that the produced
+  binaries came from the INTENDED compiler, because the failure mode
+  is silent — a lost preset still builds green, just MSVC underneath.
+  Satisfied by the REGIME GUARD: compiler-variant presets set
+  `*_EXPECT_COMPILER_ID` and every CMakeLists fails configure on
+  mismatch, converting the silent hazard into a hard failure on every
+  build, local and CI. (The original CMAKE_ARGS-vs-preset hazard was
+  separately resolved by evidence: the backend passes no compiler
+  `-D`, and the win activation exports no CMAKE_ARGS — the guard
+  exists so any future regression of either fact is loud.) The lock's
+  regime markers are the complementary metadata evidence: enginelib-
+  mingw carries `libstdcxx`/`libgcc`/`ucrt`, enginelib-clang (win)
+  carries `vc14_runtime` — the two win regimes visibly distinct,
+  asserted implicitly by every solved install.

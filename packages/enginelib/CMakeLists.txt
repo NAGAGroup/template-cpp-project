@@ -16,6 +16,19 @@ set(ENGINELIB_BUILD_TYPE "" CACHE STRING
 set(ENGINELIB_SANITIZER "" CACHE STRING
     "Sanitizers to enable (e.g. 'address,undefined' or 'thread')")
 option(ENGINELIB_COVERAGE "Enable llvm-cov source-based coverage" OFF)
+# REGIME GUARD: compiler variants set this so a build where the intended
+# toolchain silently lost (e.g. an env-exported -D outranking the
+# preset) FAILS AT CONFIGURE instead of shipping the wrong-compiler
+# binary under the variant's name. The hazard is real on win: the
+# clang-win cell's env also contains cl.exe, so a lost preset would
+# still build green — just MSVC underneath.
+set(ENGINELIB_EXPECT_COMPILER_ID "" CACHE STRING
+    "Fail configure unless CMAKE_CXX_COMPILER_ID matches (compiler-variant regime guard)")
+if(ENGINELIB_EXPECT_COMPILER_ID AND NOT CMAKE_CXX_COMPILER_ID STREQUAL ENGINELIB_EXPECT_COMPILER_ID)
+  message(FATAL_ERROR "enginelib: this variant expects compiler '${ENGINELIB_EXPECT_COMPILER_ID}' "
+                      "but is being configured with '${CMAKE_CXX_COMPILER_ID}' — the intended "
+                      "toolchain did not drive this build (regime guard)")
+endif()
 
 set(BUILD_SHARED_LIBS ${ENGINELIB_SHARED})
 if(ENGINELIB_BUILD_TYPE)

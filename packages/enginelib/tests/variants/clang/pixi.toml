@@ -14,7 +14,7 @@ backend = { name = "pixi-build-cmake", version = "==0.4.5" }
 path = "../.."
 
 [package.build.config]
-extra-args = ["--preset=default"]
+extra-args = ["--preset=clang"]
 compilers = []
 
 # Windows realization mirrors the lib variant: vs2026 activation +
