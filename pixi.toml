@@ -73,9 +73,19 @@ spdlog = ">=1.15,<1.16"
 #   ourselves. Floors are deliberately open (a v3 CPU runs a v1 build),
 #   so tier envs additionally pin the UNDERSCORE runtime package.
 # One `pixi publish` builds the full matrix on the default platforms.
+# Variant VALUES are bare and exact ("1.14" — prefix-matches the series,
+# the conda-forge pinning-feedstock idiom); dependency SPECS elsewhere
+# carry real bounds. Never ranges or wildcards as variant values.
 [workspace.build-variants]
-spdlog = [">=1.14,<1.15", ">=1.15,<1.16"]
+spdlog = ["1.14", "1.15"]
 x86_64-microarch-level = ["1", "2", "3", "4"]
+
+# Redistributability floor (conda-forge baseline): pin the stdlib
+# EXPLICITLY — pixi's derived default (glibc 2.28) silently makes
+# published packages demand a newer glibc than conda-forge's own 2.17
+# floor ("built according to the build machine" failure mode).
+[workspace.target.linux-64.build-variants]
+c_stdlib_version = ["2.17"]
 
 # Live demo of overriding the backend's default compiler variants: this
 # restates the Windows default (vs2022) explicitly; swap the value to

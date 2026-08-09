@@ -31,6 +31,31 @@ pixi run -e dev cmake --preset dev -DCMAKE_TOOLCHAIN_FILE=$PWD/../../cmake/toolc
 (Requires clang in the dev env — it's already there via the lint
 tooling.)
 
+## Compiler-version keys: upstream convention vs the acpp lane
+
+conda-forge's pinning feedstock pairs each compiler with an explicit
+version key (`cxx_compiler` + `cxx_compiler_version`, kept in lockstep
+upstream via `zip_keys`). When this template grows explicit compiler
+variants it follows that pair convention. The SYCL/acpp branch
+DELIBERATELY omits `cxx_compiler_version`: the acpp toolchain's
+activation packages ship no version-suffixed names, so a version key
+would render an unsatisfiable spec. This is a documented divergence,
+not an inconsistency — do not "fix" either side to match the other.
+(pixi note: `zip_keys` itself is not supported in `pixi.toml` — only in
+`recipe.yaml` via the rattler-build backend — so lockstep pairs are
+expressed as single-valued axes per flavor instead.)
+
+## Stdlib floor
+
+The workspace pins `c_stdlib_version = ["2.17"]` (linux) in
+`[workspace.target.linux-64.build-variants]` — conda-forge's
+redistributability baseline. Without it, pixi derives the floor from
+its platform default (glibc 2.28) and published packages silently
+demand a newer glibc than the ecosystem's own floor: the
+"built according to the build machine" failure mode. Verified: the pin
+resolves `sysroot 2.17.*` at build and stamps `__glibc >=2.17` into
+run-deps.
+
 ## Microarch note
 
 Never encode `-march` in flags, presets, or toolchain files: the
