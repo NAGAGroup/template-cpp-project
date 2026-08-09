@@ -4,9 +4,20 @@
 # matrix is declared "*" (the variant-substitution placeholder, per
 # pixi's own variants docs). This check distinguishes the two instead
 # of a naive grep.
-# spdlog leaves this list with its axis (D-23): with no variant to
-# substitute, a bare "*" for it would be an unpinned dep, not a
-# placeholder — exactly what this check exists to catch.
+#
+# ⚠ THE ALLOW-LIST IS MICROARCH-ONLY, AND THAT IS NOT AN OVERSIGHT.
+# A name belongs here ONLY while it has a live axis in
+# [workspace.build-variants]. spdlog left this list together with
+# its axis (D-23), because the moment there is no variant to
+# substitute, a bare "*" stops being a placeholder and becomes an
+# UNPINNED DEPENDENCY — the exact thing this check exists to catch.
+#
+# This is not hypothetical: removing spdlog from the list
+# immediately caught FIVE manifests still carrying `spdlog = "*"`,
+# in the same hour the axis was removed. If you are about to widen
+# this list to make a failure go away, you are almost certainly
+# looking at that failure — pin the spec instead, or add the name
+# to the variant matrix and mean it.
 let allowed_placeholder_keys = ["x86_64-microarch-level"]
 
 let manifests = (glob **/pixi.toml | where {|p| $p !~ 'scratch|\.pixi' })
