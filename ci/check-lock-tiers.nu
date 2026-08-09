@@ -50,10 +50,13 @@ for e in ($expect | transpose env level) {
   if $got != $e.level { $bad = ($bad | append $e.env) }
 }
 if ($bad | is-not-empty) {
-  # NOTE: no backticks in this message. Nushell treats a backtick as a
-  # quoting form INSIDE string interpolation, so the previous wording
-  # turned a word of prose into an external command and the assert died
-  # with "command not found" instead of reporting the real failure.
-  error make { msg: $"committed lock has wrong tier selection for: ($bad | str join ', ') — re-run pixi lock until tiers select their own level (source-variant selection is nondeterministic across solves)" }
+  # NOTE — no UNESCAPED PARENTHESES in this message. Inside a nushell
+  # interpolated string `(...)` is a SUBEXPRESSION, so a parenthesised
+  # aside in prose gets executed: the first word becomes a command and
+  # the assert dies with "command not found" instead of reporting the
+  # real failure. (I first blamed backticks and "fixed" those; the
+  # second CI run proved the parens were the culprit all along. Escape
+  # them, or write the aside without them.)
+  error make { msg: $"committed lock has wrong tier selection for: ($bad | str join ', ') — see the header of this file before re-running pixi lock: tier selection is admissible, not forced, so re-rolling is not a fix" }
 }
 print "lock tier selections OK"

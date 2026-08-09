@@ -53,6 +53,26 @@ def main [dist: string = "./dist"] {
     }
 
     let depends = ($index | get -o depends | default [])
+
+    # A package with NO native runtime is not missing a floor — it has
+    # nothing to floor. `stb` is the live example: a rattler-build
+    # recipe that installs headers and a hand-written CMake config,
+    # never invoking a compiler, so no stdlib requirement is emitted
+    # and none is wanted. Note that "header-only" is NOT the test —
+    # `mathkit` is header-only too, but it builds through
+    # pixi-build-cmake, which provisions a compiler and therefore does
+    # carry the floor. The discriminator is the COMPILER RUNTIME in
+    # depends, and the skip is printed rather than silent, because a
+    # compiled package that quietly lost its runtime deps would
+    # otherwise slip through this exemption.
+    let native = ($depends | any {|d|
+      ($d | str starts-with "libgcc") or ($d | str starts-with "libstdcxx")
+    })
+    if not $native {
+      print $"  skip ($name): no compiler-runtime dependency — nothing was compiled, so no stdlib floor is emitted or expected"
+      continue
+    }
+
     let glibc = ($depends | where {|d| $d | str starts-with "__glibc" })
 
     if ($glibc | is-empty) {
