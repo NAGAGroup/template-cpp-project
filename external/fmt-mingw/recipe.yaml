@@ -18,3 +18,7 @@ requirements:
     - gxx_win-64 >=14,<15
     - cmake
     - ninja
+  # Weak self-export for symmetry with the ../fmt wrapper.
+  run_exports:
+    weak:
+      - fmt-mingw >=11.2,<11.3
