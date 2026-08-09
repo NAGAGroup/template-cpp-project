@@ -117,10 +117,20 @@ machinery, and the preset is exactly where configure detail lives.)
   mode, that is the cheapest way across a regime boundary. It just
   wasn't available here.)
   (c) *Fetch regime:* the wrappers use TARBALL sources (url + sha256,
-  rattler recipes) — pixi's all-refs git fetch of upstream Catch2
-  hard-fails on Windows' case-insensitive filesystem
-  (case-conflicting refs in repo history; the tag trees are
-  case-clean, verified).
+  rattler recipes) because a git source dep on upstream Catch2
+  hard-fails on Windows' case-insensitive filesystem. The mechanism is
+  worth knowing precisely, because it is not what it looks like: pixi's
+  refspec for a pinned tag is already TARGETED
+  (`+refs/tags/<tag>:refs/remotes/origin/tags/<tag>`), but the fetch
+  omits `--no-tags`, so git's default TAG AUTO-FOLLOWING stores every
+  tag reachable in the fetched history — and Catch2's history holds a
+  case-conflicting pair (`refs/tags/V1.5.0` and `refs/tags/v1.5.0`).
+  The `files` ref backend cannot store both, so the fetch dies while
+  STORING refs, not while checking anything out; the v3.15.3 tree
+  itself is case-clean (verified). Note the shape: a correct targeted
+  mechanism undermined by an implicit follow-along default — the same
+  shape as the `/Zc` bug above, where a correct build-time guard was
+  undermined by an unguarded interface export.
 
   And the anti-lesson: the tempting one-line workaround — neutralizing
   the imported target's `INTERFACE_COMPILE_OPTIONS` after
