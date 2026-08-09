@@ -86,9 +86,12 @@ jobs:
           path: coverage.info
 
   variants:
-    # Selector envs: microarch subpackages (v4 skipped — runners lack
-    # AVX-512, __archspec would refuse), the clang custom-platform
-    # compiler axis, and the spdlog build-variant matrix.
+    # Variant surface: microarch tier envs (v0 fallback + v3/v4 opt-in
+    # gates — INSTALL-only: pixi doesn't match archspec yet (#3281), so
+    # installs succeed on any runner; per C-10, tests only ever run up
+    # to the runner's own capability and a skipped tier test is the
+    # constraint working — never fake archspec to un-skip one), the
+    # clang NAMED package variant, and the spdlog build-variant matrix.
     name: variants (linux)
     runs-on: ubuntu-latest
     steps:
@@ -97,9 +100,11 @@ jobs:
         with:
           cache: true
           locked: false
-          environments: v1 v3 clang spdlog14
-      - name: Publish-set validation (dependency-ordered, self-contained)
-        run: pixi publish --dry-run --to ./local-channel
+          environments: v0 v3 v4 clang spdlog14
+      - name: Advisory microarch check (what this runner supports)
+        run: pixi run check-microarch
+      - name: Publish name-set assertion (C-01/C-02 compliance surface)
+        run: pixi exec --spec nushell nu ci/check-publish-set.nu
 
   publish:
     # Real publishing with OIDC trusted publishing: the channel trusts this
