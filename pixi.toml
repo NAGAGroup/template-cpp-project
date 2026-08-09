@@ -32,15 +32,18 @@ platforms = [
 preview = ["pixi-build"]
 # Fail fast on pixi versions older than the features this workspace uses.
 requires-pixi = ">=0.76.1"
-# NOTE (blocked upstream, evidence in scratch/lockstab.sh): the
-# pinning-FILE shape (`build-variants-files = ["./variants.yaml"]`,
-# upstream cbc form, zip_keys) is the intended home for the toolchain
-# pins below — but with a variants file referenced, `pixi lock --check`
-# reports the lock stale FOREVER (even when a re-lock is byte-identical),
-# so every locked:false CI install re-solves and re-rolls the
-# nondeterministic tier selections. Until that staleness digest is fixed
-# upstream, the pins live in inline tables (identical semantics: every
-# pin is single-valued, so zip_keys has nothing to zip yet).
+# NOTE (blocked upstream): the pinning-FILE shape
+# (`build-variants-files = ["./variants.yaml"]`, upstream cbc form,
+# zip_keys) is the intended home for the toolchain pins below — but
+# referencing a variants file changed every variant config, and the
+# runner-side re-solve that followed re-rolled the nondeterministic
+# tier selections (caught by ci/check-lock-tiers.nu). Until lock
+# stability with variant files is understood upstream, the pins live
+# in inline tables — identical semantics today: every pin is
+# single-valued, so zip_keys has nothing to zip yet. (Separately:
+# `pixi lock --check` exits stale unconditionally in this workspace on
+# 0.76.1 — unreliable as a CI guard; the lock-tier content assert is
+# the real guard.)
 
 # ---- Dependency pool -------------------------------------------------------
 # Single source of truth for every sibling path and shared spec. Package
