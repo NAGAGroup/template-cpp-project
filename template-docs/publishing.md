@@ -18,13 +18,16 @@ Other destinations work the same way: `https://anaconda.org/<owner>`,
 | Published | Not published |
 |---|---|
 | `mathkit`, `enginelib` (the libraries) | `demo-app` — a channel is for libraries other projects consume, not demo binaries |
-| `external/fmt`, `external/stb` (the wrappers) | the `tests` packages — they exist to verify the install surface |
+| `external/stb` (wrapper: a source dep of published enginelib) | `external/fmt` — the NO-COLLISION rule (see footgun 1: fmt exists on conda-forge; publishing it shadows upstream) |
+| | the `tests` packages — they exist to verify the install surface |
 | | the preset variants (`*-static`, `*-clang`, `*-mingw`, …) — dev-only, consumed as source |
 
-The wrappers *must* be in the set: **a publish must be self-contained**, so
-every source dependency of a published package has to opt in too. Pixi fails
-the publish rather than leaving a channel referencing packages that were
-never uploaded.
+Wrapper membership follows from **self-containment**: every source
+dependency of a published package must opt in too (pixi fails the
+publish rather than leaving a channel referencing packages that were
+never uploaded). stb is in because published enginelib depends on it;
+fmt is out because only the unpublished demo-app consumes it — which
+is exactly what lets the no-collision rule apply to it.
 
 Note the dry-run output lists `enginelib` **eight times** — the full
 build-variant matrix (4 microarch levels × 2 spdlog lineages) under ONE
@@ -72,14 +75,20 @@ Publishing puts your names into a namespace you share with everyone else on
 that channel. None of these are hypothetical disasters — they're just things
 to decide **deliberately** rather than discover later.
 
-1. **Your package can shadow (or be shadowed by) an upstream one.** Channels
-   are often layered — a private channel on top of conda-forge, say. Publish
-   something named `fmt` and consumers of your channel may resolve *your*
-   build instead of upstream's. That is sometimes exactly what you want (a
-   newer version, or a build with different flags); the point is to know
-   which outcome you're choosing. Compiler activation packages are what make
-   the duplicate harmless: builds from a conda-compatible toolchain are ABI-
-   interchangeable with upstream's.
+1. **Your package can shadow (or be shadowed by) an upstream one — and a
+   channel-priority flip turns "can" into "does", retroactively.**
+   Channels are often layered — a private channel on top of conda-forge.
+   A layered channel merges into ONE namespace: with overlay-first
+   priority, any name you publish that also exists upstream wins for
+   EVERY consumer of the channel, even at a LOWER version. This repo
+   lived it: a teaching wrapper published `fmt` 11.2.0, harmless under
+   conda-forge-first ordering — then the channel flipped to
+   overlay-first and every consumer silently downgraded from upstream's
+   12.2.0. The safe rule is absolute, not version-hygiene: **never
+   publish a name the upstream channel ships** (this repo's
+   `ci/check-publish-set.nu` asserts it per name). ABI is not the
+   issue — activation packages make duplicates ABI-interchangeable —
+   the issue is version resolution across a merged namespace.
 2. **Strong run-exports travel with what you build.** A compiler activation
    package that declares a strong run-export stamps that dependency onto
    *every* package built with it. Publish such a package and your consumers

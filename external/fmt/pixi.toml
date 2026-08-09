@@ -10,12 +10,22 @@
 # (fmt IS on conda-forge — it is wrapped here for teaching. The pin is
 # UPSTREAM's tag; tag-then-re-pin flow: bump the tag, `pixi update`.)
 #
+# ⚠ DELIBERATELY NOT PUBLISHED (no-collision constraint): a layered
+# channel merges into ONE namespace, so with overlay-first channel
+# priority any name we publish that also exists upstream WINS for
+# every consumer of the channel — even at a LOWER version. This
+# wrapper's published fmt 11.2.0 once silently shadowed conda-forge's
+# fmt 12.2.0 for every naga-labs consumer the moment the channel
+# flipped to overlay-first. Never publish a name conda-forge ships;
+# ci/check-publish-set.nu enforces it. (Publishing stays
+# self-contained: no PUBLISHED package source-depends on fmt — only
+# the unpublished demo-app does.)
+#
 # NOTE: upstream projects have no CMakePresets, so wrappers are the one
 # place where raw -D flags in extra-args are correct.
 [package]
 name = "fmt"
 version = "11.2.0"
-publish = true
 
 [package.build]
 backend = { name = "pixi-build-cmake", version = "==0.4.5" }

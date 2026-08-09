@@ -59,6 +59,17 @@ the IDs it touches. Mechanically-checkable constraints are CI-asserted
   variant-substitution placeholders; CI checks must distinguish, not
   naive-grep. Build backends are EXACT-pinned (they version
   independently and ARE the behavior surface).
+- **NO-COLLISION constraint [ratified 2026-08-09 after a live
+  regression]:** no published name may exist on conda-forge. The
+  MECHANISM is the constraint, not the rule: a layered channel merges
+  into ONE namespace, so with overlay-first channel priority any name
+  we publish that also exists upstream WINS for every consumer of the
+  channel — even at a LOWER version. (Incident: the teaching wrapper's
+  published fmt 11.2.0 silently downgraded conda-forge's fmt 12.2.0
+  for every naga-labs consumer the moment the channel flipped to
+  overlay-first priority.) That is why this is absolute rather than a
+  version-hygiene guideline. Enforced by `ci/check-publish-set.nu`
+  (name-set + per-name conda-forge absence probe).
 - No multi-line tasks / manifest scripting — nushell scripts.
 - `[environments.default]` may be declared when it genuinely composes
   features; the antipattern is only a redundant declaration.
