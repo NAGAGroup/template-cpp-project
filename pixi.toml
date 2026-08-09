@@ -233,25 +233,41 @@ nushell = ">=0.114,<0.115"
 # a declared dep are a different FLAVOR.
 #
 # WHY 1.16 AND NOT 1.14 (this branch only — DELTA.md D-20). Main runs
-# this axis as 1.14/1.15. On the single `naga-labs` channel it cannot:
-# our own `fmt` WRAPPER is published there at 11.2.0, and under strict
-# channel priority a name found in the highest-priority channel is
-# resolved ONLY from that channel. spdlog 1.14 requires `fmt <11`,
-# every candidate lives upstream, and the solver refuses all of them
-# ("excluded because due to strict channel priority"). Channel layering
-# does not save you: the base presents as a separate, lower-priority
-# channel, so it loses the name too.
+# this axis as 1.14/1.15; on the single `naga-labs` channel the 1.14
+# cell cannot solve. The reason is specific, and an earlier version of
+# this comment got it wrong in a way worth naming: it is NOT that our
+# published `fmt` claims the name and hides every other version. It
+# does not. Ask for `fmt <11` directly and you get 10.2.1 from the
+# layer base.
 #
-# The per-dependency `channel` override — the documented escape hatch —
-# is NOT available here: pixi rejects an override naming a channel that
-# is not in the workspace `channels` list, and adding one is precisely
-# what the single-channel invariant forbids. Verified both spellings.
+# The actual rule: on a LAYERED channel, priority fall-through applies
+# to a DIRECT dependency spec but not to a purely TRANSITIVE one. Our
+# `fmt` wrapper is published at 11.2.0, so the top-priority channel
+# offers only that version for the name. A direct `fmt <11` therefore
+# falls through and resolves; but when spdlog 1.14 requires
+# `fmt >=11.0.1,<11.1` transitively, the same candidates come back
+# "excluded because due to strict channel priority".
 #
-# So the axis moves to a version pair that both resolve against the
-# fmt our channel offers. The LESSON is unchanged — a build-variant
-# axis over a dependency version — and the constraint that forced the
-# move is itself worth teaching: publishing a wrapper under an upstream
-# name caps every single-channel consumer at the versions YOU ship.
+# Verified with one-package workspaces on this channel: `fmt<11` alone
+# SOLVES (10.2.1); `spdlog >=1.14,<1.15` alone FAILS; both together
+# SOLVE (fmt 11.0.2, spdlog 1.14.1); and the control — spdlog 1.14 plus
+# a direct `fmt >=11.2` that cannot help — FAILS, so the direct spec
+# must ADMIT the needed version, not merely exist.
+#
+# Why that does not rescue the 1.14 cell here: the requirement appears
+# in a source package's NESTED HOST SOLVE, which does not inherit the
+# environment's specs. Promoting `fmt` in the env does nothing;
+# promoting it in enginelib's host-deps fixes that solve and then the
+# run-export floor pushes the same failure down into every consuming
+# env. The promotion has to be repeated at every solve in the closure,
+# and it means a package declaring a pin on something it does not use
+# to steer what its declared dependency drags in.
+#
+# 1.16 needs none of that: BOTH published spdlog 1.16 builds want
+# `fmt >=11.2`, which the top-priority channel satisfies with our own
+# wrapper. So the axis stands on "pick versions whose transitive
+# requirements the top channel can satisfy" — which is the real lesson,
+# and a smaller one than the scary non-fact it replaces.
 [feature.spdlog16.dependencies]
 enginelib = { workspace = true }
 spdlog = ">=1.16,<1.17"
