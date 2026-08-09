@@ -105,6 +105,8 @@ jobs:
         run: pixi run check-microarch
       - name: Publish name-set assertion (C-01/C-02 compliance surface)
         run: pixi exec --spec nushell nu ci/check-publish-set.nu
+      - name: Lock tier-selection assertion (nondeterministic source-variant guard)
+        run: pixi exec --spec nushell nu ci/check-lock-tiers.nu
 
   publish:
     # Real publishing with OIDC trusted publishing: the channel trusts this

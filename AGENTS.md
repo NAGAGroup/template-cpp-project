@@ -83,11 +83,20 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
   only — a weaker machine installs/runs them silently (SIGILL later).
   Advisory `check-microarch` task + docs warning stand in until
   upstream lands; the gates then enforce with zero changes here.
-- pixi-build-cmake has no build-number config → conda-forge's
-  per-level build-number prioritisation is not expressible; among
-  multiple CPU-compatible optimized builds the solver ties (v4 env may
-  resolve a lower build). Tracked; rattler-build backend = escape
-  hatch.
+- pixi's SOURCE-variant selection is NONDETERMINISTIC when several
+  variants satisfy an env (microarch floors are open by design): fresh
+  `pixi lock` runs can land tier envs on the wrong level. The committed
+  lock is the deterministic artifact; `ci/check-lock-tiers.nu` asserts
+  its tier selections every run — after re-locking, run it and re-lock
+  until green. Binary consumers select correctly (verified) and are
+  unaffected.
+- Spec-form rule (Jack): prefer `pixi add`; hand-written specs use
+  `">=x"` / `">=a.b,<c"` / `"==a.b.c"` — never `"X.*"`. Microarch
+  levels have no minor versions: pin `==N`.
+- Manifest composition rule: share features across envs that share
+  deps (tier envs = shared `consumer` feature + selector-only tier
+  features); a feature needing different solve semantics carries its
+  own `solve-strategy`, listed first in its env.
 - `--locked`/`--frozen` are developer-side tools for already-installed
   envs; virtual packages legitimately differ across hosts (and their
   satisfiability re-solve is also buggy — repro:
@@ -110,9 +119,9 @@ Run before claiming anything works (all from the repo root):
 coverage`; `pixi run -e dev-enginelib dev-test` and `lint`;
 `pixi run -e dev-mathkit dev-test`; `pixi run -e style format-check`;
 `pixi run check-microarch`; `pixi install -e clang -e v0 -e v3 -e
-spdlog14`; `pixi exec --spec nushell nu ci/check-publish-set.nu`.
-Windows: the same
-minus sanitizers/coverage/microarch/clang envs.
+spdlog14`; `pixi exec --spec nushell nu ci/check-publish-set.nu`;
+`pixi exec --spec nushell nu ci/check-lock-tiers.nu`. Windows: the
+same minus sanitizers/coverage/microarch/clang envs.
 
 ## Divergence checklist (for agents auditing OTHER NAGA repos)
 

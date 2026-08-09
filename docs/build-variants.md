@@ -18,11 +18,15 @@ Two live axes in this repo, one per selection style:
 
 ```toml
 [workspace.build-variants]
-spdlog = ["1.14.*", "1.15.*"]
+spdlog = [">=1.14,<1.15", ">=1.15,<1.16"]
 
 [environments.spdlog14]
-dependencies = { enginelib = { workspace = true }, spdlog = "1.14.*" }  # <- selector
+dependencies = { enginelib = { workspace = true }, spdlog = ">=1.14,<1.15" }  # <- selector
 ```
+
+(Spec-form rule, repo-wide: prefer `pixi add` over hand-writing specs;
+hand-written specs use `">=x"`, `">=a.b,<c"`, or `"==a.b.c"` — never
+`"X.*"`.)
 
 An environment picks a variant build **through run-dependency
 conflicts**: the 1.14-built enginelib carries spdlog's `<1.15`
@@ -80,9 +84,17 @@ envs need one reinstall; the validator reads stored metadata).
 
 | Env | Platform | Selector | Meaning |
 |-----|----------|----------|---------|
-| default | bare `linux-64` | `_x86_64-microarch-level = "1.*"` | **Recommended.** Portable-by-contract (v1: any x86-64 CPU from the last ~15 years). The pin uniquely excludes the optimized builds. |
+| default | bare `linux-64` | `_x86_64-microarch-level = "==1"` | **Recommended.** Portable-by-contract (v1: any x86-64 CPU from the last ~15 years). The pin uniquely excludes the optimized builds. |
 | v0 | bare `linux-64` | none | Nuclear-conservative fallback, **not recommended** — resolves the level-1 build anyway (higher floors can't solve on a bare platform). |
-| v3 / v4 | gate entry | `_x86_64-microarch-level = "3.*"/"4.*"` | Opt-in optimized tiers. Solve-time gated; NOT install/run-enforced yet (warning above). |
+| v3 / v4 | gate entry | `_x86_64-microarch-level = "==3"/"==4"` | Opt-in optimized tiers. Solve-time gated; NOT install/run-enforced yet (warning above). |
+
+Microarch levels have no minor versions — pin `==N`, never `N.*`.
+
+**Manifest composition is load-bearing (C-07 with teeth):** the tier
+envs differ ONLY by their selector, so the common deps live in one
+shared `consumer` feature and each tier feature carries only its pin.
+An env that carries a selector but not the selected package silently
+selects nothing — share features across envs that share deps.
 
 A tier feature MUST carry `platforms = ["<its gate entry>"]`: an env
 solves for **every** platform in its list, and the bare entry cannot
@@ -94,11 +106,19 @@ capability — they are **never selection routers** (the old "adaptive
 default" via platform ordering is retired: entry ranking never
 disqualifies by archspec, so it mis-adapts).
 
-Known open item: pixi-build-cmake cannot express per-variant build
-numbers, so conda-forge's build-number prioritisation (+100·(level−1))
-is not applied; among multiple CPU-compatible optimized builds the
-solver's choice is a tie (tracked; the rattler-build backend is the
-escape hatch if it bites).
+Known open item (upstream-shaped, guarded in CI): pixi's
+**source-variant selection is nondeterministic** when several variants
+satisfy an env — the microarch floors are open by design, so the v3/v4
+IN-WORKSPACE solves can land on a lower level on any fresh `pixi lock`
+(observed: identical solves rolling l1/l3/l4). The committed lock is
+the deterministic artifact: `ci/check-lock-tiers.nu` asserts every run
+that the lock's tier envs carry their own level, so a bad re-lock
+cannot land — after any `pixi lock`, re-run it and re-lock until green.
+BINARY consumers of the published packages select correctly with the
+same recipe (verified) and are unaffected. (conda-forge's own
+auto-highest prioritisation relies on per-level build-number offsets
+the cmake backend doesn't emit — so conda users, like pixi users,
+select their tier explicitly.)
 
 ## Non-dependency keys
 
