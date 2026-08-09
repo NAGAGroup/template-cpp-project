@@ -1,0 +1,39 @@
+# enginelib-mingw: NAMED compiler package variant — GNU toolchain ON
+# WINDOWS (libstdc++ regime, vs the default MSVC/VC-runtime regime).
+# Unlike clang (configuration-grade naming), this name is ABI-REGIME
+# grade: a mingw-built lib is NOT link-compatible with MSVC consumers —
+# exactly C-02's "compatibility contract extends to the consumer's own
+# toolchain". WIN-ONLY package: it is only ever referenced from
+# win-64 target tables and win-only envs (gnu-on-linux is just gcc =
+# the default `enginelib`) — the workspace's way of limiting a package
+# to one platform.
+# Toolchain via the conda-forge m2w64 compiler stem: `compilers =
+# ["m2w64_cxx"]` renders `${{ compiler('m2w64_cxx') }}`, resolved by
+# the m2w64_cxx_compiler keys in variants.yaml to gxx_win-64 (GCC 14
+# family). Runtime metadata (libgcc/libstdcxx/ucrt) arrives via the
+# compiler's strong run-exports — never declared by hand.
+[package]
+name = "enginelib-mingw"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "==0.4.5" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=default"]
+compilers = ["m2w64_cxx"]
+
+[package.host-dependencies]
+mathkit = { workspace = true }
+spdlog = "*"
+stb = { workspace = true }
+
+[package.run-dependencies]
+mathkit = { workspace = true }
+stb = { workspace = true }
+
+[package.run-exports.weak]
+enginelib-mingw = ">=0.1.0,<0.2"

@@ -17,8 +17,17 @@ path = "../.."
 extra-args = ["--preset=default"]
 compilers = []
 
-[package.build-dependencies]
+# Windows realization mirrors the lib variant: vs2026 activation +
+# plain clang + the clang-win preset (clang-cl). See variants/clang.
+[package.build.target.win-64.config]
+extra-args = ["--preset=clang-win"]
+
+[package.target.linux-64.build-dependencies]
 clangxx_linux-64 = ">=22.1,<22.2"
+
+[package.target.win-64.build-dependencies]
+vs2026_win-64 = ">=19.51,<20"
+clang = ">=22.1,<22.2"
 
 [package.host-dependencies]
 enginelib-clang = { workspace = true }

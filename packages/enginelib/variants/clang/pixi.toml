@@ -1,11 +1,12 @@
 # enginelib-clang: NAMED compiler package variant (package-only manifest;
 # version kept in sync with the default package — see docs/versioning.md).
-# Compiler choice is a CONSUMER-TOOLCHAIN contract the solver cannot see
-# (stdlib/ABI regime), so it earns a distinct NAME consumers knowingly
-# choose — the same test asan/static pass. This replaces the deleted
-# linux-64-clang custom-platform routing: platforms are capability gates,
-# never selection routers. Toolchain mechanics as in variants/coverage
-# (bring-your-own-compiler: disable backend provisioning, declare deps).
+# ONE name, BOTH platforms, platform-realized (C-03: compiler choice is a
+# knowingly-chosen configuration, like asan/static — the naming is
+# configuration-grade, not ABI-regime-grade; on win, clang-cl targets the
+# SAME VC runtime as MSVC). This replaces the deleted linux-64-clang
+# custom-platform routing: platforms are capability gates, never
+# selection routers. Bring-your-own-compiler mechanics: disable backend
+# compiler provisioning, declare the toolchain per platform.
 [package]
 name = "enginelib-clang"
 version = "0.1.0"
@@ -20,8 +21,23 @@ path = "../.."
 extra-args = ["--preset=default"]
 compilers = []
 
-[package.build-dependencies]
+# Windows realization: keep the vs2026 ACTIVATION (VC env, headers,
+# libs) and add plain `clang`; the clang-win preset selects clang-cl as
+# the compiler driver. The conda-forge clang_win-64 activation stems are
+# NOT usable here: they exact-pin vs2019/vs2022 and fail a vs2026-only
+# toolset. The backend passes -GNinja explicitly on the cmake command
+# line (verified in backend source), so the activation's VS-generator
+# env var cannot collide. Configure detail lives in the PRESET, never in
+# extra-args (rule 2).
+[package.build.target.win-64.config]
+extra-args = ["--preset=clang-win"]
+
+[package.target.linux-64.build-dependencies]
 clangxx_linux-64 = ">=22.1,<22.2"
+
+[package.target.win-64.build-dependencies]
+vs2026_win-64 = ">=19.51,<20"
+clang = ">=22.1,<22.2"
 
 [package.host-dependencies]
 mathkit = { workspace = true }

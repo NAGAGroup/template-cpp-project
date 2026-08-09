@@ -42,6 +42,15 @@
       }
     },
     {
+      "name": "clang-win",
+      "displayName": "Clang on Windows (clang-cl — matches enginelib-tests-clang win realization)",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
       "name": "dev",
       "displayName": "Dev (in-tree, against the dev env prefix)",
       "inherits": "base",

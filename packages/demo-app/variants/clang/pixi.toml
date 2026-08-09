@@ -1,0 +1,31 @@
+# demo-app-clang: the demo application built WITH clang against
+# enginelib-clang — the clang flavor end-to-end, both platforms,
+# platform-realized like the lib variant (see
+# packages/enginelib/variants/clang for the full mechanics rationale).
+[package]
+name = "demo-app-clang"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "==0.4.5" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=default"]
+compilers = []
+
+[package.build.target.win-64.config]
+extra-args = ["--preset=clang-win"]
+
+[package.target.linux-64.build-dependencies]
+clangxx_linux-64 = ">=22.1,<22.2"
+
+[package.target.win-64.build-dependencies]
+vs2026_win-64 = ">=19.51,<20"
+clang = ">=22.1,<22.2"
+
+[package.host-dependencies]
+enginelib-clang = { workspace = true }
+fmt = { workspace = true }

@@ -1,6 +1,7 @@
 # demo-app: application, internal-only package-only manifest. Lives in
-# the root workspace's `app` environment (its portable-enginelib run-dep
-# cannot share an env with the microarch-optimized enginelib builds).
+# the root workspace's `demo` environment (its portable-enginelib run-dep
+# cannot share an env with the microarch-optimized enginelib builds);
+# flavor variants under variants/ ride the demo-* envs.
 [package]
 name = "demo-app"
 version = "0.1.0"

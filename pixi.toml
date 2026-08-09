@@ -58,13 +58,18 @@ enginelib-asan = { path = "packages/enginelib/variants/asan" }
 enginelib-tsan = { path = "packages/enginelib/variants/tsan" }
 enginelib-coverage = { path = "packages/enginelib/variants/coverage" }
 enginelib-clang = { path = "packages/enginelib/variants/clang" }
+enginelib-mingw = { path = "packages/enginelib/variants/mingw" }
 enginelib-tests = { path = "packages/enginelib/tests" }
 enginelib-tests-clang = { path = "packages/enginelib/tests/variants/clang" }
+enginelib-tests-mingw = { path = "packages/enginelib/tests/variants/mingw" }
 enginelib-tests-asan = { path = "packages/enginelib/tests/variants/asan" }
 enginelib-tests-tsan = { path = "packages/enginelib/tests/variants/tsan" }
 enginelib-tests-coverage = { path = "packages/enginelib/tests/variants/coverage" }
 mathkit-tests = { path = "packages/mathkit/tests" }
 demo-app = { path = "packages/demo-app" }
+demo-app-static = { path = "packages/demo-app/variants/static" }
+demo-app-clang = { path = "packages/demo-app/variants/clang" }
+demo-app-mingw = { path = "packages/demo-app/variants/mingw" }
 fmt = { path = "external/fmt" }
 stb = { path = "external/stb" }
 catch2 = ">=3.5,<4"
@@ -170,6 +175,20 @@ spdlog = { workspace = true }
 enginelib-clang = { workspace = true }
 spdlog = { workspace = true }
 
+# THE feature-target-table showcase: one feature, per-platform
+# realization. "gnu" means the GNU toolchain/libstdc++ regime — on
+# linux that IS the default enginelib (gcc prod); on win it is the
+# mingw NAMED variant. Shared deps sit in the base table; target
+# tables carry only the per-platform delta.
+[feature.gnu.dependencies]
+spdlog = { workspace = true }
+
+[feature.gnu.target.linux-64.dependencies]
+enginelib = { workspace = true }
+
+[feature.gnu.target.win-64.dependencies]
+enginelib-mingw = { workspace = true }
+
 # Sanitizer/coverage flavors (linux-only realization; the consuming envs
 # carry the platform restriction). Coverage also carries the report
 # tooling its script needs — part of the flavor's coherent surface.
@@ -231,10 +250,28 @@ description = "Run the demo application"
 
 # Demo envs compose the task feature and inline their app variant as
 # the delta (the app is single-use env content, not a shared surface).
+# One demo env per demonstrated flavor; demo-gnu-windows is win-only
+# for the same reason as test-gnu-windows.
 [environments.demo]
 features = ["demo-tasks"]
 no-default-feature = true
 dependencies = { demo-app = { workspace = true }, spdlog = { workspace = true } }
+
+[environments.demo-static]
+features = ["demo-tasks"]
+no-default-feature = true
+dependencies = { demo-app-static = { workspace = true }, spdlog = { workspace = true } }
+
+[environments.demo-clang]
+features = ["demo-tasks"]
+no-default-feature = true
+dependencies = { demo-app-clang = { workspace = true }, spdlog = { workspace = true } }
+
+[environments.demo-gnu-windows]
+platforms = ["win-64"]
+features = ["demo-tasks"]
+no-default-feature = true
+dependencies = { demo-app-mingw = { workspace = true }, spdlog = { workspace = true } }
 
 # Environments show capability, not just CI need: every preset variant
 # has a consuming env — the template is a tutorial surface, and users
@@ -311,12 +348,18 @@ no-default-feature = true
 
 # Compiler package-variant env: consumes the NAMED clang variant
 # (variants/clang). Compiler choice is a knowingly-chosen configuration
-# consumers opt into, like asan/static (C-03). Linux-only until the
-# win-64 clang realization lands (compiler matrix, spec §2.1).
+# consumers opt into, like asan/static (C-03). ONE name, both
+# platforms, platform-realized (linux: libstdc++ clang; win: clang-cl
+# on the VC runtime).
 [environments.clang]
 features = ["header-only", "clang"]
 no-default-feature = true
-platforms = ["linux-64"]
+
+# GNU-regime env: same env name everywhere, per-platform realization
+# via the gnu feature's target tables (gcc prod on linux, mingw on win).
+[environments.gnu]
+features = ["header-only", "gnu"]
+no-default-feature = true
 
 # spdlog build-variant flavor env (the 1.14 branch of the matrix — see
 # the feature comment for why this is a flavor, not a prod+selector).
@@ -343,11 +386,21 @@ no-default-feature = true
 dependencies = { mathkit-tests = { workspace = true }, enginelib-tests = { workspace = true } }
 
 [environments.test-clang]
-platforms = ["linux-64"]
 features = ["header-only", "clang", "test-tasks"]
 no-default-feature = true
 dependencies = { enginelib-tests-clang = { workspace = true } }
 [environments.test-clang.tasks.test]
+cmd = "enginelib-tests"
+
+# THE env-platform-limiting showcase: this env exists ONLY on win-64.
+# gnu-on-linux is gcc prod — already tested by `test`; a cross-platform
+# test-gnu would test gcc twice.
+[environments.test-gnu-windows]
+platforms = ["win-64"]
+features = ["header-only", "gnu", "test-tasks"]
+no-default-feature = true
+dependencies = { enginelib-tests-mingw = { workspace = true } }
+[environments.test-gnu-windows.tasks.test]
 cmd = "enginelib-tests"
 
 [environments.test-asan]

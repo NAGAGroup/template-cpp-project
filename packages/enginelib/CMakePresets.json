@@ -23,6 +23,15 @@
       }
     },
     {
+      "name": "clang-win",
+      "displayName": "Clang on Windows (clang-cl, VC runtime — matches enginelib-clang win realization)",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
       "name": "relwithdebinfo",
       "displayName": "RelWithDebInfo (package variant)",
       "inherits": "base",

@@ -115,7 +115,7 @@ jobs:
       - name: Lock staleness probe (informational — see comment)
         run: pixi --version && (pixi lock --check || true)
       - name: Install variant envs
-        run: pixi install -e microarch-v0 -e microarch-v2 -e microarch-v3 -e microarch-v4 -e clang -e static -e reldbg -e spdlog14
+        run: pixi install -e microarch-v0 -e microarch-v2 -e microarch-v3 -e microarch-v4 -e clang -e static -e reldbg -e spdlog14 -e gnu -e demo-static -e demo-clang
       - name: Advisory microarch check (what this runner supports)
         run: pixi run check-microarch
       - name: Publish name-set assertion (C-01/C-02 compliance surface)

@@ -15,6 +15,15 @@
       "inherits": "base"
     },
     {
+      "name": "clang-win",
+      "displayName": "Clang on Windows (clang-cl — matches demo-app-clang win realization)",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
       "name": "dev",
       "displayName": "Dev (in-tree)",
       "inherits": "base",

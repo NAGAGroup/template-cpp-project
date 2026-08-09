@@ -1,0 +1,20 @@
+# demo-app-static: the demo application built against enginelib-static
+# (whole flavor surface at the static variant — mixing flavors is
+# incoherent). Same shape as the tests variants: the app itself builds
+# with the default preset; the flavor lives in which lib it links.
+[package]
+name = "demo-app-static"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "==0.4.5" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=default"]
+
+[package.host-dependencies]
+enginelib-static = { workspace = true }
+fmt = { workspace = true }

@@ -39,6 +39,7 @@ cxx_compiler_version:
     then: "16"
 zip_keys:
   - [c_compiler_version, cxx_compiler_version]
+  - [m2w64_c_compiler_version, m2w64_cxx_compiler_version]
 
 # Redistributability floor — EXPLICIT, decision not drift. glibc 2.28
 # is Jack's DELIBERATE floor (SYCL tooling required the bump above
@@ -59,8 +60,32 @@ c_stdlib_version:
 cmake:
   - "4.4"
 
-# mingw lane stdlib (bound once the win-only *-mingw package variants
-# land; inert until a package declares m2w64 deps).
+# mingw (GNU-on-Windows) compiler lane — the conda-forge m2w64 stem.
+# A package opts in with `compilers = ["m2w64_cxx"]`: the backend
+# renders `${{ compiler('m2w64_cxx') }}`, which resolves these keys to
+# the NEW gcc_win-64/gxx_win-64 family (GCC 14; runtime DLL packages
+# share linux names: libgcc/libstdcxx/ucrt run-deps arrive via the
+# compiler's strong run-exports). Verified against backend source:
+# arbitrary stems pass through to the compiler() jinja — only the
+# variant keys below make them resolvable.
+m2w64_c_compiler:
+  - if: win
+    then: gcc
+m2w64_cxx_compiler:
+  - if: win
+    then: gxx
+m2w64_c_compiler_version:
+  - if: win
+    then: "14"
+m2w64_cxx_compiler_version:
+  - if: win
+    then: "14"
+
+# mingw lane stdlib keys: INERT for pixi-build backends (verified in
+# backend source: stdlib injection only ever consults `c_stdlib`) —
+# kept for rattler-build recipe wrappers that render stdlib('m2w64_c'),
+# and as the documented conda-forge shape. mingw run metadata arrives
+# via the compiler run-exports instead.
 m2w64_c_stdlib:
   - if: win
     then: m2w64-sysroot
