@@ -23,6 +23,14 @@
       }
     },
     {
+      "name": "mingw",
+      "displayName": "GNU on Windows (libstdc++ regime — matches enginelib-mingw)",
+      "inherits": "base",
+      "cacheVariables": {
+        "ENGINELIB_HEADER_ONLY_DEPS": "ON"
+      }
+    },
+    {
       "name": "clang-win",
       "displayName": "Clang on Windows (clang-cl, VC runtime — matches enginelib-clang win realization)",
       "inherits": "base",

@@ -63,6 +63,17 @@ machinery, and the preset is exactly where configure detail lives.)
   link-compatible with MSVC consumers. The lock metadata shows the two
   regimes directly: `enginelib-clang` (win) carries `vc14_runtime`;
   `enginelib-mingw` carries `libstdcxx`/`libgcc`.
+- **Regime closure (learned the hard way — the first mingw CI build
+  failed at link):** the regime requirement extends to every
+  NATIVE-CODE dependency. A mingw object cannot link the channel's
+  MSVC-built import libraries (`undefined reference to __imp_…` with
+  GNU mangling). Two escapes, both demonstrated: header-only
+  consumption compiles the dep in (`--preset=mingw` sets
+  `*_HEADER_ONLY_DEPS`, switching to `spdlog::spdlog_header_only` /
+  `fmt::fmt-header-only`); compiled deps with no header-only mode get
+  an in-regime wrapper rebuild (`external/catch2-mingw`, consumed only
+  by the mingw tests). Header-only deps (mathkit, stb) are
+  regime-neutral and need nothing.
 - Header-only packages (mathkit, stb) get NO compiler variants: their
   generated CMake config is byte-identical across compilers (verified) —
   no artifact, no ABI, nothing to name.

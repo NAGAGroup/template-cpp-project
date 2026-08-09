@@ -16,6 +16,9 @@ path = "../.."
 extra-args = ["--preset=default"]
 compilers = ["m2w64_cxx"]
 
+# catch2-mingw, NOT the channel catch2: Catch2 is a COMPILED library
+# with no header-only escape, so the mingw regime needs an in-regime
+# rebuild (see external/catch2-mingw). CMake still finds it as Catch2.
 [package.host-dependencies]
 enginelib-mingw = { workspace = true }
-catch2 = { workspace = true }
+catch2-mingw = { workspace = true }

@@ -72,6 +72,7 @@ demo-app-clang = { path = "packages/demo-app/variants/clang" }
 demo-app-mingw = { path = "packages/demo-app/variants/mingw" }
 fmt = { path = "external/fmt" }
 stb = { path = "external/stb" }
+catch2-mingw = { path = "external/catch2-mingw" }
 catch2 = ">=3.5,<4"
 spdlog = ">=1.15,<1.16"
 

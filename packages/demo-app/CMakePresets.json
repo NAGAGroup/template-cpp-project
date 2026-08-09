@@ -15,6 +15,14 @@
       "inherits": "base"
     },
     {
+      "name": "mingw",
+      "displayName": "GNU on Windows (matches demo-app-mingw)",
+      "inherits": "base",
+      "cacheVariables": {
+        "DEMO_APP_HEADER_ONLY_DEPS": "ON"
+      }
+    },
+    {
       "name": "clang-win",
       "displayName": "Clang on Windows (clang-cl — matches demo-app-clang win realization)",
       "inherits": "base",

@@ -16,6 +16,13 @@ set(ENGINELIB_BUILD_TYPE "" CACHE STRING
 set(ENGINELIB_SANITIZER "" CACHE STRING
     "Sanitizers to enable (e.g. 'address,undefined' or 'thread')")
 option(ENGINELIB_COVERAGE "Enable llvm-cov source-based coverage" OFF)
+# ABI-REGIME CLOSURE knob (the mingw lesson): a GNU-on-Windows build
+# cannot link the channel's MSVC-built spdlog/fmt import libraries —
+# every native-code dependency must match the toolchain's ABI regime.
+# Header-only consumption compiles those deps into this library and
+# removes the foreign-ABI imports entirely.
+option(ENGINELIB_HEADER_ONLY_DEPS
+       "Consume spdlog/fmt header-only (required off-regime, e.g. mingw)" OFF)
 
 set(BUILD_SHARED_LIBS ${ENGINELIB_SHARED})
 if(ENGINELIB_BUILD_TYPE)
@@ -72,10 +79,20 @@ target_include_directories(
          $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
          $<INSTALL_INTERFACE:include>)
 target_compile_features(enginelib PUBLIC cxx_std_23)
-target_link_libraries(
-  enginelib
-  PUBLIC mathkit::mathkit
-  PRIVATE spdlog::spdlog stb::stb)
+if(ENGINELIB_HEADER_ONLY_DEPS)
+  target_link_libraries(
+    enginelib
+    PUBLIC mathkit::mathkit
+    PRIVATE spdlog::spdlog_header_only stb::stb)
+  # spdlog's header-only target still interface-links the external fmt;
+  # FMT_HEADER_ONLY inlines it so no fmt import symbols remain.
+  target_compile_definitions(enginelib PRIVATE FMT_HEADER_ONLY)
+else()
+  target_link_libraries(
+    enginelib
+    PUBLIC mathkit::mathkit
+    PRIVATE spdlog::spdlog stb::stb)
+endif()
 
 include(GenerateExportHeader)
 generate_export_header(enginelib EXPORT_FILE_NAME

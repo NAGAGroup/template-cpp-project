@@ -6,6 +6,10 @@ project(
   LANGUAGES CXX)
 
 option(DEMO_APP_DEV_MODE "Enable developer warnings (dev presets)" OFF)
+# ABI-regime closure (see enginelib): mingw builds cannot link the
+# MSVC-built fmt import library — consume fmt header-only there.
+option(DEMO_APP_HEADER_ONLY_DEPS
+       "Consume fmt header-only (required off-regime, e.g. mingw)" OFF)
 if(DEMO_APP_DEV_MODE)
   add_compile_options(
     "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
@@ -18,7 +22,12 @@ find_package(fmt CONFIG REQUIRED)
 
 add_executable(demo-app src/main.cpp)
 target_compile_features(demo-app PRIVATE cxx_std_23)
-target_link_libraries(demo-app PRIVATE enginelib::enginelib fmt::fmt)
+if(DEMO_APP_HEADER_ONLY_DEPS)
+  target_link_libraries(demo-app PRIVATE enginelib::enginelib
+                                         fmt::fmt-header-only)
+else()
+  target_link_libraries(demo-app PRIVATE enginelib::enginelib fmt::fmt)
+endif()
 
 include(GNUInstallDirs)
 install(TARGETS demo-app RUNTIME)

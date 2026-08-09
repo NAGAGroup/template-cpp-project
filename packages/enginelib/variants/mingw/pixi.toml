@@ -22,8 +22,13 @@ backend = { name = "pixi-build-cmake", version = "==0.4.5" }
 [package.build.source]
 path = "../.."
 
+# The mingw preset consumes spdlog/fmt HEADER-ONLY: the ABI-regime
+# lesson with teeth — this GNU-regime build cannot link the channel's
+# MSVC-built import libraries, so every native-code dep must be
+# in-regime (header-only compiles them in; catch2 gets an in-regime
+# wrapper rebuild for the tests — see external/catch2-mingw).
 [package.build.config]
-extra-args = ["--preset=default"]
+extra-args = ["--preset=mingw"]
 compilers = ["m2w64_cxx"]
 
 [package.host-dependencies]
