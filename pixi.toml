@@ -34,13 +34,15 @@ preview = ["pixi-build"]
 requires-pixi = ">=0.76.1"
 # Toolchain/stdlib pinning lives in ONE reviewable file (upstream
 # pinning-feedstock shape; also the only route to zip_keys in pixi).
-# NOTE on lock staleness: `pixi lock --check` is UNRELIABLE in this
-# workspace — its fresh re-solve virtually never reproduces the
-# committed lock's microarch tier roll (source-variant selection is
-# nondeterministic among satisfying variants), so it reports stale
-# regardless of pin placement (verified 0/8 pass with inline pins, no
-# file). The REAL lock guard is ci/check-lock-tiers.nu, which asserts
-# the committed lock's tier CONTENT.
+# NOTE on lock staleness: `pixi lock --check` exits stale in THIS
+# workspace on 0.76.1 with or without build-variants-files (0/8 pass
+# either way); MECHANISM NOT ISOLATED — minimal source-workspace
+# reproductions do NOT fire, even with a live variant-axis tie, so
+# neither the file nor ties nor source-workspaces-generally is the
+# established cause (something template-specific; bisect pending).
+# The REAL lock guard is ci/check-lock-tiers.nu, which asserts the
+# committed lock's tier CONTENT. Upstream filing embargoed until a
+# minimal repro exists.
 build-variants-files = ["./variants.yaml"]
 
 # ---- Dependency pool -------------------------------------------------------
