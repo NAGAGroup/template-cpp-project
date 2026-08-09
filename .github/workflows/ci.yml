@@ -2,7 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    # `acpp` is a long-lived divergent branch, not a feature branch: it
+    # must be validated on every push exactly like main, or its lock and
+    # asserts rot silently between merges (DELTA.md D-21).
+    branches: [main, acpp]
   pull_request:
 
 # The entire CI is pixi-first: every job provisions its toolchain and
