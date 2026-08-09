@@ -54,6 +54,16 @@ def main [dist: string = "./dist"] {
 
     let depends = ($index | get -o depends | default [])
 
+    # THE SAME LESSON AS THE REGIME RULE, ARRIVING FROM THE OTHER SIDE.
+    # Jack's amendment on regime-dependence says: it is a property of
+    # INSTALLED METADATA, not of artifacts — inspect the installed CMake
+    # config, do not reason from "it has no binary". This exemption is
+    # that rule pointed the opposite way: do not reason from "it is
+    # header-only" either. Both times the tempting test is the package's
+    # apparent NATURE, and both times the correct test is what the
+    # package actually DECLARES. Read the metadata; the artifact's shape
+    # will mislead you in both directions.
+    #
     # A package with NO native runtime is not missing a floor — it has
     # nothing to floor. `stb` is the live example: a rattler-build
     # recipe that installs headers and a hand-written CMake config,
