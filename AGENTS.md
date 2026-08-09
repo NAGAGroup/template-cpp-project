@@ -97,6 +97,12 @@ The canonical NAGA-ecosystem pixi-build C++ template. Three jobs:
   deps (tier envs = shared `consumer` feature + selector-only tier
   features); a feature needing different solve semantics carries its
   own `solve-strategy`, listed first in its env.
+- Capability-demonstration doctrine (Jack): environments aren't just
+  what CI needs — they show capability. The template is a tutorial
+  surface, a compilation of possibilities, NOT a hard requirement set;
+  users discard what they don't need. Default answer for an orphaned
+  demonstrable item is GIVE IT AN ENV, not prune. (Deletions justified
+  by CORRECTNESS still stand.)
 - `--locked`/`--frozen` are developer-side tools for already-installed
   envs; virtual packages legitimately differ across hosts (and their
   satisfiability re-solve is also buggy — repro:
@@ -118,10 +124,11 @@ Run before claiming anything works (all from the repo root):
 `pixi run demo && pixi run test-all`; `pixi run -e test-coverage
 coverage`; `pixi run -e dev-enginelib dev-test` and `lint`;
 `pixi run -e dev-mathkit dev-test`; `pixi run -e style format-check`;
-`pixi run check-microarch`; `pixi install -e clang -e v0 -e v3 -e
-spdlog14`; `pixi exec --spec nushell nu ci/check-publish-set.nu`;
-`pixi exec --spec nushell nu ci/check-lock-tiers.nu`. Windows: the
-same minus sanitizers/coverage/microarch/clang envs.
+`pixi run check-microarch`; `pixi install -e clang -e v0 -e v2 -e v3
+-e relwithdebinfo -e spdlog14`; `pixi exec --spec nushell nu
+ci/check-publish-set.nu`; `pixi exec --spec nushell nu
+ci/check-lock-tiers.nu`. Windows: the same minus
+sanitizers/coverage/microarch/clang envs.
 
 ## Divergence checklist (for agents auditing OTHER NAGA repos)
 

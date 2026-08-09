@@ -86,7 +86,11 @@ envs need one reinstall; the validator reads stored metadata).
 |-----|----------|----------|---------|
 | default | bare `linux-64` | `_x86_64-microarch-level = "==1"` | **Recommended.** Portable-by-contract (v1: any x86-64 CPU from the last ~15 years). The pin uniquely excludes the optimized builds. |
 | v0 | bare `linux-64` | none | Nuclear-conservative fallback, **not recommended** — resolves the level-1 build anyway (higher floors can't solve on a bare platform). |
-| v3 / v4 | gate entry | `_x86_64-microarch-level = "==3"/"==4"` | Opt-in optimized tiers. Solve-time gated; NOT install/run-enforced yet (warning above). |
+| v2 / v3 / v4 | gate entry | `_x86_64-microarch-level = "==N"` | Opt-in optimized tiers (v2: SSE4/POPCNT, ~every x86-64 CPU since 2009; v3: AVX2-era; v4: AVX-512). Solve-time gated; NOT install/run-enforced yet (warning above). |
+
+Every tier has an env on purpose: environments show capability, not
+just CI need — the template is a tutorial surface, and composition
+(shared feature + per-tier selector) is what makes the full set cheap.
 
 Microarch levels have no minor versions — pin `==N`, never `N.*`.
 

@@ -100,7 +100,7 @@ jobs:
         with:
           cache: true
           locked: false
-          environments: v0 v3 v4 clang spdlog14
+          environments: v0 v2 v3 v4 clang relwithdebinfo spdlog14
       - name: Advisory microarch check (what this runner supports)
         run: pixi run check-microarch
       - name: Publish name-set assertion (C-01/C-02 compliance surface)
