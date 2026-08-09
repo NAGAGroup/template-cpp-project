@@ -56,9 +56,17 @@ machinery, and the preset is exactly where configure detail lives.)
 | clang / win | `*-clang` — same name, realized as clang-cl on the VC runtime |
 | mingw / win | `*-mingw` named variants — **Windows only** (libstdc++ on win) |
 
-- `clang` is ONE name on both platforms because the naming ground is
-  the knowingly-chosen CONFIGURATION (like asan/static) — on win,
-  clang-cl targets the SAME VC runtime as MSVC.
+- `clang` is ONE name on both platforms, and the name is grounded TWO
+  ways: compiler choice is a knowingly-chosen CONFIGURATION (C-03,
+  like asan/static) AND cross-compiler mixing is not guaranteed
+  ABI-safe even on a shared runtime. On win, clang-cl targets the same
+  VC RUNTIME as MSVC — that NARROWS the regime gap, it does not close
+  it: compilers are known to produce ABI-incompatible binaries even
+  when the stdlib is the same (mangling corner cases, unwind/EH table
+  differences, layout edge cases, cross-TU inline/ODR divergence).
+  **Shared VC runtime ≠ safe object mixing** — pick the variant whose
+  compiler matches yours; do not treat the two win lanes as
+  link-interchangeable.
 - `mingw` is a name on ABI-REGIME grounds: a mingw-built lib is not
   link-compatible with MSVC consumers. The lock metadata shows the two
   regimes directly: `enginelib-clang` (win) carries `vc14_runtime`;

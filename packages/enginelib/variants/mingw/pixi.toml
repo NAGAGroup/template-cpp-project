@@ -1,7 +1,8 @@
 # enginelib-mingw: NAMED compiler package variant — GNU toolchain ON
 # WINDOWS (libstdc++ regime, vs the default MSVC/VC-runtime regime).
-# Unlike clang (configuration-grade naming), this name is ABI-REGIME
-# grade: a mingw-built lib is NOT link-compatible with MSVC consumers —
+# This name is FULLY regime-grade (clang's is configuration-grade plus
+# a narrowed-but-open regime gap): a mingw-built lib is NOT
+# link-compatible with MSVC consumers —
 # exactly C-02's "compatibility contract extends to the consumer's own
 # toolchain". WIN-ONLY package: it is only ever referenced from
 # win-64 target tables and win-only envs (gnu-on-linux is just gcc =

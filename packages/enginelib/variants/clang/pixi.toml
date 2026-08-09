@@ -1,9 +1,11 @@
 # enginelib-clang: NAMED compiler package variant (package-only manifest;
 # version kept in sync with the default package — see template-docs/versioning.md).
-# ONE name, BOTH platforms, platform-realized (C-03: compiler choice is a
-# knowingly-chosen configuration, like asan/static — the naming is
-# configuration-grade, not ABI-regime-grade; on win, clang-cl targets the
-# SAME VC runtime as MSVC). This replaces the deleted linux-64-clang
+# ONE name, BOTH platforms, platform-realized. The name is grounded two
+# ways: compiler choice is a knowingly-chosen configuration (C-03, like
+# asan/static) AND cross-compiler object mixing is not guaranteed
+# ABI-safe even on a shared runtime — on win, clang-cl shares MSVC's VC
+# runtime, which NARROWS the regime gap but does not close it (shared
+# VC runtime ≠ safe object mixing). This replaces the deleted linux-64-clang
 # custom-platform routing: platforms are capability gates, never
 # selection routers. Bring-your-own-compiler mechanics: disable backend
 # compiler provisioning, declare the toolchain per platform.

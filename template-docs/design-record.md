@@ -42,16 +42,24 @@ the IDs it touches. Mechanically-checkable constraints are CI-asserted
   [features-and-environments.md](features-and-environments.md).*
 - **C-10** Build matrix is UNBOUNDED; TEST matrix is RUNNER-BOUNDED.
   Never assert archspec on an incapable runner to un-skip a tier test.
-- **[CLARIFIED 2026-08-09 — cites C-02, C-03]** The clang-win cell keeps
-  the `*-clang` NAMED-variant shape (one name, both platforms,
-  platform-realized). The name is grounded in **C-03** (compiler choice
-  = knowingly-chosen configuration, like asan/static), NOT in ABI-regime
-  distinctness: clang-cl targets the same VC-runtime regime as vs2026.
+- **[CLARIFIED 2026-08-09, then AMENDED same day by Jack — cites C-02,
+  C-03]** The clang-win cell keeps the `*-clang` NAMED-variant shape
+  (one name, both platforms, platform-realized). The name is grounded
+  TWO ways: **C-03** (compiler choice = knowingly-chosen
+  configuration, like asan/static) AND partly in regime difference —
+  the original "grounded in C-03, NOT in ABI-regime distinctness"
+  phrasing is retracted. clang-cl's shared VC runtime with vs2026
+  NARROWS the regime gap; it does not close it: compilers are known to
+  produce ABI-incompatible binaries even on the same stdlib (mangling
+  corner cases, unwind/EH table differences, layout edge cases,
+  cross-TU inline/ODR divergence), so **shared VC runtime ≠ safe
+  object mixing** — the REASONING is the constraint, and a record that
+  taught runtime-sharing as mixing-safety would be actively harmful.
   **C-02's bare-spec-safety naming test governs CHANNEL-FACING names
   only** and is not engaged — preset variants are dev-only, never
-  published (publish name-set stays [enginelib fmt mathkit stb]). If a
-  clang variant is ever published, the C-02 test re-engages and this
-  mapping must be revisited.
+  published (publish name-set: [enginelib mathkit stb]). If a clang
+  variant is ever published, the C-02 test re-engages and this mapping
+  must be revisited.
 - **Spec forms:** dependency SPECS take real bounds (`">=4.4,<4.5"`);
   variant VALUES are BARE and EXACT (`"4.4"`). No `X.*` anywhere.
   Prefer `pixi add`; if by hand: `">=<v>"`, `">=<maj.min>,<<maj.min+1>"`,
