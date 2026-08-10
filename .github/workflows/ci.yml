@@ -151,12 +151,19 @@ jobs:
       - name: CI-shape assertion (locked defaults, banned flags)
         if: runner.os == 'Linux'
         run: pixi exec --spec nushell nu ci/check-ci-shape.nu
-      # Expiry check for the nightly-lane substitution: fails when the
-      # release lane's version scheme is fixed, so a deliberately
-      # temporary state cannot quietly become permanent.
-      - name: Nightly-substitution expiry check (D-04)
+      # Cadence-lane pin check (D-29/D-30), three arms: the pinned
+      # nightly set is still complete on the channel; the nightly env
+      # actually resolves to it; and every compiler stem is swapped in
+      # the cadence tables. The third arm is the one that catches a
+      # SILENT failure — target variant tables merge, so an unswapped
+      # stem inherits the release stem and builds a mixed-lane cell
+      # green. Needs the nightly env installed for its resolution arm.
+      - name: Install the nightly cadence env (for the pin check)
         if: runner.os == 'Linux'
-        run: pixi exec --spec nushell --spec zstd --spec curl nu ci/check-nightly-expiry.nu
+        run: pixi install -e nightly
+      - name: Nightly cadence pin check (D-29/D-30)
+        if: runner.os == 'Linux'
+        run: pixi exec --spec nushell --spec zstd --spec curl nu ci/check-nightly-pin.nu
 
   publish:
     # Real publishing with OIDC trusted publishing: the channel trusts this

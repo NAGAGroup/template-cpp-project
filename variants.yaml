@@ -20,30 +20,56 @@
 # a per-platform selector to swap gxx for vs2026 — this branch names it
 # once. A package NEVER names an activation package directly.
 #
-# ⚠ THE NIGHTLY STEM IS A TEMPORARY SUBSTITUTION, NOT THE DESIGN.
-# The ratified lane set makes the RELEASE lane the default and nightly
-# a named opt-in. Nothing can currently be BUILT against the release
-# lane: `acpp-clangxx_linux-64`'s strong run-export is
-# `acpp-runtime >=25.10.0,<25.11`, and that lower bound matches nothing
-# — published versions look like `25.10.0_llvm20.1.8`, and conda orders
-# a trailing string component BELOW the shorter version, so every
-# published build sorts under its own floor. A run-export is baked into
-# the artifact; no consumer manifest can override it, which is why this
-# is a substitution rather than a spec fix on our side.
+# ---- CADENCE IS A PACKAGE-VARIANT AXIS, AND THIS IS ITS BASE CELL ----
 #
-# The nightly lane is unaffected because its run-export is EXACT:
-# `acpp-runtime-nightly ==2026.8.9_llvm21.1.8`. An exact spec cannot be
-# bitten by the ordering rule. Verified end to end — a one-TU package
-# builds, and its `hash_input.json` records
-# `cxx_compiler: acpp-clangxx-nightly`, so the toolchain really drove
-# the compile rather than silently falling back to a host compiler.
+# The toolchain ships two lanes that are, in ACPP's own words,
+# "effectively two separate toolchains": a RELEASE lane at a semver
+# version (`25.10.0`, LLVM major in the BUILD STRING) and a NIGHTLY
+# lane at a pure date (`2026.08.10`). They are separate PACKAGE-VARIANT
+# FAMILIES, not two versions of one package, and the metadata enforces
+# it both ways — `acpp` constrains `acpp-nightly <0.0a0` and
+# `acpp-nightly` constrains `acpp <0.0a0`. An environment names exactly
+# one cadence's stems; there is no mixing them inside one env.
 #
-# REVERT THIS THE DAY ACPP REPUBLISHES: drop the `-nightly` infix from
-# both stems. See DELTA.md D-04.
+# C-02 is what licenses separate NAMES here rather than build strings:
+# `2026.x` sorts ABOVE `25.x`, so a bare spec would silently drift onto
+# the nightly lane. Version ordering makes the bare spec unsafe, which
+# is precisely the C-02 criterion for a named variant family.
+#
+# THE STEMS BELOW ARE THE RELEASE LANE, and the release lane is the
+# DEFAULT — the base table is what every ordinary platform cell builds
+# against. The nightly stems live in a target-scoped
+# `[workspace.target.<cadence-platform>.build-variants]` table in
+# pixi.toml, applied only on the named cadence platforms
+# (`linux-64-nightly`, `win-64-nightly`).
+#
+# ⚠ THE MERGE FOOTGUN, and the reason a CI assert exists for this file:
+# target build-variant tables MERGE with this base table rather than
+# replacing it. A stem key that the cadence table forgets to override
+# does NOT error — it silently INHERITS THE RELEASE STEM, producing a
+# MIXED-LANE cell that builds green and means nothing. So the cadence
+# table must swap EVERY stem key named here, and
+# `ci/check-nightly-pin.nu` asserts that by COUNT EQUALITY against this
+# table's stem key set, never by spot check. If you add a stem key
+# here, you must add it there too, or CI will say so.
+#
+# Naming, because it is easy to get backwards: the cadence suffix goes
+# on the BASE name, before the terminal `_<platform>` that
+# `compiler('cxx')` appends — `acpp-clangxx-nightly_linux-64`, NOT
+# `acpp-clangxx_linux-64-nightly`.
+#
+# Measured at the flip (2026-08-10, this channel, one compiled TU):
+# a release cell's `hash_input.json` records
+# `cxx_compiler: acpp-clangxx` and the artifact carries
+# `acpp-runtime >=25.10.0,<25.11.0a0` + `acpp-llvm >=20,<21.0a0`; the
+# matching nightly cell records `cxx_compiler: acpp-clangxx-nightly`
+# and carries the nightly lane's EXACT run-export. So the toolchain
+# really drove each compile rather than silently falling back to a host
+# compiler, and the two lanes really are distinct in the artifact.
 c_compiler:
-  - acpp-clang-nightly
+  - acpp-clang
 cxx_compiler:
-  - acpp-clangxx-nightly
+  - acpp-clangxx
 #
 # NO `*_compiler_version` KEYS, DELIBERATELY — a trap, not an omission.
 # The activation packages carry no version-suffixed names, so a version
@@ -66,20 +92,32 @@ cxx_compiler:
 #
 # pixi's automatic stdlib derivation fires only for the literal
 # `conda-forge` channel, and this workspace resolves through a single
-# `naga-labs` channel. The explicit pair below is therefore the ONLY
-# thing that puts `__glibc` into a built package's run requirements.
-# Verified with a discriminating pair (2026-08-09, pixi 0.76.1,
-# pixi-build-cmake 0.4.5, one compiled TU, this channel): WITH these
-# two keys the artifact's `info/index.json` depends carries
-# `__glibc >=2.28,<3.0.a0`; with them removed, no `__glibc` entry at
-# all — same channel, same everything else.
+# `naga-labs` channel, so nothing DERIVES a floor from the channel.
 #
-# Deleting these keys as "redundant with conda-forge's defaults" would
-# ship packages installable on machines whose glibc is too old, failing
-# at LOAD time in a user's environment, with a green build and a
-# successful upload on our side. `ci/check-stdlib-floor.nu` reads the
-# built artifact and fails if the floor is missing, because a manifest
-# cannot prove what actually shipped.
+# ⚠ CORRECTED 2026-08-10 — the earlier text here (and DELTA.md D-02)
+# said this pair was "the ONLY thing that puts `__glibc` into a built
+# package's run requirements". That is no longer true, and the
+# correction is recorded rather than quietly edited because the pair is
+# still load-bearing, just not for the stated reason.
+#
+# Re-measured with a discriminating pair (2026-08-10, pixi 0.76.1,
+# release lane, one compiled TU, this channel — the two runs differ in
+# NOTHING but these two keys):
+#   WITHOUT the pair: depends carries `__glibc >=2.28`
+#   WITH the pair:    depends carries `__glibc >=2.28`
+#                     AND `__glibc >=2.28,<3.0.a0`
+# The bare floor arrives on its own, from the toolchain: the compiler
+# activation depends on `sysroot_linux-64 >=2.28`, whose run-export
+# stamps it. What the explicit pair adds is the CEILINGED form.
+#
+# So the honest statement is: the pair is not what makes a floor exist,
+# it is what makes the floor OURS — a floor we declare at a value we
+# chose, instead of one inherited as a side effect of whatever the
+# toolchain happens to depend on. Delete it and the floor silently
+# becomes the toolchain's business, changing whenever ACPP bumps their
+# sysroot. `ci/check-stdlib-floor.nu` reads the built artifact and
+# fails if the floor is missing, because a manifest cannot prove what
+# actually shipped.
 #
 # The VALUE is Jack's deliberate decision: 2.28, above conda-forge's
 # 2.17 baseline (SYCL tooling required the bump; the same wall came up
