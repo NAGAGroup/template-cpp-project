@@ -47,12 +47,19 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            envs: test
+            # Sanitizer envs are LINUX-ONLY, and that is a scope
+            # decision rather than a capability gap now (D-26): the
+            # toolchain ships compiler-rt on both platforms, but win
+            # sanitizer support would be new work this branch has not
+            # taken on. `pixi run test-all` fans out per-platform, so
+            # the envs installed here must match the linux fan-out.
+            envs: test test-asan test-tsan
           - os: windows-latest
             # Windows mirrors every cross-platform test env. There is no
             # per-compiler test env here — one toolchain, nothing to
-            # compare against (AM-1) — and no sanitizer envs at all,
-            # because the toolchain ships no sanitizer runtimes (D-26).
+            # compare against (AM-1) — and no sanitizer envs, because
+            # host-side sanitizers are linux-only on this branch by
+            # choice (D-26), not because the runtimes are missing.
             envs: test
     steps:
       - uses: actions/checkout@v4

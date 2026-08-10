@@ -1,0 +1,23 @@
+# enginelib-tests-tsan: tests built against (and like) enginelib-tsan.
+[package]
+name = "enginelib-tests-tsan"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "==0.4.5" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=tsan"]
+
+[package.host-dependencies]
+enginelib-tsan = { workspace = true }
+catch2 = { workspace = true }
+
+
+# Same reason as the library variant: the tests link the sanitizer
+# runtimes too, and `acpp` does not run-export them.
+[package.target.linux-64.build-dependencies]
+acpp-compiler-rt = ">=25.10.0,<25.11.0a0"

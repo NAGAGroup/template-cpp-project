@@ -75,9 +75,13 @@ mathkit = { path = "packages/mathkit" }
 enginelib = { path = "packages/enginelib" }
 enginelib-static = { path = "packages/enginelib/variants/static" }
 enginelib-relwithdebinfo = { path = "packages/enginelib/variants/relwithdebinfo" }
+enginelib-asan = { path = "packages/enginelib/variants/asan" }
+enginelib-tsan = { path = "packages/enginelib/variants/tsan" }
 enginelib-coverage = { path = "packages/enginelib/variants/coverage" }
 enginelib-tests = { path = "packages/enginelib/tests" }
 enginelib-tests-coverage = { path = "packages/enginelib/tests/variants/coverage" }
+enginelib-tests-asan = { path = "packages/enginelib/tests/variants/asan" }
+enginelib-tests-tsan = { path = "packages/enginelib/tests/variants/tsan" }
 mathkit-tests = { path = "packages/mathkit/tests" }
 demo-app = { path = "packages/demo-app" }
 demo-app-static = { path = "packages/demo-app/variants/static" }
@@ -327,16 +331,50 @@ spdlog = { workspace = true }
 enginelib-relwithdebinfo = { workspace = true }
 spdlog = { workspace = true }
 
+# ---- SANITIZER FLAVORS: RESTORED 2026-08-10 (DELTA.md D-26) --------
+# These were deleted from this branch as a toolchain CAPABILITY GAP, not
+# as a simplification: AdaptiveCpp shipped no compiler-rt sanitizer
+# runtimes, so `-fsanitize=address` could not LINK at all. It now ships
+# them (`acpp-compiler-rt`, at the matching clang major on both lanes),
+# so the gap is closed and the flavors come back.
+#
+# Verified end to end before restoring, because "the package exists on
+# the channel" and "the sanitizer works" are different claims: a
+# one-TU binary built on the release lane with `-fsanitize=address,undefined`
+# links, runs clean, and — the part that actually matters — DETECTS, a
+# deliberate heap-buffer-overflow producing both an AddressSanitizer
+# report and a UBSan diagnostic.
+#
+# HOST-SIDE (linux) ONLY, deliberately. Windows sanitizers are out of
+# scope for this branch: that would be new work rather than the
+# un-deletion this is, and it is recorded as a scope decision so nobody
+# reads the absence as another capability gap. The consuming envs carry
+# the platform restriction.
+[feature.asan.dependencies]
+enginelib-asan = { workspace = true }
+spdlog = { workspace = true }
+
+# ACTIVATION showcase: env vars set on every activation of an env
+# composing this feature (pixi run / pixi shell). The right layer for
+# SEMANTIC knobs that configure the flavor itself — sanitizer runtime
+# options belong to the sanitizer flavor, not to individual tasks. This
+# is also the branch's showcase for env-level semantic knobs, which the
+# D-26 deletion had temporarily displaced onto coverage and the
+# microarch tiers.
+[feature.asan.activation.env]
+ASAN_OPTIONS = "halt_on_error=1:detect_stack_use_after_return=1"
+UBSAN_OPTIONS = "print_stacktrace=1:halt_on_error=1"
+
+[feature.tsan.dependencies]
+enginelib-tsan = { workspace = true }
+spdlog = { workspace = true }
+
+[feature.tsan.activation.env]
+TSAN_OPTIONS = "halt_on_error=1:second_deadlock_stack=1"
+
 # Coverage flavor (linux-only realization; the consuming env carries the
 # platform restriction). It also carries the report tooling its script
 # needs — part of the flavor's coherent surface.
-#
-# THE SANITIZER FLAVORS ARE GONE, and not by choice — DELTA.md D-26.
-# AdaptiveCpp ships no compiler-rt sanitizer runtimes, so asan/tsan
-# cannot link at all here. Their activation-env block was also this
-# template's showcase for env-level SEMANTIC knobs; that teaching moves
-# to the coverage flavor and the microarch tiers until the capability
-# comes back.
 [feature.coverage.dependencies]
 enginelib-coverage = { workspace = true }
 spdlog = { workspace = true }
@@ -553,6 +591,24 @@ features = ["header-only", "prod", "test-tasks"]
 no-default-feature = true
 dependencies = { mathkit-tests = { workspace = true }, enginelib-tests = { workspace = true } }
 
+# Sanitizer test envs: linux-only, which is the HOST-SIDE-ONLY scope
+# decision made explicit rather than left as an absence.
+[environments.test-asan]
+platforms = ["linux-64"]
+features = ["header-only", "asan", "test-tasks"]
+no-default-feature = true
+dependencies = { enginelib-tests-asan = { workspace = true } }
+[environments.test-asan.tasks.test]
+cmd = "enginelib-tests"
+
+[environments.test-tsan]
+platforms = ["linux-64"]
+features = ["header-only", "tsan", "test-tasks"]
+no-default-feature = true
+dependencies = { enginelib-tests-tsan = { workspace = true } }
+[environments.test-tsan.tasks.test]
+cmd = "enginelib-tests"
+
 [environments.test-coverage]
 platforms = ["linux-64"]
 features = ["header-only", "coverage", "test-tasks"]
@@ -695,5 +751,7 @@ description = "Run all cross-platform test envs"
 [target.linux-64.tasks.test-all]
 depends-on = [
   { task = "test", environment = "test" },
+  { task = "test", environment = "test-asan" },
+  { task = "test", environment = "test-tsan" },
 ]
-description = "Run all test envs"
+description = "Run all test envs (incl. host-side sanitizers)"

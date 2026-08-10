@@ -1,0 +1,47 @@
+# enginelib-tsan: preset-variant subpackage (package-only manifest; version
+# kept in sync with the default
+# package — see https://github.com/NAGAGroup/template-cpp-project/blob/main/template-docs/versioning.md).
+[package]
+name = "enginelib-tsan"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "==0.4.5" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=tsan"]
+
+[package.host-dependencies]
+mathkit = { workspace = true }
+spdlog = { workspace = true }
+stb = { workspace = true }
+
+[package.run-dependencies]
+mathkit = { workspace = true }
+stb = { workspace = true }
+
+[package.run-exports.weak]
+enginelib-tsan = ">=0.1.0,<0.2"
+
+# THE ONE LINE THIS BRANCH ADDS TO MAIN'S VARIANT PACKAGE, and it is the
+# whole reason D-26 could be closed (see DELTA.md D-26).
+#
+# AdaptiveCpp now ships the compiler-rt sanitizer runtimes, but `acpp`
+# does NOT run-export them — verified against the published metadata:
+# neither `acpp` nor `acpp-clang_linux-64` lists `acpp-compiler-rt` in
+# its dependencies. So a build that links `-fsanitize=...` has to ask
+# for the runtimes itself, or the link dies on
+# `cannot find .../libclang_rt.asan_static.a` exactly as it did when
+# D-26 deleted this package.
+#
+# This is a BUILD dependency and legitimately ours under D-28's
+# distinction: it is a tool THIS package's own build invokes, not a
+# version we are reaching into a dependency to steer.
+#
+# Linux-only, because the sanitizer surface here is host-side only —
+# Windows sanitizers are deliberately out of scope, not forgotten.
+[package.target.linux-64.build-dependencies]
+acpp-compiler-rt = ">=25.10.0,<25.11.0a0"

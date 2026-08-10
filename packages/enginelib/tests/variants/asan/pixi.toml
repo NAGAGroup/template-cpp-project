@@ -1,0 +1,23 @@
+# enginelib-tests-asan: tests built against (and like) enginelib-asan.
+[package]
+name = "enginelib-tests-asan"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "==0.4.5" }
+
+[package.build.source]
+path = "../.."
+
+[package.build.config]
+extra-args = ["--preset=asan"]
+
+[package.host-dependencies]
+enginelib-asan = { workspace = true }
+catch2 = { workspace = true }
+
+
+# Same reason as the library variant: the tests link the sanitizer
+# runtimes too, and `acpp` does not run-export them.
+[package.target.linux-64.build-dependencies]
+acpp-compiler-rt = ">=25.10.0,<25.11.0a0"
